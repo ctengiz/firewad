@@ -1,0 +1,222 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 30px;
+    margin-top: 55px;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    overflow-x: hidden;
+    font-size: 12px;
+
+    color: #434A54;
+    background-color: #f1f2f6;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    /*font-family: 'Lato', sans-serif !important;*/
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+/* ----------------------------------
+ * Fluid Container
+ * ---------------------------------- */
+.container-fluid {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* ----------------------------------
+ * Footer
+ * ---------------------------------- */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 30px;
+  background-color: #cdcdcd;
+}
+.footer > .container {
+  height: 30px;
+}
+
+.footer > .container > p {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+
+/* ----------------------------------
+ * Drop-Down Menu
+ * ---------------------------------- */
+.dropdown-menu {
+    font-size: 12px;
+}
+
+/* ----------------------------------
+ * Form Control
+ * ---------------------------------- */
+.form-control{
+    font-size: 12px;
+}
+
+
+/* ----------------------------------
+ * Menu Styles
+ * ---------------------------------- */
+.menu-panel .glyphicon-chevron-right, .menu-list .glyphicon-chevron-right {
+    float: right;
+}
+
+.menu-list li {
+    list-style: none;
+}
+
+.menu-list .list-group-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.menu-list .list-group-item:last-child {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-bottom: -1px;
+}
+
+.menu-list a.list-group-item:focus, a.list-group-item:hover {
+    text-decoration: underline;
+    color: #23527C;
+    background-color: transparent;
+}
+
+.menu-root {
+    background-color: #337AB7; /*#F5F5F5;*/
+    font-weight: bold;
+    color: #fff;
+}
+a.menu-root.list-group-item {
+    color: white;
+}
+a.menu-root.list-group-item:focus, a.menu-root.list-group-item:hover {
+    text-decoration: none;
+    color: #fff; /*#555;*/
+    background-color: #337AB7; /*#F5F5F5;*/
+}
+
+.menu-node {
+    font-weight: bold;
+}
+a.menu-node.list-group-item:focus, a.menu-node.list-group-item:hover {
+    text-decoration: none;
+    color: #555;
+    background-color: #F5F5F5;;
+}
+
+/* ----------------------------------
+ * sidebar
+ * ---------------------------------- */
+
+.sidebar-offcanvas {
+    padding-right: 5px
+}
+.sidebar-offcanvas i {
+    margin-right: 8px
+}
+.toggle-sidebar span {
+    font-size: 18px;
+    margin-right: 10px
+}
+@media screen and (min-width: 768px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all .25s ease-out;
+        -moz-transition: all .25s ease-out;
+        transition: all .25s ease-out;
+    }
+    .row-offcanvas-right {
+        right: 20%;
+    }
+    .row-offcanvas-left {
+        left: 20%;
+    }
+    .row-offcanvas-right .sidebar-offcanvas {
+        right: -20%;
+        /* 3 columns */
+    }
+    .row-offcanvas-left .sidebar-offcanvas {
+        left: -20%;
+        /* 3 columns */
+    }
+    .row-offcanvas-right.active {
+        right: 0;
+        /* 3 columns */
+    }
+    .row-offcanvas-left.active {
+        left: 0;
+        /* 3 columns */
+    }
+    .row-offcanvas-right.active .sidebar-offcanvas {
+        /*background-color: rgb(254, 254, 254);*/
+    }
+    .row-offcanvas-left.active .sidebar-offcanvas {
+        /*background-color: rgb(254, 254, 254);*/
+    }
+    .row-offcanvas .content {
+        width: 80%;
+        /* 9 columns */
+        -webkit-transition: all .25s ease-out;
+        -moz-transition: all .25s ease-out;
+        transition: all .25s ease-out;
+    }
+    .row-offcanvas.active .content {
+        width: 100%;
+        /* 12 columns */
+    }
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        width: 20%;
+        /* 3 columns */
+    }
+}
+@media screen and (max-width: 767px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all .25s ease-out;
+        -moz-transition: all .25s ease-out;
+        transition: all .25s ease-out;
+    }
+    .row-offcanvas-right {
+        right: 0;
+    }
+    .row-offcanvas-left {
+        left: 0;
+    }
+    .row-offcanvas-right .sidebar-offcanvas {
+        right: -50%;
+        /* 6 columns */
+    }
+    .row-offcanvas-left .sidebar-offcanvas {
+        left: -50%;
+        /* 6 columns */
+    }
+    .row-offcanvas-right.active {
+        right: 50%;
+        /* 6 columns */
+    }
+    .row-offcanvas-left.active {
+        left: 50%;
+        /* 6 columns */
+    }
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        width: 50%;
+        /* 6 columns */
+    }
+}
