@@ -6,6 +6,19 @@ end
 if not defined('show_sidebar'):
     setdefault('show_sidebar', True)
 end
+
+if not defined('db'):
+    setdefault('db', '')
+end
+
+if not defined('typ'):
+    setdefault('typ', '')
+end
+
+if not defined('obj'):
+    setdefault('obj', '')
+end
+
 %>
 
 <!DOCTYPE html>
@@ -21,7 +34,7 @@ end
     <link rel="icon" href="../../favicon.ico">
     -->
 
-    <title>Firewad - {{session['db_code']}}</title>
+    <title>Firewad - {{session['db']}}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -32,6 +45,10 @@ end
     <!-- Base Css -->
     <link href="/static/base.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+
+    <!-- Pygments -->
+    <link href="/static/pygments_github.css" rel="stylesheet">
+
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -58,29 +75,48 @@ end
             <a href="javascript:void(0);" class="navbar-brand">
                 <span class="fa fa-angle-double-left" data-toggle="offcanvas" title="Maximize Panel"></span>
             </a>
-            <a class="navbar-brand" href="/{{session['db_code']}}">{{session['db_code']}}</a>
+            <a class="navbar-brand" href="/{{db}}">{{db}}</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar">
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <select class="form-control" id="nav-db-select">
+                        <option></option>
+                        %for k in appconf.db_config.sections():
+                        <option value="{{k}}" {{'selected="selected"' if k == db else ''}}>{{k}}</option>
+                        %end
+                    </select>
+                </div>
+            </form>
+
             <ul class="nav navbar-nav">
-                <li><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Databases<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/db_list">Registered Databases</a></li>
+                        <li><a href="/register_db">Register Database</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/create_db">Create Database</a></li>
+                        <li><a href="/drop_db">Drop Database</a></li>
+                    </ul>
+                </li>
+
+                <%
+                if db != '':
+                    include('_menu_db.tpl')
+                end
+                %>
+
+                <%
+                if typ != '':
+                    include('_menu_%s.tpl' % typ)
+                end
+                %>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Settings</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projeler <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-
-                        <!-- todo
-                        for adb in appconf.db:
-                        <li><a href="/db/{{adb}}">{{adb}}</a></li>
-                        end
-                        -- >
-                    </ul>
-                </li>
                 <!-- todo
                 if session['logged_in']:
                     <li><a href="/system/logout">Logout</a></li>
@@ -101,11 +137,14 @@ end
     <div class="row row-offcanvas row-offcanvas-left">
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas do-not-print" role="navigation">
             <ul class="list-group menu-list">
+                <!--
                 <li class="list-group-item"><i class="glyphicon glyphicon-align-justify"></i> <b>Hızlı Erişim</b></li>
                 <li class="list-group-item"><input type="text" class="form-control search-query" placeholder="program kodu"></li>
-                <li class="list-group-item" style="font-size: 14px;"><b>Menü</b></li>
-                %if 'menu' in session:
-                {{!prj_menu_to_html(session['menu'], style='list-group-collapse-only-list')}}
+                -->
+                <li class="list-group-item" style="font-size: 14px;"><i class="fa fa-database"></i> <b>Database Objects</b></li>
+
+                %if db != '':
+                % include('_metadata.tpl', metadata=appconf.ddl[db], section=db, section_name=db)
                 %end
             </ul>
         </div>

@@ -77,6 +77,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     list-style: none;
 }
 
+.menu-list .list-group-item {
+    padding: 5px 15px;
+}
+
+
 .menu-list .list-group-item:first-child {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -219,4 +224,20 @@ a.menu-node.list-group-item:focus, a.menu-node.list-group-item:hover {
         width: 50%;
         /* 6 columns */
     }
+}
+
+/* ----------------------------------
+ * panel heading chevron
+ * ---------------------------------- */
+
+.panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
 }

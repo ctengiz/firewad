@@ -1,4 +1,4 @@
-bottle
+-e git://github.com/bottlepy/bottle.git#egg=bottle
 beaker
 fdb
 pygments

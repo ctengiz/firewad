@@ -1,7 +1,7 @@
 %setdefault('show_topbar', False)
 %setdefault('show_sidebar', False)
 
-% include('./standard/_header.tpl')
+% include('_header.tpl')
 
 <div class="row">
     <div class="col-md-6 col-md-push-3">
@@ -13,5 +13,5 @@
 </div>
 
 
-% include('./standard/_footer.tpl')
+% include('_footer.tpl')
 

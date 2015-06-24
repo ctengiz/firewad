@@ -1,12 +1,13 @@
 __author__ = 'cagataytengiz'
 
 import os
+import importlib
 
-from bottle import BaseTemplate, debug, run, template, static_file, request
+from bottle import BaseTemplate, debug, run, template, static_file, request, redirect
 from beaker.middleware import SessionMiddleware
 
-from common import appconf, baseApp
-import setup
+from common import appconf, baseApp, init_app, init_session, render, highlight_sql
+import firstrun
 
 
 def run_app(do_debug=True):
@@ -14,14 +15,26 @@ def run_app(do_debug=True):
     appconf.basepath = os.path.abspath(os.path.dirname(__file__))
 
     if not(os.path.exists(appconf.basepath + '/config.ini')):
-        baseApp.route('/', method=['GET', 'POST'], callback=setup.do_setup)
-        baseApp.route('/setup_ok', method=['GET', 'POST'], callback=setup.setup_ok)
+        baseApp.route('/', method=['GET', 'POST'], callback=firstrun.do_setup)
+        baseApp.route('/setup_ok', method=['GET', 'POST'], callback=firstrun.setup_ok)
     else:
-        #todo: init_app()
+        init_app()
         baseApp.route('/', method=['GET', 'POST'], callback=index)
 
     #template defaults
     BaseTemplate.defaults['appconf'] = appconf
+    BaseTemplate.defaults['highlight_sql'] = highlight_sql
+
+    #Importing controllers
+    _controllers_dir = '%s/sub/' %(appconf.basepath, )
+    _lst = os.listdir(_controllers_dir)
+    for _fname in _lst:
+        _module_name, _module_ext = os.path.splitext(_fname)
+        _module_path = 'sub.' + _module_name
+        if not os.path.isdir(_module_path) and _fname[0:2] != '__' and _module_ext == '.py':
+            module = importlib.import_module(_module_path)
+
+        #baseApp.merge(module.subApp.routes)
 
     return SessionMiddleware(baseApp, {'session.type': 'file',
                                        'session.cookie_expires': 18000,
@@ -31,29 +44,15 @@ def run_app(do_debug=True):
 @baseApp.hook('before_request')
 def setup_request():
     s = request.environ['beaker.session']
+    _path = request.urlparts.path.split('/')[1]
 
-    #todo:
-    s['db_code'] = ''
-    """
-    if not 'logged_in' in s:
-        utils.init_session()
-    request.session = s
-
-
-    dst_path = request.urlparts.path.split('/')[1]
-    if baseApp.config['auth.login_required'] == '1':
-        if not(s.get('logged_in')):
-            if dst_path != 'login' and dst_path != 'static':
-                s['path'] = request.urlparts.path
-                redirect('/login')
-
-    if dst_path == 'admin':
-        if not(s.get('is_admin')):
-            abort(401, _('Admin rights required for this section'))
-    """
+    if 'logged_in' not in s:
+        init_session()
 
     BaseTemplate.defaults['session'] = s
 
+    if appconf.login_required and s['logged_in'] is False and _path != 'login':
+        redirect('/login')
 
 
 def index():
@@ -61,11 +60,8 @@ def index():
 
     :return:
     """
-    #todo: burada tüm prj'leri listeleyelim !
-    #veya tam bir welcome ekranı koyalım
-    #işte hoş geldiniz şu projeler vardır. admin şuradandır vs..
 
-    return template('_content', content='', scripts='')
+    return render()
 
 
 @baseApp.get('/static/<filepath:path>')
