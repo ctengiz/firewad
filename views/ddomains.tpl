@@ -14,13 +14,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#tbl-field">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#tbl-domains">
                             Domains
                         </a>
                     </h4>
                 </div>
-                <div id="tbl-field" class="panel-collapse collapse in">
-                    <table class="table table-condensed">
+                <div id="tbl-domains" class="panel-collapse collapse in">
+                    <table class="table table-condensed table-bordered">
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -32,7 +32,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    %for k in tbl:
+                    %for k in sorted(tbl, key=lambda k: str(k.name)):
                         <tr>
                             <td>{{k.name}}</td>
                             <td>{{k.datatype}}</td>

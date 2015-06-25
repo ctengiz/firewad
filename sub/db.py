@@ -104,7 +104,6 @@ def dtable(typ, db):
     elif typ == 'exceptions':
         _ddl = appconf.con[db].exceptions
 
-
     return render(_rnd, db=db, tbl=_ddl, typ=typ)
 
 @baseApp.route('/<typ>/<db>/<obj>')
@@ -121,6 +120,8 @@ def dtable(typ, db, obj):
         _ddl = appconf.con[db].schema.get_trigger(obj)
     elif typ == 'procedure':
         _ddl = appconf.con[db].schema.get_procedure(obj)
+    elif typ == 'function':
+        _ddl = appconf.con[db].schema.get_function(obj)
 
     return render(_rnd, db=db, tbl=_ddl, obj=obj, typ=typ)
 

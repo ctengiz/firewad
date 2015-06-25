@@ -51,3 +51,11 @@ def render(tpl='', scripts='', show_topbar=True, show_sidebar=True, **kwargs):
 def highlight_sql(text):
     return highlight(text, sql.PlPgsqlLexer(), html.HtmlFormatter())
 
+
+def get_rdb_type(typ):
+    types = ['table', 'view', 'trigger', 'computed field', 'validation', 'procedure',
+             'expression index', 'exception', 'user', 'field', 'index', ' ',
+             'user group', 'role', 'generator', 'udf', 'blob filter']
+
+    return types[typ]
+

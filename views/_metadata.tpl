@@ -58,11 +58,7 @@
         <a class="list-group-item" href="/function/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
     %end
 </div>
-<a href="#menu-exception" class="list-group-item menu-root" data-toggle="collapse" style="padding-left:5px;">
-    <i class="fa fa-exclamation-triangle"></i>Exceptions <small>({{len(metadata['exceptions'])}})</small> <span class="glyphicon glyphicon-chevron-right"></span>
+
+<a href="/exceptions/{{db}}" class="list-group-item menu-root"  style="padding-left:5px;">
+    <i class="fa fa-exclamation-triangle"></i>Exceptions <small>({{len(metadata['exceptions'])}})</small>
 </a>
-<div class="collapse" id="menu-exception">
-    %for k in metadata['exceptions']:
-        <a class="list-group-item" href="/exception/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
-    %end
-</div>

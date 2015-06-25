@@ -20,7 +20,7 @@
                     </h4>
                 </div>
                 <div id="tbl-index" class="panel-collapse collapse in">
-                    <table class="table table-condensed table-sortable">
+                    <table class="table table-condensed table-sortable table-bordered">
                         <thead>
                         <tr>
                             <th>Name</th>
@@ -35,7 +35,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        %for k in tbl:
+                        %for k in sorted(tbl, key=lambda k: str(k.name)):
                             <tr>
                                 <td>{{k.name}}</td>
                                 <td>{{k.table.name}}</td>

@@ -34,7 +34,7 @@ end
     <link rel="icon" href="../../favicon.ico">
     -->
 
-    <title>Firewad - {{session['db']}}</title>
+    <title>Firewad - {{db}}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -104,13 +104,13 @@ end
 
                 <%
                 if db != '':
-                    include('_menu_db.tpl')
+                    include('./incmenu/m_db.tpl')
                 end
                 %>
 
                 <%
                 if typ != '':
-                    include('_menu_%s.tpl' % typ)
+                    include('./incmenu/m_%s.tpl' % typ)
                 end
                 %>
             </ul>
@@ -135,7 +135,7 @@ end
 <div class="container-fluid" >
     %if show_sidebar:
     <div class="row row-offcanvas row-offcanvas-left">
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas do-not-print" role="navigation">
+        <div class="col-xs-https://github.com/ctengiz/firewad6 col-sm-2 sidebar-offcanvas do-not-print" role="navigation">
             <ul class="list-group menu-list">
                 <!--
                 <li class="list-group-item"><i class="glyphicon glyphicon-align-justify"></i> <b>Hızlı Erişim</b></li>
@@ -149,7 +149,7 @@ end
             </ul>
         </div>
 
-    <div class="col-xs-12 col-sm-9 content">
+    <div class="col-xs-12 col-sm-10 content">
     %else:
     <div class="col-xs-12 content">
     %end

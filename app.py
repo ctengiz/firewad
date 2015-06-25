@@ -6,7 +6,7 @@ import importlib
 from bottle import BaseTemplate, debug, run, template, static_file, request, redirect
 from beaker.middleware import SessionMiddleware
 
-from common import appconf, baseApp, init_app, init_session, render, highlight_sql
+from common import appconf, baseApp, init_app, init_session, render, highlight_sql, get_rdb_type
 import firstrun
 
 
@@ -24,6 +24,7 @@ def run_app(do_debug=True):
     #template defaults
     BaseTemplate.defaults['appconf'] = appconf
     BaseTemplate.defaults['highlight_sql'] = highlight_sql
+    BaseTemplate.defaults['get_rdb_type'] = get_rdb_type
 
     #Importing controllers
     _controllers_dir = '%s/sub/' %(appconf.basepath, )
