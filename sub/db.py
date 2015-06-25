@@ -1,5 +1,5 @@
 """ 
-Description of the module
+Database objects and DDL operations
 """
 
 import fdb
@@ -85,7 +85,7 @@ def db_page(db):
 
     s = request.environ['beaker.session']
 
-    return render(db=db)
+    return render('db_page', db=db)
 
 @baseApp.route('/<typ>/<db>')
 def dtable(typ, db):

@@ -20,8 +20,11 @@ python app.py
 
 Now browse to http://127.0.0.1:18022
 
+**SECURITY WARNING : Code is not ready for public serve yet (as a www service, db passwords is stored as plaintext in dbconfig.ini and access
+to website is not secured. Use it only from localhost right now**
 
-## Basic Todo List
+
+## Brief Todos
 
 - [x] Basic database metadata representation
  - [ ] Dependencies for functions, exceptions, sequences, domains
@@ -42,6 +45,7 @@ Now browse to http://127.0.0.1:18022
  - [ ] Create
  - [ ] Backup / restore
  - [ ] DDL export
+ - [ ] Schema View
 - [ ] Data Operations
  - [ ] Sql query
  - [ ] Data edit / insert / delete
@@ -50,7 +54,9 @@ Now browse to http://127.0.0.1:18022
 - [ ] User management
 - [ ] Code documentation
 - [ ] Usage documentation
-
+- [ ] Use github's isssue tracker
+- [ ] Prepare a roadmap
+- [ ] Package for windows
  
  
 

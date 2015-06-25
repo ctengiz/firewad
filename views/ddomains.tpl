@@ -4,7 +4,6 @@
             <li><a href="/db/{{db}}">{{db}}</a></li>
             <li class="active">Domains</li>
         </ol>
-
     </div>
 </div>
 
