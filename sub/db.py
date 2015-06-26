@@ -21,6 +21,10 @@ def connect_db(db):
 
     appconf.ddl[db] = {}
     appconf.ddl[db]['tables'] = sorted([t.name for t in appconf.con[db].tables])
+    appconf.ddl[db]['tables_id'] = {}
+    for t in appconf.con[db].tables:
+        appconf.ddl[db]['tables_id'][t.id] = t.name
+
     appconf.ddl[db]['views'] = sorted([t.name for t in appconf.con[db].views])
     appconf.ddl[db]['triggers'] = sorted([t.name for t in appconf.con[db].triggers])
     appconf.ddl[db]['views'] = sorted([t.name for t in appconf.con[db].views])

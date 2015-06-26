@@ -15,4 +15,6 @@ $(document).ready(function(){
         return false;
     });
 
+    //Tooltip
+    $("[data-toggle='tooltip']").tooltip();
 });
