@@ -3,13 +3,7 @@
     %for k in _kl.keys():
     % _sum += _kl[k]
     <tr>
-        <td>
-            %if k in appconf.ddl[db]['tables_id']:
-            {{appconf.ddl[db]['tables_id'][k]}}
-            %else:
-            {{k}}
-            %end
-        </td>
+        <td>{{k}}</td>
         <td>{{_kl[k]}}</td>
     </tr>
     %end

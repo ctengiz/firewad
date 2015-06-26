@@ -22,9 +22,9 @@
                     % ntyp = utyp.upper()
                     <tr>
                         <td>{{ntyp}}</td>
-                        <td><a href="/{{utyp}}/{{db}}/{{k.dependent_name}}">{{k.dependent_name}}</a></td>
+                        <td><a href="/db/{{utyp}}/{{db}}/{{k.dependent_name}}">{{k.dependent_name}}</a></td>
                         <td>
-                            <a href="/{{utyp}}/{{db}}/{{k.dependent_name}}#field-{{k.field_name}}">{{k.field_name}}</a>
+                            <a href="/db/{{utyp}}/{{db}}/{{k.dependent_name}}#field-{{k.field_name}}">{{k.field_name}}</a>
                         </td>
                     </tr>
                 %end

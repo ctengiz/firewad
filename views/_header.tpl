@@ -75,7 +75,7 @@ end
             <a href="javascript:void(0);" class="navbar-brand">
                 <span class="fa fa-angle-double-left" data-toggle="offcanvas" title="Maximize Panel"></span>
             </a>
-            <a class="navbar-brand" href="/{{db}}">{{db}}</a>
+            <a class="navbar-brand" href="/db/{{db}}">{{db}}</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar">
@@ -94,11 +94,11 @@ end
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Databases<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/db_list">Registered Databases</a></li>
-                        <li><a href="/register_db">Register Database</a></li>
+                        <li><a href="/db/list">Registered Databases</a></li>
+                        <li><a href="/db/register">Register Database</a></li>
                         <li class="divider"></li>
-                        <li><a href="/create_db">Create Database</a></li>
-                        <li><a href="/drop_db">Drop Database</a></li>
+                        <li><a href="/db/create">Create Database</a></li>
+                        <li><a href="/db/drop">Drop Database</a></li>
                     </ul>
                 </li>
 
@@ -135,7 +135,7 @@ end
 <div class="container-fluid" >
     %if show_sidebar:
     <div class="row row-offcanvas row-offcanvas-left">
-        <div class="col-xs-https://github.com/ctengiz/firewad6 col-sm-2 sidebar-offcanvas do-not-print" role="navigation">
+        <div class="col-xs-6 col-sm-2 sidebar-offcanvas do-not-print" role="navigation">
             <ul class="list-group menu-list">
                 <!--
                 <li class="list-group-item"><i class="glyphicon glyphicon-align-justify"></i> <b>Hızlı Erişim</b></li>

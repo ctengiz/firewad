@@ -25,7 +25,7 @@
             %for k in tbl.triggers:
             <tr>
                 <td>
-                    <a href="/trigger/{{db}}/{{k.name}}">{{k.name}}</a>
+                    <a href="/db/trigger/{{db}}/{{k.name}}">{{k.name}}</a>
                 </td>
                 <td style="text-align: center;">
                     {{! '<span class="glyphicon glyphicon-ok"></span>' if k.isactive() else '<span class="glyphicon glyphicon-ban-circle"></span>'}}

@@ -1,4 +1,4 @@
-<a href="/domains/{{db}}" class="list-group-item menu-root" style="padding-left:5px;">
+<a href="/db/domains/{{db}}" class="list-group-item menu-root" style="padding-left:5px;">
     <i class="fa fa-chain"></i>Domains <small>({{len(metadata['domains'])}})</small>
 </a>
 
@@ -7,7 +7,7 @@
 </a>
 <div class="collapse" id="menu-table">
     %for k in metadata['tables']:
-        <a class="list-group-item" href="/table/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
+        <a class="list-group-item" href="/db/table/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
     %end
 </div>
 
@@ -16,7 +16,7 @@
 </a>
 <div class="collapse" id="menu-view">
     %for k in metadata['views']:
-        <a class="list-group-item" href="/view/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
+        <a class="list-group-item" href="/db/view/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
     %end
 </div>
 
@@ -25,7 +25,7 @@
 </a>
 <div class="collapse" id="menu-trigger">
     %for k in metadata['triggers']:
-        <a class="list-group-item" href="/trigger/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
+        <a class="list-group-item" href="/db/trigger/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
     %end
 </div>
 
@@ -34,19 +34,19 @@
 </a>
 <div class="collapse" id="menu-procedure">
     %for k in metadata['procedures']:
-        <a class="list-group-item" href="/procedure/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
+        <a class="list-group-item" href="/db/procedure/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
     %end
 </div>
 
-<a href="/sequences/{{db}}" class="list-group-item menu-root" style="padding-left:5px;">
+<a href="/db/sequences/{{db}}" class="list-group-item menu-root" style="padding-left:5px;">
     <i class="fa fa-sort-numeric-asc"></i>Sequences <small>({{len(metadata['sequences'])}})</small>
 </a>
 
-<a href="/indices/{{db}}" class="list-group-item menu-root" style="padding-left:5px;">
+<a href="/db/indices/{{db}}" class="list-group-item menu-root" style="padding-left:5px;">
     <i class="fa fa-arrows-v"></i>Indices <small>({{len(metadata['indices'])}})</small>
 </a>
 
-<a href="/constraints/{{db}}" class="list-group-item menu-root" style="padding-left:5px;">
+<a href="/db/constraints/{{db}}" class="list-group-item menu-root" style="padding-left:5px;">
     <i class="fa fa-lock"></i>Constraints <small>({{len(metadata['constraints'])}})</small>
 </a>
 
@@ -55,10 +55,10 @@
 </a>
 <div class="collapse" id="menu-function">
     %for k in metadata['functions']:
-        <a class="list-group-item" href="/function/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
+        <a class="list-group-item" href="/db/function/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
     %end
 </div>
 
-<a href="/exceptions/{{db}}" class="list-group-item menu-root"  style="padding-left:5px;">
+<a href="/db/exceptions/{{db}}" class="list-group-item menu-root"  style="padding-left:5px;">
     <i class="fa fa-exclamation-triangle"></i>Exceptions <small>({{len(metadata['exceptions'])}})</small>
 </a>

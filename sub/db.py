@@ -21,10 +21,6 @@ def connect_db(db):
 
     appconf.ddl[db] = {}
     appconf.ddl[db]['tables'] = sorted([t.name for t in appconf.con[db].tables])
-    appconf.ddl[db]['tables_id'] = {}
-    for t in appconf.con[db].tables:
-        appconf.ddl[db]['tables_id'][t.id] = t.name
-
     appconf.ddl[db]['views'] = sorted([t.name for t in appconf.con[db].views])
     appconf.ddl[db]['triggers'] = sorted([t.name for t in appconf.con[db].triggers])
     appconf.ddl[db]['views'] = sorted([t.name for t in appconf.con[db].views])
@@ -37,7 +33,7 @@ def connect_db(db):
     appconf.ddl[db]['constraints'] = sorted([t.name for t in appconf.con[db].constraints])
 
 
-@baseApp.route('/register_db', method=['GET', 'POST'])
+@baseApp.route('/db/register', method=['GET', 'POST'])
 def register_db():
     if request.method == 'GET':
 
@@ -77,7 +73,7 @@ def register_db():
         redirect('/db_list')
 
 
-@baseApp.route('/db_list')
+@baseApp.route('/db/list')
 def db_list():
     return render('db_list')
 
@@ -91,8 +87,8 @@ def db_page(db):
 
     return render('db_page', db=db)
 
-@baseApp.route('/<typ>/<db>')
-def dtable(typ, db):
+@baseApp.route('/db/<typ>/<db>')
+def dobj_list(typ, db):
     if db not in appconf.con:
         connect_db(db)
 
@@ -110,8 +106,8 @@ def dtable(typ, db):
 
     return render(_rnd, db=db, tbl=_ddl, typ=typ)
 
-@baseApp.route('/<typ>/<db>/<obj>')
-def dtable(typ, db, obj):
+@baseApp.route('/db/<typ>/<db>/<obj>')
+def dbobj(typ, db, obj):
     if db not in appconf.con:
         connect_db(db)
 

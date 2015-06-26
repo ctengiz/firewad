@@ -2,7 +2,7 @@
     <div class="col-xs-12">
         <ol class="breadcrumb">
             <li><a href="/db/{{db}}">{{db}}</a></li>
-            <li><a href="/views/{{db}}">Views</a></li>
+            <li><a href="/db/views/{{db}}">Views</a></li>
             <li class="active">{{tbl.name}}</li>
         </ol>
 

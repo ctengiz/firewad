@@ -38,7 +38,7 @@
                 <td>
                     %if k.isfkey():
                     Fk Table:
-                    <a href="/table/{{db}}/{{k.partner_constraint.index.table.name}}">
+                    <a href="/db/table/{{db}}/{{k.partner_constraint.index.table.name}}">
                         {{k.partner_constraint.index.table.name}}
                     </a>
                     <small>

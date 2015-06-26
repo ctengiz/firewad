@@ -4,6 +4,11 @@ Web admin tool for [Firebird SQL RDBMS](http://firebirdsql.org/).
  
 ![](https://github.com/ctengiz/firewad/blob/master/docs/screenshot.png)
 
+##Features
+
+* Full representation of database objects
+* Code completion from database objects (right now only tables)
+
 ##Install
 
 ###Requirements
@@ -41,13 +46,16 @@ to website is not secured. Use it only from localhost right now**
  - [ ] UDF
  - [ ] Exceptions
 - [ ] Database operations
- - [ ] Database info
+ - [x] Database info
+ - [ ] Database parameter updates (sweep interval, shutdown etc.)
+ - [ ] MON$ based analysis
  - [ ] Create
  - [ ] Backup / restore
  - [ ] DDL export
  - [ ] Schema View
 - [ ] Data Operations
  - [ ] Sql query
+  - [ ] Code completion
  - [ ] Data edit / insert / delete
  - [ ] Execute procedure / fetch results
  - [ ] Recompute statistics

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <a class="btn btn-default" href="/register_db">Register DB</a>
+        <a class="btn btn-default" href="/db/register">Register DB</a>
     </div>
 </div>
 
@@ -29,7 +29,7 @@
                 <td>{{appconf.db_config[k]['charset']}}</td>
                 <td>
                     <div class="btn-group-xs">
-                        <a href="/register_db?db={{k}}" class="btn btn-xs btn-primary" title="Edit Registration Info">
+                        <a href="/db/register?db={{k}}" class="btn btn-xs btn-primary" title="Edit Registration Info">
                             <span class="fa fa-edit"></span>
                         </a>
                     </div>

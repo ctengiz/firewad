@@ -241,3 +241,32 @@ a.menu-node.list-group-item:focus, a.menu-node.list-group-item:hover {
     /* symbol for "collapsed" panels */
     content: "\e080";    /* adjust as needed, taken from bootstrap.css */
 }
+
+
+/* ----------------------------------
+ * panel heading chevron
+ * ---------------------------------- */
+#editor {
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+}
+#statusBar {
+    margin: 0;
+    padding: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+    background-color: rgb(245, 245, 245);
+    color: gray;
+}
+.ace_status-indicator {
+    color: gray;
+    right: 0;
+    padding-left: 3px;
+    border-left: 1px solid;
+}
