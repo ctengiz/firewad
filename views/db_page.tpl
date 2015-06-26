@@ -26,6 +26,12 @@
             </li>
 
             <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_db_read_only</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_db_read_only)}}</div>
+            </li>
+
+
+            <li class="list-group-item row">
                 <div class="col-md-4 text-right" style="text-align: right;">ODS Version</div>
                 <div class="col-md-8">{{appconf.con[db].ods}}</div>
             </li>
@@ -47,6 +53,15 @@
                 <div class="col-md-4 text-right" style="text-align: right;">DB Size (mb)</div>
                 <div class="col-md-8">{{(_page_size * _page_allocated) / (1024 * 1024) }}</div>
             </li>
+
+            <!--
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_db_file_size</div>
+                <div class="col-md-8">appconf.con[db].db_info(fdb.isc_info_db_file_size)}}</div>
+            </li>
+            -->
+
+
             <li class="list-group-item row">
                 <div class="col-md-4 text-right" style="text-align: right;">Oldest Transaction</div>
                 <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_oldest_transaction)}}</div>
@@ -97,25 +112,113 @@
             <!--
             <li class="list-group-item row">
                 <div class="col-md-4 text-right" style="text-align: right;">isc_info_limbo</div>
-                <div class="col-md-8">todo : appconf.con[db].db_info(fdb.isc_info_limbo, 'i')}}</div>
+                <div class="col-md-8">todo : appconf.con[db].db_info(fdb.isc_info_limbo)}}</div>
+            </li>
+            -->
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_attachment_id</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_attachment_id)}}</div>
             </li>
 
-    , , ,
-    isc_info_attachment_id, isc_info_fetches, isc_info_marks, isc_info_reads,
-    isc_info_writes, isc_info_set_page_buffers, isc_info_db_read_only,
-    isc_info_db_size_in_pages, isc_info_page_errors, isc_info_record_errors,
-    isc_info_bpage_errors, isc_info_dpage_errors, isc_info_ipage_errors,
-    isc_info_ppage_errors, isc_info_tpage_errors,
-    isc_info_oldest_transaction, isc_info_oldest_active,
-    isc_info_oldest_snapshot, isc_info_next_transaction,
-    isc_info_active_tran_count,
-    isc_info_backout_count, isc_info_delete_count, isc_info_expunge_count,
-    isc_info_insert_count, isc_info_purge_count, isc_info_read_idx_count,
-    isc_info_read_seq_count, isc_info_update_count
-    -->
 
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_fetches</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_fetches)}}</div>
+            </li>
 
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_reads</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_reads)}}</div>
+            </li>
 
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_marks</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_marks)}}</div>
+            </li>
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_writes</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_writes)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_set_page_buffers</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_set_page_buffers)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_page_errors</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_page_errors)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_record_errors</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_record_errors)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_bpage_errors</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_bpage_errors)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_dpage_errors</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_dpage_errors)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_ipage_errors</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_ipage_errors)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_ppage_errors</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_ppage_errors)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_tpage_errors</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_tpage_errors)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_backout_count</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_backout_count)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_delete_count</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_delete_count)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_expunge_count</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_expunge_count)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_insert_count</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_insert_count)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_purge_count</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_purge_count)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_read_idx_count</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_read_idx_count)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_read_seq_count</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_read_seq_count)}}</div>
+            </li>
+
+            <li class="list-group-item row">
+                <div class="col-md-4 text-right" style="text-align: right;">isc_info_update_count</div>
+                <div class="col-md-8">{{appconf.con[db].db_info(fdb.isc_info_update_count)}}</div>
+            </li>
         </ul>
     </div>
 </div>

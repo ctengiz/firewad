@@ -24,6 +24,7 @@ def init_session():
     s['logged_in'] = False
     s['db'] = ''
 
+
 def init_app():
     aconfig = configparser.ConfigParser()
 
@@ -31,8 +32,12 @@ def init_app():
         aconfig.read_file(f)
     appconf.login_required = aconfig['system']['login_required'] == 1
 
-    with open('%s/dbconfig.ini' % appconf.basepath, 'r', encoding='utf-8') as f:
-        appconf.db_config.read_file(f)
+    #todo: better exc. handling
+    try:
+        with open('%s/dbconfig.ini' % appconf.basepath, 'r', encoding='utf-8') as f:
+            appconf.db_config.read_file(f)
+    except:
+        pass
 
 
 def render(tpl='', scripts='', show_topbar=True, show_sidebar=True, **kwargs):
