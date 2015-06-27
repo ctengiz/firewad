@@ -28,6 +28,7 @@ end
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="/static/jquery-2.1.4.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap-table/bootstrap-table-all.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="/static/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
 <!-- Invigo Core Js -->

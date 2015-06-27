@@ -42,6 +42,9 @@ end
     <!-- Fontawesome -->
     <link href="/static/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <!-- Bootstrap Table -->
+    <link href="/static/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+
     <!-- Base Css -->
     <link href="/static/base.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
