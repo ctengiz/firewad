@@ -31,7 +31,6 @@ def process_val(cval):
         elif type_ is decimal.Decimal:
             return_val = str(cval)
 
-
     return return_val
 
 
@@ -40,9 +39,11 @@ def query(db):
     if db not in appconf.con:
         connect_db(db)
 
+    _template = 'query-bootstrap-table'
+    _template = 'query-raw'
+
     if request.method == 'GET':
-        return template('query', db=db)
-        #return render(tpl='query', db=db)
+        return template(_template, db=db)
     else:
         sql = request.POST.sql
         crs = appconf.con[db].cursor()
