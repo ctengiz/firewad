@@ -53,7 +53,8 @@ def query(db):
             columns.append(
                 {'field': _fld[0],
                  'title': _fld[0].replace('_', ' ').title(),
-                 'sortable': True
+                 'sortable': True,
+                 'filterControl': 'input'
                  }
             )
             """

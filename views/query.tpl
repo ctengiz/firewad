@@ -34,7 +34,7 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <pre id="editor">select * from usr</pre>
+                    <pre id="editor">select * from acbankslip</pre>
                     <div id="statusBar"></div>
                 </div>
             </div>
@@ -43,22 +43,38 @@
         <div role="tabpanel" class="tab-pane" id="data">
             <div class="row">
                 <div class="col-sm-12">
-                    <table id="table"></table>
+                    <table id="table"
+                           data-search="true"
+                           data-show-refresh="true"
+                           data-show-toggle="true"
+                           data-show-columns="true"
+                           data-show-export="true"
+                           data-show-pagination-switch="true"
+                           x-data-pagination="true"
+                           x-data-page-list="[10, 25, 50, 100, ALL]"
+                           data-height="450"
+                           data-filter-control="true"
+                           data-show-filter="true"
+                            ></table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-
-
 % include('_footer.tpl')
 
-
-<script src="/static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/ace/ace.js"></script>
 <script src="/static/ace/ext-language_tools.js"></script>
 <script src="/static/ace/ext-statusbar.js"></script>
+
+
+<script src="/static/bootstrap-table/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+<script src="/static/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+<script src="/static/bootstrap-table/extensions/filter/bootstrap-table-filter.js"></script>
+
 <script>
     var editor = ace.edit("editor");
 
@@ -100,6 +116,8 @@
 
 <script>
     $(document).ready(function(){
+        var $table = $('#table');
+
         $('#btn-exec').click(function(){
             var sql = editor.getSession().getValue();
             $.ajax({
@@ -111,9 +129,18 @@
                     alert("errror")
                 }
             }).done(function(data, textStatus, jqXH){
-                $("#table").bootstrapTable(data
-                );
-                $('#data').tab('show');
+
+                try {
+                    $table.bootstrapTable('destroy');
+                } catch(e) {
+                    alert(e);
+                }
+
+                $table.bootstrapTable(data);
+                $table.bootstrapTable('resetView');
+
+
+                $('a[href="#data"]').tab('show');
             }).error(function(){
 
             }).always(function () {
