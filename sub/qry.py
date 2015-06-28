@@ -69,13 +69,20 @@ def query(db):
         return template(_template, db=db, sql_select=_select_sql_str)
     else:
         sql = request.POST.sql
+        exec_typ = request.POST.exec_typ
 
         try:
             crs = appconf.con[db].cursor()
-            crs.execute(sql)
+            pst = crs.prep(sql)
+
+            if exec_typ == 'plan':
+                return json.dumps({'plan':pst.plan})
+            else:
+                crs.execute(pst)
         except Exception as e:
             response.status = 500
             return e.args[0].replace('\n', '<br/>')
+
 
         columns = []
         for _fld in crs.description:
@@ -100,10 +107,12 @@ def query(db):
         for row in crs.fetchallmap():
             jrw = {}
             for k in row:
-                print(k, row[k], type(row[k]).__name__, type(row[k]))
+                #print(k, row[k], type(row[k]).__name__, type(row[k]))
                 json.dumps({k: process_val(row[k])})
                 jrw[k] = process_val(row[k])
             data.append(jrw)
 
-        return json.dumps({'columns': columns, 'data': data})
+        return json.dumps({'plan':pst.plan,
+                           'tdata':{'columns': columns,
+                                    'data': data}})
 

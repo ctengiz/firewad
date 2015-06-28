@@ -5,7 +5,7 @@
 
     <div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;">
         <div class="btn-group btn-group-sm">
-            <button class="btn btn-default" type="button" id="btn-prepare" title="Prepare and get plan">
+            <button class="btn btn-default" type="button" id="btn-plan" title="Get execution plan">
                 <i class="fa fa-crosshairs"></i>
             </button>
             <button class="btn btn-default" type="button" id="btn-exec" title="Execute query">
@@ -17,8 +17,8 @@
             <button class="btn btn-default" type="button">
                 <i class="fa fa-refresh"></i>
             </button>
-            <button class="btn btn-default" type="button">t</button>
         </div>
+        <!-- todo:
         <div class="btn-group btn-group-sm">
             <div class="btn-group btn-group-sm" role="group">
                 <button type="button" class="btn btn-default dropdown-toggle"
@@ -38,9 +38,8 @@
             <button class="btn btn-default" type="button">
                 <i class="fa fa-print"></i>
             </button>
-            <button class="btn btn-default" type="button">z</button>
-            <button class="btn btn-default" type="button">t</button>
         </div>
+        -->
     </div>
 
     <div class="alert alert-danger alert-dismissible" role="alert" id="error-panel" style="margin-bottom: 3px; display:none;">
@@ -69,6 +68,12 @@
                 <div class="col-sm-12">
                     <pre id="editor">{{sql_select}}</pre>
                     <pre id="statusBar"></pre>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <pre id="sql-plan"></pre>
                 </div>
             </div>
         </div> <!-- sql tab panel -->
@@ -129,67 +134,89 @@
         }
     };
     langTools.addCompleter(customCompleter);
-</script>
-
-<script>
-    $(document).ready(function(){
-        $('#btn-exec').click(function(){
-            var sql = editor.getSession().getValue();
-            $.ajax({
-                method: "POST",
-                url: "/tools/query/{{db}}",
-                data: {sql: sql},
-                dataType: "json",
-                beforeSend: function() {
-                    $("#error-panel").hide();
-                },
-                error: function (e) {
-                    $("#error-panel").show();
-                    $("#error-panel-text").html(e.responseText);
-                }
-            }).done(function(rslt, textStatus, jqXH){
-
-                $("#table").floatThead('destroy');
-                $("#table").html('');
 
 
-                var thead = '';
-                for (var i in rslt.columns) {
-                    thead = thead +
-                            '<th>' +
-                            rslt.columns[i].field +
-                            /*'<div>' + rslt.columns[i].field + '</div>' + */
-                            '</th>'
-                }
-                thead = '<thead><tr>' + thead + '</tr></thead>';
+    var build_table=function(rslt) {
+        $("#table").floatThead('destroy');
+        $("#table").html('');
 
-                var tbody = '';
-                for (var i in rslt.data) {
-                    tbody = tbody + '<tr>';
-                    for (var col in rslt.columns) {
-                        tbody = tbody + '<td>' + rslt.data[i][rslt.columns[col].field] + '</td>'
-                    }
-                    tbody = tbody + '</tr>';
-                }
-                tbody = '<tbody>' + tbody + '</tbody>';
 
-                $("#table").html(thead + tbody);
+        var thead = '';
+        for (var i in rslt.columns) {
+            thead = thead +
+            '<th>' +
+            rslt.columns[i].field +
+                /*'<div>' + rslt.columns[i].field + '</div>' + */
+            '</th>'
+        }
+        thead = '<thead><tr>' + thead + '</tr></thead>';
 
-                $('a[href="#data"]').tab('show');
+        var tbody = '';
+        for (var i in rslt.data) {
+            tbody = tbody + '<tr>';
+            for (var col in rslt.columns) {
+                tbody = tbody + '<td>' + rslt.data[i][rslt.columns[col].field] + '</td>'
+            }
+            tbody = tbody + '</tr>';
+        }
+        tbody = '<tbody>' + tbody + '</tbody>';
 
-                $("#table").floatThead({
-                    scrollContainer: function($table){
-                        return $table.closest('#data-grid-container');
-                    }
-                });
+        $("#table").html(thead + tbody);
 
-            }).fail(function(){
+        $('a[href="#data"]').tab('show');
 
-            }).always(function () {
-
-            })
+        $("#table").floatThead({
+            scrollContainer: function($table){
+                return $table.closest('#data-grid-container');
+            }
         });
 
+    };
+
+    var exec_sql=function(exec_typ, limit) {
+        var post_data = {
+            sql: editor.getSession().getValue(),
+            exec_typ: exec_typ,
+            limit: limit
+        };
+
+        $.ajax({
+            method: "POST",
+            url: "/tools/query/{{db}}",
+            data: post_data,
+            dataType: "json",
+            beforeSend: function() {
+                $("plan-sql").text('');
+
+                $("#error-panel").hide();
+            },
+            error: function (e) {
+                $("#error-panel").show();
+                $("#error-panel-text").html(e.responseText);
+            }
+        }).done(function(rslt, textStatus, jqXH){
+            $("#sql-plan").text(rslt.plan);
+
+            if ((exec_typ == 'fetch') || (exec_typ == 'fetch_all')) {
+                build_table(rslt.tdata);
+            };
+
+        }).fail(function(){
+
+        }).always(function () {
+
+        })
+    };
+
+
+    $(document).ready(function(){
+        $('#btn-exec').click(function(){
+            exec_sql('fetch')
+        });
+
+        $('#btn-plan').click(function(){
+            exec_sql('plan')
+        });
 
         $('.alert .close').click(function(){
             $(this).parent().hide();
