@@ -6,6 +6,7 @@ import json
 import base64
 import datetime
 import decimal
+import re
 
 import fdb
 from bottle import request, redirect, HTTPError, template, response
@@ -34,6 +35,38 @@ def process_val(cval):
 
     return return_val
 
+
+def parse_params(sql, **prms):
+    """
+    Converts named parameters (ie :param) of a sql statement to qmark represantation and gives correct
+    order of parameters for substition of qmark parameters
+
+    :param sql: source sql statement contains named parameter
+    :param prms: dict of paramaters
+    :return: qmark style sql and parameters list
+    """
+
+    #regex for finding named params (ie :param)
+    #source : http://www.rexegg.com/regex-best-trick.html#notarzan
+    p = re.compile('''":[_a-zA-Z0-9]+"|':[_a-zA-Z0-9]+'|(:[_a-zA-Z0-9]+)''')
+
+    #change :param expression to qmark
+    result_sql = re.sub(p, '?', sql)
+
+    #construct parameters list
+    result_params = []
+    for pr in re.findall(p, sql):
+        pr = pr[1:].lower()
+        if pr in prms.keys():
+            if prms[pr] == '':
+                _prm_val = None
+            else:
+                _prm_val = prms[pr]
+            result_params.append(_prm_val)
+        else:
+            result_params.append(None)
+
+    return result_sql, tuple(result_params)
 
 
 @baseApp.route('/tools/query/<db>', method=['GET', 'POST'])

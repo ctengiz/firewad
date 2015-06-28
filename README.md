@@ -8,14 +8,16 @@ Web admin tool for [Firebird SQL RDBMS](http://firebirdsql.org/).
 
 * Full representation of database objects
 * Adhoc sql query
+ * Representation of query execution plan
 * Code completion from database objects (right now only tables)
 
 ##Install
 
 ###Requirements
 
-* python 3
-* write permissions to installation / clone directory
+* Firebird 2.1+ (though only tested with 2.5, but all major sholuld be fine with 2.1)
+* python 3+
+* write permissions to directory where the firewad is installed
 
 ```
 git clone https://github.com/ctengiz/firewad.git
@@ -58,7 +60,7 @@ to website is not secured. Use it only from localhost right now**
 - [ ] Data Operations
  - [x] Sql query
   - [ ] Code completion
-  - [ ] Execution plan
+  - [x] Execution plan
   - [ ] Param support
  - [ ] Data edit / insert / delete
  - [ ] Execute procedure / fetch results

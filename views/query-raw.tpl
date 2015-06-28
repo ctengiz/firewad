@@ -140,7 +140,6 @@
         $("#table").floatThead('destroy');
         $("#table").html('');
 
-
         var thead = '';
         for (var i in rslt.columns) {
             thead = thead +
@@ -174,8 +173,14 @@
     };
 
     var exec_sql=function(exec_typ, limit) {
+        var re = /":[_a-zA-Z0-9]+"|':[_a-zA-Z0-9]+'|(:[_a-zA-Z0-9]+)/g;
+        var sql = editor.getSession().getValue();
+        var params = sql.match(re);
+
+        alert(params);
+
         var post_data = {
-            sql: editor.getSession().getValue(),
+            sql: sql,
             exec_typ: exec_typ,
             limit: limit
         };
@@ -211,7 +216,12 @@
 
     $(document).ready(function(){
         $('#btn-exec').click(function(){
-            exec_sql('fetch')
+            exec_sql('fetch');
+
+            //todo: parse sql params
+            //regex source : http://www.rexegg.com/regex-best-trick.html#notarzan
+            //":[_a-zA-Z0-9]+"|':[_a-zA-Z0-9]+'|(:[_a-zA-Z0-9]+)
+
         });
 
         $('#btn-plan').click(function(){
