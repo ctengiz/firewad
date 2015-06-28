@@ -8,10 +8,11 @@ import datetime
 import decimal
 
 import fdb
-from bottle import request, redirect, HTTPError, template
+from bottle import request, redirect, HTTPError, template, response
 from sub.db import connect_db
 
 from common import baseApp, appconf, render
+
 
 def process_val(cval):
 
@@ -34,6 +35,7 @@ def process_val(cval):
     return return_val
 
 
+
 @baseApp.route('/tools/query/<db>', method=['GET', 'POST'])
 def query(db):
     if db not in appconf.con:
@@ -43,11 +45,37 @@ def query(db):
     _template = 'query-raw'
 
     if request.method == 'GET':
-        return template(_template, db=db)
+        _col = None
+        _prms_str = ''
+        if 'table' in request.GET:
+            _table_name = request.GET.table
+            _col = appconf.con[db].schema.get_table(_table_name).columns
+        elif 'view' in request.GET:
+            _table_name = request.GET.view
+            _col = appconf.con[db].schema.get_view(_table_name).columns
+        elif 'procedure' in request.GET:
+            _table_name = request.GET.procedure
+            _col = appconf.con[db].schema.get_procedure(_table_name).output_params
+            _prm = appconf.con[db].schema.get_procedure(_table_name).input_params
+            _prms_str = ', '.join([':' + t.name for t in _prm])
+            _prms_str = '(' + _prms_str + ')'
+
+        _select_sql_str = ""
+        if _col:
+            _select_sql_str += 'select\n'
+            _select_sql_str += ',\n'.join(['  ' + t.name for t in _col])
+            _select_sql_str += '\nfrom ' + _table_name + _prms_str
+
+        return template(_template, db=db, sql_select=_select_sql_str)
     else:
         sql = request.POST.sql
-        crs = appconf.con[db].cursor()
-        crs.execute(sql)
+
+        try:
+            crs = appconf.con[db].cursor()
+            crs.execute(sql)
+        except Exception as e:
+            response.status = 500
+            return e.args[0].replace('\n', '<br/>')
 
         columns = []
         for _fld in crs.description:

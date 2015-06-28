@@ -70,7 +70,7 @@ def register_db():
         with open('%s/dbconfig.ini' % appconf.basepath, 'w+', encoding='utf-8') as f:
             appconf.db_config.write(f)
 
-        redirect('/db_list')
+        redirect('/db/list')
 
 
 @baseApp.route('/db/list')

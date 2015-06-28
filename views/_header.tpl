@@ -36,23 +36,19 @@ end
 
     <title>Firewad - {{db}}</title>
 
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+
     <!-- Bootstrap core CSS -->
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Fontawesome -->
     <link href="/static/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-    <!-- Bootstrap Table -->
-    <link href="/static/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-
     <!-- Base Css -->
     <link href="/static/base.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
 
     <!-- Pygments -->
     <link href="/static/pygments_github.css" rel="stylesheet">
-
-
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -75,9 +71,6 @@ end
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="javascript:void(0);" class="navbar-brand">
-                <span class="fa fa-angle-double-left" data-toggle="offcanvas" title="Maximize Panel"></span>
-            </a>
             <a class="navbar-brand" href="/db/{{db}}">{{db}}</a>
         </div>
 
@@ -120,6 +113,12 @@ end
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Settings</a></li>
+                <li>
+                    <a href="javascript:void(0);" class="btn btn-default btn-xs">
+                        <span class="fa fa-angle-double-left" data-toggle="offcanvas" title="Maximize Panel"></span>
+                    </a>
+                </li>
+
                 <!-- todo
                 if session['logged_in']:
                     <li><a href="/system/logout">Logout</a></li>

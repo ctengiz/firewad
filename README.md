@@ -7,6 +7,7 @@ Web admin tool for [Firebird SQL RDBMS](http://firebirdsql.org/).
 ##Features
 
 * Full representation of database objects
+* Adhoc sql query
 * Code completion from database objects (right now only tables)
 
 ##Install
@@ -25,7 +26,7 @@ python app.py
 
 Now browse to http://127.0.0.1:18022
 
-**SECURITY WARNING : Code is not ready for public serve yet (as a www service, db passwords is stored as plaintext in dbconfig.ini and access
+**SECURITY WARNING : Code is not ready for public serve yet (as a www service), db passwords is stored as plaintext in dbconfig.ini and access
 to website is not secured. Use it only from localhost right now**
 
 
@@ -39,6 +40,7 @@ to website is not secured. Use it only from localhost right now**
   - [ ] Create table
   - [ ] Field modification
   - [ ] Constraint / index  
+  - [ ] Select * from table
  - [ ] View
  - [ ] Trigger
  - [ ] Procedure
@@ -54,8 +56,10 @@ to website is not secured. Use it only from localhost right now**
  - [ ] DDL export
  - [ ] Schema View
 - [ ] Data Operations
- - [ ] Sql query
+ - [x] Sql query
   - [ ] Code completion
+  - [ ] Execution plan
+  - [ ] Param support
  - [ ] Data edit / insert / delete
  - [ ] Execute procedure / fetch results
  - [ ] Recompute statistics

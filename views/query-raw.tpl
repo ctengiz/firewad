@@ -3,6 +3,53 @@
 
 <div style="background-color: snow;">
 
+    <div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" id="btn-prepare" title="Prepare and get plan">
+                <i class="fa fa-crosshairs"></i>
+            </button>
+            <button class="btn btn-default" type="button" id="btn-exec" title="Execute query">
+                <i class="fa fa-play"></i>
+            </button>
+            <button class="btn btn-default" type="button" id="btn-fetch-all" title="Execute and fetch all">
+                <i class="fa fa-fast-forward"></i>
+            </button>
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-refresh"></i>
+            </button>
+            <button class="btn btn-default" type="button">t</button>
+        </div>
+        <div class="btn-group btn-group-sm">
+            <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        title="Download data">
+                    <i class="fa fa-download"></i>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#"><i class="fa fa-file-excel-o"></i> Excel</a></li>
+                    <li><a href="#">Csv</a></li>
+                </ul>
+            </div>
+
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-print"></i>
+            </button>
+            <button class="btn btn-default" type="button">z</button>
+            <button class="btn btn-default" type="button">t</button>
+        </div>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible" role="alert" id="error-panel" style="margin-bottom: 3px; display:none;">
+        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <span id="error-panel-text">
+
+        </span>
+    </div>
+
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
@@ -15,33 +62,19 @@
         <div role="tabpanel" class="tab-pane active" id="sql">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="btn-toolbar" role="toolbar">
-                        <div class="btn-group">
-                            <button class="btn btn-default" type="button" id="btn-exec">Exec</button>
-                            <button class="btn btn-default" type="button">y</button>
-                            <button class="btn btn-default" type="button">z</button>
-                            <button class="btn btn-default" type="button">t</button>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-default" type="button">x</button>
-                            <button class="btn btn-default" type="button">y</button>
-                            <button class="btn btn-default" type="button">z</button>
-                            <button class="btn btn-default" type="button">t</button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-12">
-                    <pre id="editor">select * from acbankslip</pre>
-                    <div id="statusBar"></div>
+                    <pre id="editor">{{sql_select}}</pre>
+                    <pre id="statusBar"></pre>
                 </div>
             </div>
         </div> <!-- sql tab panel -->
 
         <div role="tabpanel" class="tab-pane" id="data">
-            <div style="height: 400px; overflow: auto;" id="ahead">
+            <div style="height: 420px; overflow: auto;" id="data-grid-container">
                 <table id="table" class="table table-bordered table-condensed"></table>
             </div>
         </div>
@@ -107,8 +140,12 @@
                 url: "/tools/query/{{db}}",
                 data: {sql: sql},
                 dataType: "json",
-                error: function () {
-                    alert("errror")
+                beforeSend: function() {
+                    $("#error-panel").hide();
+                },
+                error: function (e) {
+                    $("#error-panel").show();
+                    $("#error-panel-text").html(e.responseText);
                 }
             }).done(function(rslt, textStatus, jqXH){
 
@@ -142,18 +179,24 @@
 
                 $("#table").floatThead({
                     scrollContainer: function($table){
-                        return $table.closest('#ahead');
+                        return $table.closest('#data-grid-container');
                     }
                 });
 
-            }).error(function(){
+            }).fail(function(){
 
             }).always(function () {
 
             })
         });
+
+
+        $('.alert .close').click(function(){
+            $(this).parent().hide();
+        });
     });
 
 
-
 </script>
+
+
