@@ -43,30 +43,30 @@ The list below, is a mix of features completed and features which are planned to
  - [ ] Schema View
 - [ ] DDL Operations
  - [ ] Table
-   - [ ] Create table
-   - [ ] Drop table
-   - [ ] Field modification
-   - [ ] Alter / Create constraints / indices  
-   - [x] Quick query from table (select * from ..)
+    - [ ] Create table
+    - [ ] Drop table
+    - [ ] Field modification
+    - [ ] Alter / Create constraints / indices  
+    - [x] Quick query from table (select * from ..)
  - [ ] View
-   - [ ] Create view
-   - [ ] Drop view
-   - [ ] Alter view
-   - [x] Quick query from view (select * from ..)
-   - [ ] Create view from query
+    - [ ] Create view
+    - [ ] Drop view
+    - [ ] Alter view
+    - [x] Quick query from view (select * from ..)
+    - [ ] Create view from query
  - [ ] Trigger
  - [ ] Procedure
-   - [x] Quick query from procedure (select * from ..)
-   - [x] Quick execution of procedure
+    - [x] Quick query from procedure (select * from ..)
+    - [x] Quick execution of procedure
  - [ ] Sequence
  - [ ] UDF
  - [ ] Exceptions
 - [ ] Data Operations
  - [x] Sql query
-   - [ ] Code completion (semi supported)
-   - [x] Execution plan
-   - [x] Param support
-   - [ ] Save & Load query sqls
+    - [ ] Code completion (semi supported)
+    - [x] Execution plan
+    - [x] Param support
+    - [ ] Save & Load query sqls
  - [ ] Data edit / insert / delete
  - [ ] Execute procedure / fetch results
  - [ ] Recompute statistics
