@@ -7,18 +7,8 @@ from bottle import request, redirect, HTTPError
 
 from common import baseApp, appconf, render, formval_to_utf8
 
-def connect_db(db):
-    appconf.con[db] = fdb.connect(
-        host=appconf.db_config[db]['db_server'],
-        database=appconf.db_config[db]['db_path'],
-        user=appconf.db_config[db]['db_user'],
-        password=appconf.db_config[db]['db_pass'],
-        charset=appconf.db_config[db]['charset'],
-        role=appconf.db_config[db]['db_role'],
-        sql_dialect=int(appconf.db_config[db]['dialect']),
-        connection_class=fdb.ConnectionWithSchema
-    )
 
+def register_ddl(db):
     appconf.ddl[db] = {}
     appconf.ddl[db]['tables'] = sorted([t.name for t in appconf.con[db].tables])
     appconf.ddl[db]['views'] = sorted([t.name for t in appconf.con[db].views])
@@ -31,6 +21,22 @@ def connect_db(db):
     appconf.ddl[db]['functions'] = sorted([t.name for t in appconf.con[db].functions])
     appconf.ddl[db]['exceptions'] = sorted([t.name for t in appconf.con[db].exceptions])
     appconf.ddl[db]['constraints'] = sorted([t.name for t in appconf.con[db].constraints])
+
+
+def connect_db(db):
+    appconf.con[db] = fdb.connect(
+        host=appconf.db_config[db]['db_server'],
+        database=appconf.db_config[db]['db_path'],
+        user=appconf.db_config[db]['db_user'],
+        password=appconf.db_config[db]['db_pass'],
+        charset=appconf.db_config[db]['charset'],
+        role=appconf.db_config[db]['db_role'],
+        sql_dialect=int(appconf.db_config[db]['dialect']),
+        connection_class=fdb.ConnectionWithSchema
+    )
+
+    register_ddl(db)
+
 
 
 @baseApp.route('/db/register', method=['GET', 'POST'])
@@ -77,13 +83,64 @@ def register_db():
 
 
 @baseApp.route('/db/unregister/<db>')
-def runegister_db(db):
+def unegister_db(db):
     appconf.db_config.pop(db, None)
     with open('%s/dbconfig.ini' % appconf.basepath, 'w+', encoding='utf-8') as f:
         appconf.db_config.write(f)
 
     redirect('/db/list')
 
+
+@baseApp.route('/db/create', method=['GET', 'POST'])
+def register_db():
+    if request.method == 'GET':
+
+        _reg = {
+            'db_alias': '',
+            'db_server': '',
+            'db_path': '',
+            'db_user': '',
+            'db_pass': '',
+            'db_role': '',
+            'dialect': '',
+            'charset': ''
+        }
+
+        return render(tpl='register_db', reg=_reg, ftyp='create')
+    else:
+        prms = request.POST
+
+        if prms['db_path'] in ['BASE_PATH', '', '.', './']:
+            prms['db_path'] = appconf.basepath
+
+        sql = """
+            create database
+                '{db_server}:{db_path}/{db_name}'
+                user '{db_user}'
+                password '{db_pass}'
+                page_size  {db_page_size}
+                DEFAULT CHARACTER SET {charset}""".format(**prms)
+
+        appconf.con[prms.db_alias] = fdb.create_database(
+            sql=sql,
+            connection_class=fdb.ConnectionWithSchema,
+        )
+
+        register_ddl(prms.db_alias)
+
+        appconf.db_config[prms.db_alias] = {
+            'db_server': prms.db_server,
+            'db_path': prms.db_path + '/' + prms.db_name,
+            'db_user': prms.db_user,
+            'db_pass': prms.db_pass,
+            'db_role': prms.db_role,
+            'dialect': prms.dialect,
+            'charset': prms.charset
+        }
+        with open('%s/dbconfig.ini' % appconf.basepath, 'w+', encoding='utf-8') as f:
+            appconf.db_config.write(f)
+
+        redirect('/db/list')
 
 
 @baseApp.route('/db/list')

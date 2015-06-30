@@ -1,3 +1,9 @@
+<%
+if not defined('ftyp'):
+    setdefault('ftyp', 'register')
+end
+%>
+
 <div class="row">
     <div class="col-md-6">
         <form method="post">
@@ -14,6 +20,14 @@
                 <label for="db_path">Database Location</label>
                 <input type="text" id="db_path" name="db_path" class="form-control" placeholder="Database Path" value="{{reg['db_path']}}">
             </div>
+
+            %if ftyp == 'create':
+            <div class="form-group">
+                <label for="db_name">Database File Name</label>
+                <input type="text" id="db_name" name="db_name" class="form-control" placeholder="Database File Name">
+            </div>
+            %end
+
             <div class="form-group">
                 <label for="db_user">Database User Name</label>
                 <input type="text" class="form-control" id="db_user" name="db_user" placeholder="Database User Name" value="{{reg['db_user']}}">
@@ -22,10 +36,14 @@
                 <label for="db_pass">Database User Password</label>
                 <input type="text" class="form-control" id="db_pass" name="db_pass" placeholder="Database User Password" value="{{reg['db_pass']}}">
             </div>
+            %if ftyp == 'register':
             <div class="form-group">
                 <label for="db_role">Role</label>
                 <input type="text" class="form-control" id="db_role" name="db_role" placeholder="Role" value="{{reg['db_role']}}">
             </div>
+            %end
+
+            %if ftyp == 'register':
             <div class="form-group">
                 <label for="charset">Dialect</label>
                 <select class="form-control" id="dialect" name="dialect">
@@ -34,6 +52,19 @@
                     <option value="3" selected="selected">3</option>
                 </select>
             </div>
+            %end
+
+            %if ftyp == 'create':
+            <div class="form-group">
+                <label for="db_name">Page Size</label>
+                <select class="form-control" name="db_page_size" id="db_page_size">
+                    <option value="4096">4096</option>
+                    <option value="8192" selected="selected">8192</option>
+                    <option value="16384">16384</option>
+                </select>
+            </div>
+            %end
+
             <div class="form-group">
                 <label for="charset">Charset</label>
                 <select class="form-control" id="charset" name="charset">

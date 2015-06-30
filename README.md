@@ -33,7 +33,7 @@ The list below, is a mix of features completed and features which are planned to
  - [x] Exceptions
  - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception)
 - [ ] Database operations
- - [ ] Create Database
+ - [x] Create Database
  - [ ] Drop Database
  - [x] Database info via isc_info calls
  - [ ] Database parameter updates (sweep interval, shutdown etc.)
@@ -78,7 +78,7 @@ The list below, is a mix of features completed and features which are planned to
 
 ###Requirements
 
-* Firebird 2.1+ (though only tested with 2.5, but all major sholuld be fine with 2.1)
+* Firebird 2.1+ (though only tested with 2.5, but all major operations should be fine with 2.1)
 * python 3+
 * write permissions to directory where the firewad is installed
 
