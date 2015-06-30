@@ -4,12 +4,50 @@ Web admin tool for [Firebird SQL RDBMS](http://firebirdsql.org/).
  
 ![](https://github.com/ctengiz/firewad/blob/master/docs/screenshot.png)
 
-##Features
+##Features 
 
-* Full representation of database objects
-* Adhoc sql query
- * Representation of query execution plan
-* Code completion from database objects (right now only tables)
+- [ ] Full database metadata representation
+ - [x] Tables
+ - [x] Views
+ - [x] Trigger
+ - [x] Procedure
+ - [x] Sequence
+ - [x] UDF
+ - [x] Exceptions
+ - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception)
+- [ ] Database operations
+ - [ ] Create Database
+ - [ ] Drop Database
+ - [x] Database info via isc_info calls
+ - [ ] Database parameter updates (sweep interval, shutdown etc.)
+ - [ ] MON$ based analysis
+ - [ ] Backup / restore
+ - [ ] DDL export
+ - [ ] Schema View
+- [ ] DDL Operations
+ - [ ] Table
+  - [ ] Create table
+  - [ ] Field modification
+  - [ ] Constraint / index  
+  - [ ] Select * from table
+ - [ ] View
+ - [ ] Trigger
+ - [ ] Procedure
+ - [ ] Sequence
+ - [ ] UDF
+ - [ ] Exceptions
+- [ ] Data Operations
+ - [x] Sql query
+  - [ ] Code completion (semi supported)
+  - [x] Execution plan
+  - [x] Param support
+  - [ ] Save & Load query sqls
+ - [ ] Data edit / insert / delete
+ - [ ] Execute procedure / fetch results
+ - [ ] Recompute statistics
+- [ ] Script execution support
+- [ ] User management
+
 
 ##Install
 
@@ -32,45 +70,16 @@ Now browse to http://127.0.0.1:18022
 to website is not secured. Use it only from localhost right now**
 
 
-## Brief Todos
+## Todos
 
-- [x] Basic database metadata representation
- - [ ] Dependencies for functions, exceptions, sequences, domains
- - [ ] Better dependency displays
-- [ ] DDL Operations
- - [ ] Table
-  - [ ] Create table
-  - [ ] Field modification
-  - [ ] Constraint / index  
-  - [ ] Select * from table
- - [ ] View
- - [ ] Trigger
- - [ ] Procedure
- - [ ] Sequence
- - [ ] UDF
- - [ ] Exceptions
-- [ ] Database operations
- - [x] Database info
- - [ ] Database parameter updates (sweep interval, shutdown etc.)
- - [ ] MON$ based analysis
- - [ ] Create
- - [ ] Backup / restore
- - [ ] DDL export
- - [ ] Schema View
-- [ ] Data Operations
- - [x] Sql query
-  - [ ] Code completion
-  - [x] Execution plan
-  - [ ] Param support
- - [ ] Data edit / insert / delete
- - [ ] Execute procedure / fetch results
- - [ ] Recompute statistics
-- [ ] User management
 - [ ] Code documentation
 - [ ] Usage documentation
 - [ ] Use github's isssue tracker
 - [ ] Prepare a roadmap
 - [ ] Package for windows
+
+
+
  
  
 
