@@ -40,7 +40,7 @@ def connect_db(db):
 
 
 @baseApp.route('/db/register', method=['GET', 'POST'])
-def register_db():
+def db_register():
     if request.method == 'GET':
 
         _reg = {
@@ -60,7 +60,7 @@ def register_db():
         else:
             _reg['db_alias'] = ''
 
-        return render(tpl='register_db', reg=_reg)
+        return render(tpl='db_register', reg=_reg)
     else:
         prms = request.POST
 
@@ -83,8 +83,14 @@ def register_db():
 
 
 @baseApp.route('/db/unregister/<db>')
-def unegister_db(db):
+def db_unegister(db):
+    if db in appconf.con:
+        appconf.con[db].disconnect()
+
+    appconf.con.pop(db, None)
+    appconf.ddl.pop(db, None)
     appconf.db_config.pop(db, None)
+
     with open('%s/dbconfig.ini' % appconf.basepath, 'w+', encoding='utf-8') as f:
         appconf.db_config.write(f)
 
@@ -92,7 +98,7 @@ def unegister_db(db):
 
 
 @baseApp.route('/db/create', method=['GET', 'POST'])
-def register_db():
+def db_create():
     if request.method == 'GET':
 
         _reg = {
@@ -106,7 +112,7 @@ def register_db():
             'charset': ''
         }
 
-        return render(tpl='register_db', reg=_reg, ftyp='create')
+        return render(tpl='db_register', reg=_reg, ftyp='create')
     else:
         prms = request.POST
 
@@ -134,13 +140,29 @@ def register_db():
             'db_user': prms.db_user,
             'db_pass': prms.db_pass,
             'db_role': prms.db_role,
-            'dialect': prms.dialect,
+            'dialect': 3, #todo! prms.dialect,
             'charset': prms.charset
         }
         with open('%s/dbconfig.ini' % appconf.basepath, 'w+', encoding='utf-8') as f:
             appconf.db_config.write(f)
 
         redirect('/db/list')
+
+@baseApp.route('/db/drop', method=['GET', 'POST'])
+def db_drop():
+    if 'db' in request.GET:
+        db = request.GET.db
+        if db not in appconf.con:
+            connect_db(db)
+
+        appconf.con[db].drop_database()
+        appconf.con.pop(db, None)
+        appconf.ddl.pop(db, None)
+        appconf.db_config.pop(db, None)
+
+        redirect('/db/list')
+    else:
+        return render(tpl='db_drop')
 
 
 @baseApp.route('/db/list')

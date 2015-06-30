@@ -34,7 +34,7 @@ The list below, is a mix of features completed and features which are planned to
  - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception)
 - [ ] Database operations
  - [x] Create Database
- - [ ] Drop Database
+ - [x] Drop Database
  - [x] Database info via isc_info calls
  - [ ] Database parameter updates (sweep interval, shutdown etc.)
  - [ ] MON$ based analysis

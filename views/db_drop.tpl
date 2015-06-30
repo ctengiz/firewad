@@ -1,11 +1,5 @@
 <div class="row">
     <div class="col-md-12">
-        <a class="btn btn-default" href="/db/register">Register DB</a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
         <table class="table table-bordered table-condensed">
             <thead>
             <tr>
@@ -28,12 +22,10 @@
                 <td>{{appconf.db_config[k]['db_user']}}</td>
                 <td>{{appconf.db_config[k]['charset']}}</td>
                 <td>
+                    <!-- todo : alert confirmation -->
                     <div class="btn-group-xs">
-                        <a href="/db/register?db={{k}}" class="btn btn-xs btn-primary" title="Edit Registration Info">
-                            <span class="fa fa-edit"></span>
-                        </a>
-                        <a href="/db/unregister/{{k}}" class="btn btn-xs btn-warning" title="Unregister db">
-                            <span class="fa fa-minus"></span>
+                        <a href="/db/drop?db={{k}}" class="btn btn-xs btn-danger" title="Drop database">
+                            <span class="fa fa-trash"></span>
                         </a>
                     </div>
                 </td>
