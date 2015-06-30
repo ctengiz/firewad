@@ -1,10 +1,28 @@
 #firewad
 
 Web admin tool for [Firebird SQL RDBMS](http://firebirdsql.org/).
+
+I love Firebird and I use it since InterBase was open-sourced (sooo long ago !). When I also began to use MacOSX
+for development two years ago I've missed tools I've used to use such as [IBExpert](http://www.ibexpert.net/ibe/). 
+So this project is born.
+
+Main Goals are :
+
+- Be platform independent, easily deployed
+- A helper for database monitoring and performance tuning 
+- Adhoc queries for simple reports, data inspection
+- Easy database maintanence and administration operations
+- Provide a platform for database schema migration for my own projects
  
 ![](https://github.com/ctengiz/firewad/blob/master/docs/screenshot.png)
+![](https://github.com/ctengiz/firewad/blob/master/docs/screenshot-01.png)
+![](https://github.com/ctengiz/firewad/blob/master/docs/screenshot-02.png)
 
 ##Features 
+
+The list below, is a mix of features completed and features that will be planned to be implemented. Yet this is not
+ a full plan list. It grows while I play with the project. Any suggestions are welcome.
+
 
 - [ ] Full database metadata representation
  - [x] Tables
@@ -27,12 +45,20 @@ Web admin tool for [Firebird SQL RDBMS](http://firebirdsql.org/).
 - [ ] DDL Operations
  - [ ] Table
   - [ ] Create table
+  - [ ] Drop table
   - [ ] Field modification
-  - [ ] Constraint / index  
-  - [ ] Select * from table
+  - [ ] Alter / Create constraints / indices  
+  - [x] Quick query from table (select * from ..)
  - [ ] View
+  - [ ] Create view
+  - [ ] Drop view
+  - [ ] Alter view
+  - [x] Quick query from view (select * from ..)
+  - [ ] Create view from query
  - [ ] Trigger
  - [ ] Procedure
+  - [x] Quick query from procedure (select * from ..)
+  - [x] Quick execution of procedure
  - [ ] Sequence
  - [ ] UDF
  - [ ] Exceptions
@@ -66,8 +92,8 @@ python app.py
 
 Now browse to http://127.0.0.1:18022
 
-**SECURITY WARNING : Code is not ready for public serve yet (as a www service), db passwords is stored as plaintext in dbconfig.ini and access
-to website is not secured. Use it only from localhost right now**
+**SECURITY WARNING : Code is not ready for public serve yet (as a www service), db passwords is stored as plaintext in 
+dbconfig.ini and access to website is not secured. Use it only from localhost right now**
 
 
 ## Todos
