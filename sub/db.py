@@ -58,6 +58,9 @@ def register_db():
     else:
         prms = request.POST
 
+        if prms.old_alias:
+            appconf.db_config.pop(prms.old_alias, None)
+
         appconf.db_config[prms.db_alias] = {
             'db_server': prms.db_server,
             'db_path': prms.db_path,
@@ -71,6 +74,16 @@ def register_db():
             appconf.db_config.write(f)
 
         redirect('/db/list')
+
+
+@baseApp.route('/db/unregister/<db>')
+def runegister_db(db):
+    appconf.db_config.pop(db, None)
+    with open('%s/dbconfig.ini' % appconf.basepath, 'w+', encoding='utf-8') as f:
+        appconf.db_config.write(f)
+
+    redirect('/db/list')
+
 
 
 @baseApp.route('/db/list')

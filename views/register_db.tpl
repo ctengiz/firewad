@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-md-6">
         <form method="post">
+            <input type="hidden" name="old_alias" value="{{reg['db_alias']}}">
             <div class="form-group">
                 <label for="db_alias">Alias</label>
                 <input type="text" id="db_alias" name="db_alias" class="form-control" placeholder="Database Alias" value="{{reg['db_alias']}}">

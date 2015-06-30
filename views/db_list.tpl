@@ -32,6 +32,9 @@
                         <a href="/db/register?db={{k}}" class="btn btn-xs btn-primary" title="Edit Registration Info">
                             <span class="fa fa-edit"></span>
                         </a>
+                        <a href="/db/unregister/{{k}}" class="btn btn-xs btn-danger" title="Delete Registration Info">
+                            <span class="fa fa-trash"></span>
+                        </a>
                     </div>
                 </td>
             </tr>

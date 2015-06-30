@@ -3,7 +3,7 @@
 
 <div style="background-color: snow;">
 
-    <div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;">
+    <div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;" id="toolbar">
         <div class="btn-group btn-group-sm">
             <button class="btn btn-default" type="button" id="btn-plan" title="Get execution plan">
                 <i class="fa fa-crosshairs"></i>
@@ -14,7 +14,7 @@
             <button class="btn btn-default" type="button" id="btn-fetch-all" title="Execute and fetch all">
                 <i class="fa fa-fast-forward"></i>
             </button>
-            <button class="btn btn-default" type="button">
+            <button class="btn btn-default" type="button" id="btn-refresh">
                 <i class="fa fa-refresh"></i>
             </button>
         </div>
@@ -43,20 +43,15 @@
     </div>
 
     <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs" role="tablist" id="tabs">
         <li role="presentation" class="active"><a href="#sql" aria-controls="sql" role="tab" data-toggle="tab">Sql</a></li>
         <li role="presentation"><a href="#data" aria-controls="data" role="tab" data-toggle="tab">Data</a></li>
     </ul>
 
     <!-- Tab panes -->
-    <div class="tab-content">
+    <div class="tab-content" style="margin-bottom: 5px;">
         <div role="tabpanel" class="tab-pane active" id="sql">
             <div class="row">
-                <div class="col-sm-12">
-                </div>
-            </div>
-
-            <div class="row" style="margin-bottom: 5px;">
                 <div class="col-sm-12">
                     <pre id="editor">{{sql_select}}</pre>
                     <pre id="statusBar"></pre>
@@ -142,6 +137,8 @@
         params_parsed = false;
         params_entered = false;
     });
+
+    editor.focus();
 
     var customCompleter = {
         getCompletions: function(editor, session, pos, prefix, callback) {
@@ -289,13 +286,21 @@
         $('#btn-exec').click(function(){
             if (!params_parsed) {parse_params()}
             if (params_entered) {
-                exec_sql('fetch')
+                exec_sql('fetch');
+                $('html, body').animate({
+                    scrollTop: $("#toolbar").offset().top - 50
+                }, 200);
+
             } else {
                 params_entered = true;
             }
         });
 
         $('#btn-exec-param').click(function(){
+            $('#btn-exec').click();
+        });
+
+        $("#btn-refresh").click(function() {
             $('#btn-exec').click();
         });
 
