@@ -12,7 +12,7 @@ import fdb
 from bottle import request, redirect, HTTPError, template, response
 from sub.db import connect_db
 
-from common import baseApp, appconf, render
+from common import baseApp, appconf, render, formval_to_utf8
 
 
 def process_val(cval):
@@ -98,6 +98,10 @@ def query(db):
             _select_sql_str += 'select\n'
             _select_sql_str += ',\n'.join(['  ' + t.name for t in _col])
             _select_sql_str += '\nfrom ' + _table_name + _prms_str
+        else:
+            if 'procedure' in request.GET:
+                _select_sql_str += 'execute procedure'
+                _select_sql_str += '\n  ' + _table_name + _prms_str
 
         return template(_template, db=db, sql_select=_select_sql_str)
     else:
@@ -106,12 +110,19 @@ def query(db):
 
         try:
             crs = appconf.con[db].cursor()
-            pst = crs.prep(sql)
+
+            _params = {}
+            for _pp in request.POST:
+                if _pp[0:7] == 'params[':
+                    _params[_pp[7:-1]] = formval_to_utf8(request.POST[_pp])
+
+            nsql, nprms = parse_params(sql, **_params)
+            pst = crs.prep(nsql)
 
             if exec_typ == 'plan':
                 return json.dumps({'plan':pst.plan})
             else:
-                crs.execute(pst)
+                crs.execute(pst, nprms)
         except Exception as e:
             response.status = 500
             return e.args[0].replace('\n', '<br/>')

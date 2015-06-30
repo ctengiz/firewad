@@ -42,14 +42,6 @@
         -->
     </div>
 
-    <div class="alert alert-danger alert-dismissible" role="alert" id="error-panel" style="margin-bottom: 3px; display:none;">
-        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <span id="error-panel-text">
-
-        </span>
-    </div>
-
-
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#sql" aria-controls="sql" role="tab" data-toggle="tab">Sql</a></li>
@@ -64,16 +56,10 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-bottom: 5px;">
                 <div class="col-sm-12">
                     <pre id="editor">{{sql_select}}</pre>
                     <pre id="statusBar"></pre>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <pre id="sql-plan"></pre>
                 </div>
             </div>
         </div> <!-- sql tab panel -->
@@ -84,6 +70,40 @@
             </div>
         </div>
     </div>
+
+    <div class="alert alert-danger alert-dismissible" role="alert" id="error-panel" style="margin-bottom: 3px; display:none;">
+        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <span id="error-panel-text">
+
+        </span>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Query Plan
+        </div>
+        <div class="panel-body">
+            <pre id="sql-plan"></pre>
+        </div>
+    </div>
+
+    <div class="panel panel-warning" style="display: none;">
+        <div class="panel-heading">
+            Parameters
+        </div>
+        <div class="panel-body form-horizontal" id="params">
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-default" type="button" id="btn-exec-param" title="Execute query">
+                <i class="fa fa-play"></i>
+            </button>
+            <button class="btn btn-default" type="button" id="btn-fetch-all-param" title="Execute and fetch all">
+                <i class="fa fa-fast-forward"></i>
+            </button>
+        </div>
+    </div>
+
+
 </div>
 
 % include('_footer.tpl')
@@ -97,6 +117,8 @@
 
 
 <script>
+    var params_parsed = false;
+    var params_entered = false;
 
     var editor = ace.edit("editor");
 
@@ -114,6 +136,11 @@
         enableBasicAutocompletion: true,
         enableSnippets: true,
         enableLiveAutocompletion: false
+    });
+
+    editor.on('change', function() {
+        params_parsed = false;
+        params_entered = false;
     });
 
     var customCompleter = {
@@ -134,7 +161,6 @@
         }
     };
     langTools.addCompleter(customCompleter);
-
 
     var build_table=function(rslt) {
         $("#table").floatThead('destroy');
@@ -172,18 +198,63 @@
 
     };
 
-    var exec_sql=function(exec_typ, limit) {
-        var re = /":[_a-zA-Z0-9]+"|':[_a-zA-Z0-9]+'|(:[_a-zA-Z0-9]+)/g;
-        var sql = editor.getSession().getValue();
-        var params = sql.match(re);
+    var tstring = function(tstr, prm) {
+        tstr = tstr.replace(/{[^{}]+}/g, function(key){
+            return prm[key.replace(/[{}]+/g, '')].replace(':', '') || "";
+        });
+        return tstr;
+    };
 
-        alert(params);
+    var parse_params = function(sql) {
+        params_parsed = true;
+
+        $("#params").parent().hide();
+        sql = sql || editor.getSession().getValue();
+
+        var re = /":[_a-zA-Z0-9]+"|':[_a-zA-Z0-9]+'|(:[_a-zA-Z0-9]+)/g;
+
+        var params = sql.match(re) || [];
+
+        var param_html = '';
+        for (var i = 0; i < params.length; i++) {
+            param_html = param_html +
+                    tstring('<div class="form-group"><label class="col-sm-3 control-label">{param}</label>'+
+                            '<div class="col-sm-9">'+
+                            '<input class="form-control input-xs prm" name="{param}" id="prm-{param}">' +
+                            '</div></div>',
+                            {param: params[i]}
+                    );
+        };
+        $("#params").html(param_html);
+
+        if (params.length > 0) {
+            params_entered = false;
+            $("#params").parent().show();
+            $('html, body').animate({
+                scrollTop: $("#params").offset().top
+            }, 1000);
+            return true;
+        } else {
+            params_entered = true;
+            $("#params").parent().hide();
+        }
+    };
+
+    var exec_sql=function(exec_typ, limit) {
+        var sql = editor.getSession().getValue();
 
         var post_data = {
             sql: sql,
             exec_typ: exec_typ,
-            limit: limit
+            limit: limit,
+            params: {}
         };
+
+        if (params_entered) {
+            $('.prm').each(function(el){
+                post_data.params[$(this).attr("name")] = $(this).val();
+            });
+        }
 
         $.ajax({
             method: "POST",
@@ -216,15 +287,20 @@
 
     $(document).ready(function(){
         $('#btn-exec').click(function(){
-            exec_sql('fetch');
+            if (!params_parsed) {parse_params()}
+            if (params_entered) {
+                exec_sql('fetch')
+            } else {
+                params_entered = true;
+            }
+        });
 
-            //todo: parse sql params
-            //regex source : http://www.rexegg.com/regex-best-trick.html#notarzan
-            //":[_a-zA-Z0-9]+"|':[_a-zA-Z0-9]+'|(:[_a-zA-Z0-9]+)
-
+        $('#btn-exec-param').click(function(){
+            $('#btn-exec').click();
         });
 
         $('#btn-plan').click(function(){
+            parse_params();
             exec_sql('plan')
         });
 

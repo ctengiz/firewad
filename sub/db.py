@@ -5,7 +5,7 @@ Database objects and DDL operations
 import fdb
 from bottle import request, redirect, HTTPError
 
-from common import baseApp, appconf, render
+from common import baseApp, appconf, render, formval_to_utf8
 
 def connect_db(db):
     appconf.con[db] = fdb.connect(
@@ -47,7 +47,7 @@ def register_db():
             'charset': ''
         }
         if 'db' in request.GET:
-            _db = request.GET['db'].encode('latin1').decode('utf8')
+            _db = formval_to_utf8(request.GET['db'])
             for k in _reg:
                 _reg[k] = appconf.db_config[_db][k]
             _reg['db_alias'] = _db
