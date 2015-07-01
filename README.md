@@ -112,9 +112,11 @@ dbconfig.ini and access to website is not secured. Use it only from localhost ri
 - [Bootstrap](http://getbootstrap.com/)
 - [Ace Editor](http://http://ace.c9.io)
 - [Beaker](http://beaker.readthedocs.org/en/latest/)
-- [PygMents](http://pygments.org/)
+- [Pygments](http://pygments.org/)
 - [Fontawesome](http://fortawesome.github.io/Font-Awesome/)
+
 and of course
+
 - [jQuery](https://jquery.com/)
 
 
