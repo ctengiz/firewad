@@ -103,6 +103,19 @@ dbconfig.ini and access to website is not secured. Use it only from localhost ri
 - [ ] Prepare a roadmap
 - [ ] Package for windows
 
+## firewad steps on the shoulders of
+
+- [Python FDB](http://pythonhosted.org/fdb/) Thx to Pavel Cisar and David S. Rushby
+(aka woodsplitter)
+[RIP](http://www.firebirdnews.org/kinterbasdb-leader-drowns/)
+- [BottlePy](http://bottlepy.org/docs/dev/index.html)
+- [Bootstrap](http://getbootstrap.com/)
+- [Ace Editor](http://http://ace.c9.io)
+- [Beaker](http://beaker.readthedocs.org/en/latest/)
+- [PygMents](http://pygments.org/)
+- [Fontawesome](http://fortawesome.github.io/Font-Awesome/)
+and of course
+- [jQuery](https://jquery.com/)
 
 
  
