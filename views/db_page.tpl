@@ -199,10 +199,8 @@
                     <a href="#" data-toggle="tooltip" title="Number of sequential table scans (row reads) done on each table since the database was last attached"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <!-- todo: waiting for fdb 1.4.9
-                    . _kl = appconf.con[db].db_info(fdb.isc_info_read_seq_count)
-                    . include('./incobj/isc_count', _kl=_kl)
-                    -->
+                    % _kl = appconf.con[db].db_info(fdb.isc_info_read_seq_count)
+                    % include('./incobj/isc_count', _kl=_kl)
                 </div>
             </li>
 
@@ -211,10 +209,8 @@
                     <a href="#" data-toggle="tooltip" title="Number of reads done via an index since the database was last attached"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <!-- todo: waiting for fdb 1.4.9
-                    . _kl = appconf.con[db].db_info(fdb.isc_info_read_idx_count)
-                    . include('./incobj/isc_count', _kl=_kl)
-                    -->
+                    % _kl = appconf.con[db].db_info(fdb.isc_info_read_idx_count)
+                    % include('./incobj/isc_count', _kl=_kl)
                 </div>
             </li>
 
@@ -223,10 +219,8 @@
                     <a href="#" data-toggle="tooltip" title="Number of inserts into the database since the database was last attached"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <!-- todo: waiting for fdb 1.4.9
-                    . _kl = appconf.con[db].db_info(fdb.isc_info_insert_count)
-                    . include('./incobj/isc_count', _kl=_kl)
-                    -->
+                    % _kl = appconf.con[db].db_info(fdb.isc_info_insert_count)
+                    % include('./incobj/isc_count', _kl=_kl)
                 </div>
             </li>
 
@@ -235,10 +229,8 @@
                     <a href="#" data-toggle="tooltip" title="Number of database updates since the database was last attached"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <!-- todo: waiting for fdb 1.4.9
-                    . _kl = appconf.con[db].db_info(fdb.isc_info_update_count)
-                    . include('./incobj/isc_count', _kl=_kl)
-                    -->
+                    % _kl = appconf.con[db].db_info(fdb.isc_info_update_count)
+                    % include('./incobj/isc_count', _kl=_kl)
                 </div>
             </li>
 
@@ -247,10 +239,8 @@
                     <a href="#" data-toggle="tooltip" title="Number of database deletes since the database was last attached"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <!-- todo: waiting for fdb 1.4.9
-                    . _kl = appconf.con[db].db_info(fdb.isc_info_delete_count)
-                    . include('./incobj/isc_count', _kl=_kl)
-                    -->
+                    % _kl = appconf.con[db].db_info(fdb.isc_info_delete_count)
+                    % include('./incobj/isc_count', _kl=_kl)
                 </div>
             </li>
 
@@ -259,10 +249,8 @@
                     <a href="#" data-toggle="tooltip" title="Number of removals of a version of a record"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <!-- todo: waiting for fdb 1.4.9
-                    . _kl = appconf.con[db].db_info(fdb.isc_info_backout_count)
-                    . include('./incobj/isc_count', _kl=_kl)
-                    -->
+                    % _kl = appconf.con[db].db_info(fdb.isc_info_backout_count)
+                    % include('./incobj/isc_count', _kl=_kl)
                 </div>
             </li>
 
@@ -271,10 +259,8 @@
                     <a href="#" data-toggle="tooltip" title="Number of removals of old versions of fully mature records (records that are committed, so that older ancestor versions are no longer needed)"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <!-- todo: waiting for fdb 1.4.9
-                    . _kl = appconf.con[db].db_info(fdb.isc_info_purge_count)
-                    . include('./incobj/isc_count', _kl=_kl)
-                    -->
+                    % _kl = appconf.con[db].db_info(fdb.isc_info_purge_count)
+                    % include('./incobj/isc_count', _kl=_kl)
                 </div>
             </li>
 
@@ -283,10 +269,8 @@
                     <a href="#" data-toggle="tooltip" title="Number of removals of a record and all of its ancestors, for records whose deletions have been committed"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <!-- todo: waiting for fdb 1.4.9
-                    . _kl = appconf.con[db].db_info(fdb.isc_info_expunge_count)
-                    . include('./incobj/isc_count', _kl=_kl)
-                    -->
+                    % _kl = appconf.con[db].db_info(fdb.isc_info_expunge_count)
+                    % include('./incobj/isc_count', _kl=_kl)
                 </div>
             </li>
 
