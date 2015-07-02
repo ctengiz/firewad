@@ -2,10 +2,13 @@
 Database objects and DDL operations
 """
 
+import io
+import base64
+
 import fdb
 from bottle import request, redirect, HTTPError
 
-from common import baseApp, appconf, render, formval_to_utf8, highlight_sql
+from common import baseApp, appconf, render, formval_to_utf8, serve_file
 
 
 def register_ddl(db):
@@ -119,7 +122,27 @@ def db_metadata(db):
     else:
         prms = request.POST
 
-        rslt = ''
+        rslt = fancy_header('DATABASE DDL EXTRACT OF : ** %s **' %db)
+
+        #Database Create or Connect !
+        if 'include_password' in prms:
+            _password = "PASSWORD '%s'" % appconf.db_config[db]['db_pass']
+        else:
+            _password = ''
+        if prms.create_or_connect == 'create':
+            _cr = "CREATE DATABASE '{db_server}:{db_path}'\nUSER '{db_user}' {password}\nPAGE_SIZE {page_size}\nDEFAULT CHARACTER SET UTF8;"
+
+            rslt += _cr.format(
+                password= _password,
+                page_size = appconf.con[db].db_info(fdb.isc_info_page_size),
+                **appconf.db_config[db])
+        elif prms.create_or_connect == 'connect':
+            _cr = "CONNECT '{db_server}:{db_path}'\nUSER '{db_user}' {password};"
+            rslt += _cr.format(
+                password= _password,
+                page_size = appconf.con[db].db_info(fdb.isc_info_page_size),
+                **appconf.db_config[db])
+
         if 'function' in prms:
             rslt += fancy_header('USER DEFINED FUNCTIONS')
             for obj in sorted(appconf.con[db].functions, key=lambda k: str(k.name)):
@@ -229,10 +252,17 @@ def db_metadata(db):
                          or obj.user_type == 13):
                     rslt += obj.get_sql_for('grant') + ';\n'
 
-        return render('db_metadata_result', db=db, ddl_sql=rslt)
+        #todo: extract descriptions too !
+        #if 'description' in prms:
 
-
-
+        if prms.output == 'script':
+            _bs = base64.urlsafe_b64encode(bytes(rslt, 'utf-8'))
+            redirect('/tools/script/%s?encoded&sql=%s' % (db, _bs))
+        elif prms.output == 'file':
+            _data = io.StringIO(rslt)
+            return serve_file(db+'.sql', data=_data, download=True)
+        else:
+            return render('db_metadata_result', db=db, ddl_sql=rslt)
 
 @baseApp.route('/db/create', method=['GET', 'POST'])
 def db_create():

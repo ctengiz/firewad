@@ -33,6 +33,20 @@ body {
     margin-top: 5px;
 }
 
+/* ----------------------------------
+ * Bootstrap Cust.
+ * ---------------------------------- */
+legend {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.breadcrumb {
+    font-size: 14px;
+    margin-bottom: 7px;
+    border: 1px solid #DDD;
+}
+
 
 /* ----------------------------------
  * Drop-Down Menu

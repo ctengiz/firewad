@@ -1,4 +1,13 @@
 <div class="row">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li class="active">Drop Database</li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-condensed">
             <thead>

@@ -7,7 +7,7 @@
         </h4>
     </div>
     <div id="tbl-field" class="panel-collapse collapse in">
-        <table class="table table-condensed">
+        <table class="table table-condensed table-bordered">
             <thead>
             <tr>
                 <th>#</th>
@@ -18,6 +18,7 @@
                 <th>Computed</th>
                 <th>Default</th>
                 <th>Description</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -31,14 +32,17 @@
                     %end
                 </td>
                 <td><!-- todo: pk/fk/uq --> {{k.name}}</td>
-                <td>{{k.datatype}}</td>
+                <td style="word-wrap: break-word">{{k.datatype}}</td>
                 <td>{{k.domain.name}}</td>
-                <td>
+                <td style="text-align: center;">
                     {{! '<span class="glyphicon glyphicon-ok"></span>' if not k.isnullable() else '&nbsp;'}}
                 </td>
                 <td>{{k.domain.expression}}</td>
                 <td>{{k.domain.default}}</td>
-                <td>{{k.description}}</td>
+                <td style="word-wrap: break-word">{{k.description}}</td>
+                <td>
+
+                </td>
             </tr>
             %end
             </tbody>

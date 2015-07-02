@@ -5,6 +5,19 @@ end
 %>
 
 <div class="row">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="/db/list">Databases</a></li>
+            %if ftyp == 'create':
+                <li class="active">Create Database</li>
+            %else:
+                <li class="active">Register Database</li>
+            %end
+        </ol>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-md-6">
         <form method="post">
             <input type="hidden" name="old_alias" value="{{reg['db_alias']}}">

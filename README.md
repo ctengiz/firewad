@@ -40,7 +40,7 @@ The list below, is a mix of features completed and features which are planned to
  - [ ] Database parameter updates (sweep interval, shutdown etc.)
  - [ ] MON$ based analysis
  - [ ] Backup / restore
- - [ ] DDL export
+ - [x] Database Metada Extract (to screen, to file, to script tool)
  - [ ] Schema View
  - [ ] Recompute all statistics
 - [ ] DDL Operations

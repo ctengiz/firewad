@@ -9,8 +9,9 @@
         <li><a href="/db/backup/{{db}}">Backup Database</a></li>
         <li><a href="/db/restore/{{db}}">Restore Database</a></li>
         <li class="divider"></li>
+        <li><a href="/db/metadata/{{db}}">Extract Database Metadata</a></li>
+        <li class="divider"></li>
         <li><a href="/db/refresh_cache_metadata/{{db}}">Refresh Cached Database Metadata</a></li>
-        <li><a href="/db/metadata/{{db}}">Export Database Metadata</a></li>
     </ul>
 </li>
 

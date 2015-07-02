@@ -161,62 +161,10 @@ def script(db):
     if db not in appconf.con:
         connect_db(db)
 
-    _template = 'query-raw'
-
     if request.method == 'GET':
-        return template('sql_script', db=db, sql_script='', )
+        _sql = request.GET.sql if 'sql' in request.GET else ''
+        if 'encoded' in request.GET:
+            _sql = base64.urlsafe_b64decode(_sql.encode("ascii")[2:-1]).decode("utf-8")
+        return template('sql_script', db=db, sql_script=_sql)
     else:
-        sql = request.POST.sql
-        exec_typ = request.POST.exec_typ
-
-        try:
-            crs = appconf.con[db].cursor()
-
-            _params = {}
-            for _pp in request.POST:
-                if _pp[0:7] == 'params[':
-                    _params[_pp[7:-1]] = formval_to_utf8(request.POST[_pp])
-
-            nsql, nprms = parse_params(sql, **_params)
-            pst = crs.prep(nsql)
-
-            if exec_typ == 'plan':
-                return json.dumps({'plan':pst.plan})
-            else:
-                crs.execute(pst, nprms)
-        except Exception as e:
-            response.status = 500
-            return e.args[0].replace('\n', '<br/>')
-
-        columns = []
-        for _fld in crs.description:
-            columns.append(
-                {'field': _fld[0],
-                 'title': _fld[0].replace('_', ' ').title(),
-                 'sortable': True,
-                 'filterControl': 'input'
-                 }
-            )
-            """
-            _fld_def['type_code'] = _fld[1]
-            _fld_def['display_size'] = _fld[2]
-            _fld_def['internal_size'] = _fld[3]
-            _fld_def['precision'] = _fld[4]
-            _fld_def['scale'] = _fld[5]
-            _fld_def['null_ok'] = _fld[6]
-            fields.append(_fld_def)
-            """
-
-        data = []
-        for row in crs.fetchallmap():
-            jrw = {}
-            for k in row:
-                #print(k, row[k], type(row[k]).__name__, type(row[k]))
-                json.dumps({k: process_val(row[k])})
-                jrw[k] = process_val(row[k])
-            data.append(jrw)
-
-        return json.dumps({'plan': pst.plan,
-                           'tdata': {'columns': columns,
-                                     'data': data}})
-
+        pass

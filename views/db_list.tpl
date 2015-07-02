@@ -1,8 +1,20 @@
 <div class="row">
-    <div class="col-md-12">
-        <a class="btn btn-default" href="/db/register">Register DB</a>
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li class="active">Registered Databases</li>
+        </ol>
     </div>
 </div>
+
+
+<div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;" id="toolbar">
+    <div class="btn-group">
+        <a  href="/db/register" class="btn btn-default" title="Register DB">
+            <i class="fa fa-database"></i> Register DB
+        </a>
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-md-12">

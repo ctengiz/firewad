@@ -1,7 +1,7 @@
 % include('_header.tpl')
 
 
-<div style="background-color: snow;">
+<div>
 
     <div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;" id="toolbar">
         <div class="btn-group btn-group-sm">
