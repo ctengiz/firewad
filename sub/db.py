@@ -211,19 +211,23 @@ def db_metadata(db):
             rslt += fancy_header('PROCEDURES : second pass')
             rslt += 'SET TERM ^;\n'
             for obj in sorted(appconf.con[db].procedures, key=lambda k: str(k.name)):
-                rslt += obj.get_sql_for('alter') + '^\n\n'
+                rslt += obj.get_sql_for('create_or_alter') + '^\n\n'
             rslt += 'SET TERM ;^\n'
 
         if 'role' in prms:
             rslt += fancy_header('ROLES')
             for obj in sorted(appconf.con[db].roles, key=lambda k: str(k.name)):
-                rslt += obj.get_sql_for('create') + ';\n'
+                if not obj.issystemobject():
+                    rslt += obj.get_sql_for('create') + ';\n'
 
+        #todo: check this
         if 'grant' in prms:
             rslt += fancy_header('PRIVILEGES')
-            for obj in sorted(appconf.con[db].privileges, key=lambda k: str(k.name)):
-                rslt += obj.get_sql_for('grant') + ';\n'
-
+            for obj in appconf.con[db].privileges:
+                if obj.user_name != 'SYSDBA' and \
+                        (obj.user_type == 8
+                         or obj.user_type == 13):
+                    rslt += obj.get_sql_for('grant') + ';\n'
 
         return render('db_metadata_result', db=db, ddl_sql=rslt)
 

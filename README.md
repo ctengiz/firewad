@@ -42,6 +42,7 @@ The list below, is a mix of features completed and features which are planned to
  - [ ] Backup / restore
  - [ ] DDL export
  - [ ] Schema View
+ - [ ] Recompute all statistics
 - [ ] DDL Operations
  - [ ] Table
     - [ ] Create table
@@ -70,9 +71,10 @@ The list below, is a mix of features completed and features which are planned to
     - [ ] Save & Load query sqls
  - [ ] Data edit / insert / delete
  - [ ] Execute procedure / fetch results
- - [ ] Recompute statistics
 - [ ] Script execution support
 - [ ] User management
+- [ ] Grants Management
+- [ ] Data Analysis - Pivot Reports
 
 
 ##Install
