@@ -13,6 +13,8 @@ def do_setup():
     :return:
     """
 
+    #todo: setup
+    """
     if bottle.request.method == 'GET':
         return bottle.template('setup')
     else:
@@ -26,11 +28,23 @@ def do_setup():
             aconfig.write(f)
 
         bottle.redirect('/setup_ok')
+    """
+
+    aconfig = configparser.ConfigParser()
+    aconfig['system'] = {
+        'login_required': 0,
+    }
+    with open('%s/config.ini' % appconf.basepath, 'w+', encoding='utf-8') as f:
+        aconfig.write(f)
+    from app import index
+    init_app()
+    baseApp.route('/', method=['GET', 'POST'], callback=index)
+    return index()
+
 
 
 def setup_ok():
     from app import index
-    #todo: from apps.system import init_app
 
     init_app()
 
