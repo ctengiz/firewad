@@ -5,7 +5,7 @@ Database objects and DDL operations
 import fdb
 from bottle import request, redirect, HTTPError
 
-from common import baseApp, appconf, render, formval_to_utf8
+from common import baseApp, appconf, render, formval_to_utf8, highlight_sql
 
 
 def register_ddl(db):
@@ -21,6 +21,7 @@ def register_ddl(db):
     appconf.ddl[db]['functions'] = sorted([t.name for t in appconf.con[db].functions])
     appconf.ddl[db]['exceptions'] = sorted([t.name for t in appconf.con[db].exceptions])
     appconf.ddl[db]['constraints'] = sorted([t.name for t in appconf.con[db].constraints])
+    appconf.ddl[db]['roles'] = sorted([t.name for t in appconf.con[db].roles])
 
 
 def connect_db(db):
@@ -36,8 +37,6 @@ def connect_db(db):
     )
 
     register_ddl(db)
-
-
 
 @baseApp.route('/db/register', method=['GET', 'POST'])
 def db_register():
@@ -95,6 +94,140 @@ def db_unegister(db):
         appconf.db_config.write(f)
 
     redirect('/db/list')
+
+@baseApp.route('/db/refresh_cache_metadata/<db>', method=['GET', 'POST'])
+def refresh_cache_metadata(db):
+    if db not in appconf.con:
+        connect_db(db)
+
+    register_ddl(db)
+    redirect('/db/%s' %(db))
+
+
+@baseApp.route('/db/metadata/<db>', method=['GET', 'POST'])
+def db_metadata(db):
+    def fancy_header(title):
+        return '\n\n/' + ('*' * 78) + \
+               '/\n' + '/*' + title + (' ' * (76 - len(title))) + \
+               '*/\n' + '/' + ('*' * 78) + '/\n'
+
+    if db not in appconf.con:
+        connect_db(db)
+
+    if request.method == 'GET':
+        return render('db_metadata', db=db)
+    else:
+        prms = request.POST
+
+        rslt = ''
+        if 'function' in prms:
+            rslt += fancy_header('USER DEFINED FUNCTIONS')
+            for obj in sorted(appconf.con[db].functions, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('declare') + ';\n\n'
+
+        if 'domain' in prms:
+            rslt += fancy_header('DOMAINS')
+            for obj in sorted(appconf.con[db].domains, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('create') + ';\n'
+
+        if 'sequence' in prms:
+            rslt += fancy_header('SEQUENCES')
+            for obj in sorted(appconf.con[db].sequences, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('create') + ';\n'
+
+        if 'exception' in prms:
+            rslt += fancy_header('EXCEPTIONS')
+            for obj in sorted(appconf.con[db].exceptions, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('create') + ';\n'
+
+        if 'procedure' in prms:
+            rslt += fancy_header('PROCEDURES : first pass')
+            rslt += 'SET TERM ^;\n'
+            for obj in sorted(appconf.con[db].procedures, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('create', no_code=True) + '^\n\n'
+            rslt += 'SET TERM ;^\n'
+
+        if 'table' in prms:
+            rslt += fancy_header('TABLES')
+            for obj in sorted(appconf.con[db].tables, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('create') + ';\n\n'
+
+        if 'view' in prms:
+            rslt += fancy_header('VIEWS')
+            for obj in sorted(appconf.con[db].views, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('create') + ';\n\n'
+
+        #Constraints !
+        if 'table' in prms:
+            _ck = ''
+            _uq = ''
+            _fk = ''
+            for obj in sorted(appconf.con[db].constraints, key=lambda k: str(k.name)):
+                if obj.ischeck():
+                    _ck += obj.get_sql_for('create') + ';\n'
+                if obj.isunique():
+                    _uq += obj.get_sql_for('create') + ';\n'
+                if obj.isfkey():
+                    _fk += obj.get_sql_for('create') + ';\n'
+
+            if _ck:
+                rslt += fancy_header('CHECK CONSTRAINTS')
+                rslt += _ck
+            if _uq:
+                rslt += fancy_header('UNIQUE CONSTRAINTS')
+                rslt += _uq
+            if _fk:
+                rslt += fancy_header('FOREIGN KEY CONSTRAINTS')
+                rslt += _fk
+
+        if 'index' in prms:
+            rslt += fancy_header('INDICES')
+            for obj in sorted(appconf.con[db].indices, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('create') + ';\n\n'
+
+        if 'trigger' in prms:
+            _dt = ''
+            _tt = ''
+
+            for obj in sorted(appconf.con[db].triggers, key=lambda k: str(k.name)):
+                if obj.isdbtrigger():
+                    _dt += obj.get_sql_for('create') + '^\n\n'
+                else:
+                    _tt += obj.get_sql_for('create') + '^\n\n'
+
+            if _dt:
+                rslt += fancy_header('DATABASE TRIGGERS')
+                rslt += 'SET TERM ^;\n'
+                rslt += _dt
+                rslt += 'SET TERM ;^\n'
+
+            if _tt:
+                rslt += fancy_header('TABLE TRIGGERS')
+                rslt += 'SET TERM ^;\n'
+                rslt += _tt
+                rslt += 'SET TERM ;^\n'
+
+        if 'procedure' in prms:
+            rslt += fancy_header('PROCEDURES : second pass')
+            rslt += 'SET TERM ^;\n'
+            for obj in sorted(appconf.con[db].procedures, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('alter') + '^\n\n'
+            rslt += 'SET TERM ;^\n'
+
+        if 'role' in prms:
+            rslt += fancy_header('ROLES')
+            for obj in sorted(appconf.con[db].roles, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('create') + ';\n'
+
+        if 'grant' in prms:
+            rslt += fancy_header('PRIVILEGES')
+            for obj in sorted(appconf.con[db].privileges, key=lambda k: str(k.name)):
+                rslt += obj.get_sql_for('grant') + ';\n'
+
+
+        return render('db_metadata_result', db=db, ddl_sql=rslt)
+
+
 
 
 @baseApp.route('/db/create', method=['GET', 'POST'])

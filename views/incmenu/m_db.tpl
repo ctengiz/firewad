@@ -1,16 +1,16 @@
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{db}}<b class="caret"></b></a>
     <ul class="dropdown-menu">
-        <li><a href="/admin/client">Recompute All Indices</a></li>
+        <li><a href="/db/recompute_all/{{db}}">Recompute All Indices</a></li>
         <li class="divider"></li>
-        <li><a href="/admin/client">Enable All Triggers</a></li>
-        <li><a href="/admin/client">Disable All Triggers</a></li>
+        <li><a href="/db/enable_all_triggers/{{db}}">Enable All Triggers</a></li>
+        <li><a href="/db/disable_all_triggers/{{db}}">Disable All Triggers</a></li>
         <li class="divider"></li>
-        <li><a href="/backup">Backup Database</a></li>
-        <li><a href="/restore">Restore Database</a></li>
+        <li><a href="/db/backup/{{db}}">Backup Database</a></li>
+        <li><a href="/db/restore/{{db}}">Restore Database</a></li>
         <li class="divider"></li>
-        <li><a href="/refresh_db">Refresh Database Metadata</a></li>
-        <li><a href="/export_metadata">Export Database Metadata</a></li>
+        <li><a href="/db/refresh_cache_metadata/{{db}}">Refresh Cached Database Metadata</a></li>
+        <li><a href="/db/metadata/{{db}}">Export Database Metadata</a></li>
     </ul>
 </li>
 

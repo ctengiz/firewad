@@ -31,6 +31,7 @@ The list below, is a mix of features completed and features which are planned to
  - [x] Sequence
  - [x] UDF
  - [x] Exceptions
+ - [ ] Roles
  - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception)
 - [ ] Database operations
  - [x] Create Database
@@ -80,6 +81,7 @@ The list below, is a mix of features completed and features which are planned to
 
 * Firebird 2.1+ (though only tested with 2.5, but all major operations should be fine with 2.1)
 * python 3+
+* fdb 1.4.9+
 * write permissions to directory where the firewad is installed
 
 ```
