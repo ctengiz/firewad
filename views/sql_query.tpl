@@ -97,8 +97,32 @@
             </button>
         </div>
     </div>
+</div>
 
 
+<!-- Static Modal -->
+<!-- Source : http://bootsnipp.com/snippets/featured/centered-processing-modal -->
+<div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <!--
+                    <img src="http://www.travislayne.com/images/loading.gif" class="icon" />
+                    -->
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <!--<span class="sr-only">45% Complete</span>-->
+                        </div>
+                    </div>
+                    <h4>
+                        Executing sql
+                        <!-- <button type="button" class="close" style="float: none;" data-dismiss="modal" aria-hidden="true">×</button> -->
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 % include('_footer.tpl')
@@ -221,7 +245,7 @@
                             '</div></div>',
                             {param: params[i]}
                     );
-        };
+        }
         $("#params").html(param_html);
 
         if (params.length > 0) {
@@ -259,7 +283,8 @@
             data: post_data,
             dataType: "json",
             beforeSend: function() {
-                $("plan-sql").text('');
+                $('#processing-modal').modal('show');
+                $("#plan-sql").text('');
 
                 $("#error-panel").hide();
             },
@@ -272,15 +297,15 @@
 
             if ((exec_typ == 'fetch') || (exec_typ == 'fetch_all')) {
                 build_table(rslt.tdata);
-            };
+            }
 
         }).fail(function(){
 
         }).always(function () {
+            $('#processing-modal').modal('hide');
 
         })
     };
-
 
     $(document).ready(function(){
         $('#btn-exec').click(function(){
