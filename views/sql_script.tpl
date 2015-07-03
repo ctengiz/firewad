@@ -29,6 +29,10 @@
         <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <span id="result-panel-text">
         </span>
+        <div class="btn-group" id="result-panel-action" style="display: none;">
+            <a class="btn btn-success trn-action" data-action="commit">Commit</a>
+            <a class="btn btn-danger trn-action" data-action="rollback">Rollback</a>
+        </div>
     </div>
 
     <div class="alert alert-danger alert-dismissible" role="alert" id="error-panel" style="margin-bottom: 3px; display:none;">
@@ -91,8 +95,7 @@
     });
 
     editor.on('change', function() {
-        params_parsed = false;
-        params_entered = false;
+        //
     });
 
     editor.focus();
@@ -122,7 +125,7 @@
 
         var post_data = {
             sql: sql,
-            commit: $('#btn-commit-type').data('pressed')
+            auto_commit: $('#btn-commit-type').data('pressed')
         };
 
         $.ajax({
@@ -134,6 +137,7 @@
                 $('#processing-modal').modal('show');
 
                 $("#error-panel").hide();
+                $('#result-panel-action').hide();
                 $("#result-panel").hide();
             },
             error: function (e) {
@@ -143,6 +147,11 @@
         }).done(function(rslt, textStatus, jqXH){
             $("#result-panel").show();
             $("#result-panel-text").html(rslt.result);
+
+            if (rslt.trn_id) {
+                $('.trn-action').data('trn_id', rslt.trn_id);
+                $('#result-panel-action').show();
+            }
 
             if (rslt.errors.length > 0) {
                 $("#error-panel").show();
@@ -181,6 +190,50 @@
         $('.alert .close').click(function(){
             $(this).parent().hide();
         });
+
+        $('.trn-action').click(function() {
+            var post_data = {
+                action: $(this).data('action'),
+                trn_id: $(this).data('trn_id'),
+                auto_commit: $('#btn-commit-type').data('pressed')
+            };
+
+            $.ajax({
+                method: "POST",
+                url: "/tools/script/{{db}}",
+                data: post_data,
+                dataType: "json",
+                beforeSend: function() {
+                    $('#processing-modal').modal('show');
+
+                    $("#error-panel").hide();
+                    $('#result-panel-action').hide();
+                    $("#result-panel").hide();
+                },
+                error: function (e) {
+                    $("#error-panel").show();
+                    $("#error-panel-text").text(e.responseText);
+                }
+            }).done(function(rslt, textStatus, jqXH){
+                $('.trn-action').data('trn_id', null);
+
+                $("#result-panel").show();
+                $("#result-panel-text").html(rslt.result);
+
+                if (rslt.errors.length > 0) {
+                    $("#error-panel").show();
+                    var error_text = '';
+                    for (var i = 0; i < rslt.errors.length; i++) {
+                        error_text = error_text + '<br/>' + rslt.errors[i];
+                    }
+                    $("#error-panel-text").html(error_text);
+                }
+            }).fail(function(){
+
+            }).always(function () {
+                $('#processing-modal').modal('hide');
+            })
+        })
     });
 
 

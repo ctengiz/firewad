@@ -18,6 +18,7 @@ class appconf():
     login_required = False
     basepath = None
     con = OrderedDict()
+    trn = OrderedDict()
     ddl = OrderedDict()
     db_config = configparser.ConfigParser()
 

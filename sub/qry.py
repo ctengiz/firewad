@@ -195,19 +195,51 @@ def script(db):
         return template('sql_script', db=db, sql_script=_sql)
     else:
         prms = request.POST
-        trn = appconf.con[db].trans()
-
         sqls = prms.sql
-        commit = int(prms.commit)
+        auto_commit = int(prms.auto_commit)
+        trn = None
+        trn_id = None
+
+        if 'action' in prms:
+            try:
+                trn_id = int(prms.trn_id)
+                trn = appconf.trn[trn_id]
+            except:
+                response.status = 500
+                return 'Associated transaction ID is invalid !'
+
+            try:
+                if prms.action == 'commit':
+                    trn.commit()
+                    trn.close()
+                    appconf.trn.pop(trn_id)
+                    return json.dumps({'errors': [], 'result': 'Transaction committed', 'trn_id': None})
+                else:
+                    trn.rollback()
+                    trn.close()
+                    appconf.trn.pop(trn_id)
+                    return json.dumps({'errors': [], 'result': 'Transaction rolled back', 'trn_id': None})
+            except Exception as e:
+                response.status = 500
+                return e.args[0].replace('\n', '<br/>')
+
+        trn = appconf.con[db].trans()
+        if not auto_commit:
+            trn.begin()
+            trn_id = trn.trans_info(fdb.isc_info_tra_id)
+            appconf.trn[trn_id] = trn
 
         error_log = []
         try:
             trn.execute_immediate(sqls)
 
-            if commit:
+            if auto_commit:
                 trn.commit()
                 trn.close()
         except Exception as e:
+            if auto_commit:
+                trn.rollback()
+                trn.close()
             error_log.append(e.args[0].replace('\n', '<br/>'))
 
         if error_log != []:
@@ -215,4 +247,4 @@ def script(db):
         else:
             result = 'Script executed successfully'
 
-        return json.dumps({'errors': error_log, 'result': result})
+        return json.dumps({'errors': error_log, 'result': result, 'trn_id': trn_id})
