@@ -2,7 +2,7 @@
     <div class="panel-heading">
         <h4 class="panel-title">
             <a class="accordion-toggle collapsed" data-toggle="collapse" href="#tbl-depedencies">
-                Dependencies
+                <i class="fa fa-share"></i> Dependencies
             </a>
         </h4>
     </div>

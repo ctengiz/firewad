@@ -5,41 +5,35 @@
 
     <div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;" id="toolbar">
         <div class="btn-group btn-group-sm">
+            <button class="btn btn-default" type="button" id="btn-commit-type"
+                    data-toggle="button"
+                    data-pressed="0"
+                    data-0-text="Auto Commit: OFF"
+                    data-1-text="Auto Commit: ON"
+                    >
+                Auto Commit: OFF
+            </button>
+        </div>
+
+        <div class="btn-group btn-group-sm">
             <button class="btn btn-default" type="button" id="btn-exec" title="Execute script">
                 <i class="fa fa-bolt"></i>
             </button>
         </div>
-        <!-- todo:
-        <div class="btn-group btn-group-sm">
-            <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-default dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        title="Download data">
-                    <i class="fa fa-download"></i>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-file-excel-o"></i> Excel</a></li>
-                    <li><a href="#">Csv</a></li>
-                </ul>
-            </div>
-
-            <button class="btn btn-default" type="button">
-                <i class="fa fa-print"></i>
-            </button>
-        </div>
-        -->
     </div>
 
     <pre id="editor">{{sql_script}}</pre>
     <pre id="statusBar"></pre>
 
+    <div class="alert alert-info alert-dismissible" role="alert" id="result-panel" style="margin-bottom: 3px; display:none;">
+        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <span id="result-panel-text">
+        </span>
+    </div>
+
     <div class="alert alert-danger alert-dismissible" role="alert" id="error-panel" style="margin-bottom: 3px; display:none;">
         <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <span id="error-panel-text">
-
         </span>
     </div>
 </div>
@@ -78,9 +72,6 @@
 
 
 <script>
-    var params_parsed = false;
-    var params_entered = false;
-
     var editor = ace.edit("editor");
 
     var langTools = ace.require("ace/ext/language_tools");
@@ -125,155 +116,66 @@
     };
     langTools.addCompleter(customCompleter);
 
-    var build_table=function(rslt) {
-        $("#table").floatThead('destroy');
-        $("#table").html('');
-
-        var thead = '';
-        for (var i in rslt.columns) {
-            thead = thead +
-            '<th>' +
-            rslt.columns[i].field +
-                /*'<div>' + rslt.columns[i].field + '</div>' + */
-            '</th>'
-        }
-        thead = '<thead><tr>' + thead + '</tr></thead>';
-
-        var tbody = '';
-        for (var i in rslt.data) {
-            tbody = tbody + '<tr>';
-            for (var col in rslt.columns) {
-                tbody = tbody + '<td>' + rslt.data[i][rslt.columns[col].field] + '</td>'
-            }
-            tbody = tbody + '</tr>';
-        }
-        tbody = '<tbody>' + tbody + '</tbody>';
-
-        $("#table").html(thead + tbody);
-
-        $('a[href="#data"]').tab('show');
-
-        $("#table").floatThead({
-            scrollContainer: function($table){
-                return $table.closest('#data-grid-container');
-            }
-        });
-
-    };
-
-    var tstring = function(tstr, prm) {
-        tstr = tstr.replace(/{[^{}]+}/g, function(key){
-            return prm[key.replace(/[{}]+/g, '')].replace(':', '') || "";
-        });
-        return tstr;
-    };
-
-    var parse_params = function(sql) {
-        params_parsed = true;
-
-        $("#params").parent().hide();
-        sql = sql || editor.getSession().getValue();
-
-        var re = /":[_a-zA-Z0-9]+"|':[_a-zA-Z0-9]+'|(:[_a-zA-Z0-9]+)/g;
-
-        var params = sql.match(re) || [];
-
-        var param_html = '';
-        for (var i = 0; i < params.length; i++) {
-            param_html = param_html +
-                    tstring('<div class="form-group"><label class="col-sm-3 control-label">{param}</label>'+
-                            '<div class="col-sm-9">'+
-                            '<input class="form-control input-xs prm" name="{param}" id="prm-{param}">' +
-                            '</div></div>',
-                            {param: params[i]}
-                    );
-        }
-        $("#params").html(param_html);
-
-        if (params.length > 0) {
-            params_entered = false;
-            $("#params").parent().show();
-            $('html, body').animate({
-                scrollTop: $("#params").offset().top
-            }, 1000);
-            return true;
-        } else {
-            params_entered = true;
-            $("#params").parent().hide();
-        }
-    };
 
     var exec_sql=function(exec_typ, limit) {
         var sql = editor.getSession().getValue();
 
         var post_data = {
             sql: sql,
-            exec_typ: exec_typ,
-            limit: limit,
-            params: {}
+            commit: $('#btn-commit-type').data('pressed')
         };
-
-        if (params_entered) {
-            $('.prm').each(function(el){
-                post_data.params[$(this).attr("name")] = $(this).val();
-            });
-        }
 
         $.ajax({
             method: "POST",
-            url: "/tools/query/{{db}}",
+            url: "/tools/script/{{db}}",
             data: post_data,
             dataType: "json",
             beforeSend: function() {
                 $('#processing-modal').modal('show');
-                $("#plan-sql").text('');
 
                 $("#error-panel").hide();
+                $("#result-panel").hide();
             },
             error: function (e) {
                 $("#error-panel").show();
-                $("#error-panel-text").html(e.responseText);
+                $("#error-panel-text").text(e.responseText);
             }
         }).done(function(rslt, textStatus, jqXH){
-            $("#sql-plan").text(rslt.plan);
+            $("#result-panel").show();
+            $("#result-panel-text").html(rslt.result);
 
-            if ((exec_typ == 'fetch') || (exec_typ == 'fetch_all')) {
-                build_table(rslt.tdata);
+            if (rslt.errors.length > 0) {
+                $("#error-panel").show();
+                var error_text = '';
+                for (var i = 0; i < rslt.errors.length; i++) {
+                    error_text = error_text + '<br/>' + rslt.errors[i];
+                }
+                $("#error-panel-text").html(error_text);
             }
-
         }).fail(function(){
 
         }).always(function () {
             $('#processing-modal').modal('hide');
-
         })
     };
 
     $(document).ready(function(){
-        $('#btn-exec').click(function(){
-            if (!params_parsed) {parse_params()}
-            if (params_entered) {
-                exec_sql('fetch');
-                $('html, body').animate({
-                    scrollTop: $("#toolbar").offset().top - 50
-                }, 200);
-
+        $('#btn-commit-type').on('click', function () {
+            if ($(this).data('pressed') == '0') {
+                $(this).data('pressed', '1');
+                $(this).addClass('btn-warning');
+                $(this).removeClass('btn-default');
             } else {
-                params_entered = true;
+                $(this).data('pressed', '0');
+                $(this).removeClass('btn-warning');
+                $(this).addClass('btn-default');
             }
+
+            $(this).button($(this).data('pressed'));
         });
 
-        $('#btn-exec-param').click(function(){
-            $('#btn-exec').click();
-        });
-
-        $("#btn-refresh").click(function() {
-            $('#btn-exec').click();
-        });
-
-        $('#btn-plan').click(function(){
-            parse_params();
-            exec_sql('plan')
+        $('#btn-exec').click(function(){
+            exec_sql('fetch');
         });
 
         $('.alert .close').click(function(){

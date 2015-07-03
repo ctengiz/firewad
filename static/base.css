@@ -34,11 +34,11 @@ body {
 }
 
 /* ----------------------------------
- * Bootstrap Cust.
+ * Bootstrap Custumizations
  * ---------------------------------- */
 legend {
     margin-top: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .breadcrumb {
@@ -47,6 +47,9 @@ legend {
     border: 1px solid #DDD;
 }
 
+.navbar-form .form-control {
+    padding: 3px 6px;
+}
 
 /* ----------------------------------
  * Drop-Down Menu

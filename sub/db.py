@@ -102,10 +102,11 @@ def db_unegister(db):
 def refresh_cache_metadata(db):
     if db not in appconf.con:
         connect_db(db)
+    else:
+        appconf.con[db].schema.reload()
 
     register_ddl(db)
     redirect('/db/%s' %(db))
-
 
 @baseApp.route('/db/metadata/<db>', method=['GET', 'POST'])
 def db_metadata(db):

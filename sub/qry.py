@@ -194,4 +194,25 @@ def script(db):
 
         return template('sql_script', db=db, sql_script=_sql)
     else:
-        pass
+        prms = request.POST
+        trn = appconf.con[db].trans()
+
+        sqls = prms.sql
+        commit = int(prms.commit)
+
+        error_log = []
+        try:
+            trn.execute_immediate(sqls)
+
+            if commit:
+                trn.commit()
+                trn.close()
+        except Exception as e:
+            error_log.append(e.args[0].replace('\n', '<br/>'))
+
+        if error_log != []:
+            result = 'Script executed with errors'
+        else:
+            result = 'Script executed successfully'
+
+        return json.dumps({'errors': error_log, 'result': result})
