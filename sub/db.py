@@ -254,8 +254,13 @@ def db_metadata(db):
 
         #todo: extract descriptions too !
         #if 'description' in prms:
+            #.........
 
         if prms.output == 'script':
+            #todo: if script is too long, we get a 414 error. So we should find another way...
+            #possible solutions:
+            #  a. work with a temp file
+            #  b. on the fly gzip encoded string (may also get a 414 error)
             _bs = base64.urlsafe_b64encode(bytes(rslt, 'utf-8'))
             redirect('/tools/script/%s?encoded&sql=%s' % (db, _bs))
         elif prms.output == 'file':

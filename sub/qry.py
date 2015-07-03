@@ -162,9 +162,36 @@ def script(db):
         connect_db(db)
 
     if request.method == 'GET':
-        _sql = request.GET.sql if 'sql' in request.GET else ''
-        if 'encoded' in request.GET:
-            _sql = base64.urlsafe_b64decode(_sql.encode("ascii")[2:-1]).decode("utf-8")
+        prms = request.GET
+        _sql = ''
+
+        if 'sql' in prms:
+            _sql = prms.sql
+            if 'encoded' in prms:
+                _sql = base64.urlsafe_b64decode(_sql.encode("ascii")[2:-1]).decode("utf-8")
+
+        if 'obj_typ' in prms:
+            if prms.obj_typ == 'table':
+                _obj = appconf.con[db].schema.get_table(prms.name)
+                _sql = _obj.get_sql_for('recreate') + ';'
+
+                #todo: not sure if I should add these to the script ?
+                """
+                for _cns in _obj.constraints:
+                    if not _cns.isnotnull():
+                        _sql += '\n' + _cns.get_sql_for('create') + ';'
+
+                for _ndx in _obj.indices:
+                    _sql += '\n' + _ndx.get_sql_for('create') + ';'
+                """
+
+            if prms.obj_typ == 'view':
+                _sql = appconf.con[db].schema.get_view(prms.name).get_sql_for('recreate')
+            if prms.obj_typ == 'procedure':
+                _sql = appconf.con[db].schema.get_procedure(prms.name).get_sql_for('create_or_alter')
+            if prms.obj_typ == 'trigger':
+                _sql = appconf.con[db].schema.get_trigger(prms.name).get_sql_for('recreate')
+
         return template('sql_script', db=db, sql_script=_sql)
     else:
         pass

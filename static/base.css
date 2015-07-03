@@ -231,6 +231,16 @@ a.menu-node.list-group-item:focus, a.menu-node.list-group-item:hover {
     content: "\e080";    /* adjust as needed, taken from bootstrap.css */
 }
 
+/* ----------------------------------
+ * panel heading button
+ * ---------------------------------- */
+
+a.panel-heading-button {
+    color: #ffffff;
+    margin-top: -2px;
+    margin-right: 20px;
+}
+
 
 /* ----------------------------------
  * Ace Editor

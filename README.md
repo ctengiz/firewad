@@ -18,59 +18,66 @@ Main Goals are :
 ![](https://github.com/ctengiz/firewad/blob/master/docs/screenshot-01.png)
 ![](https://github.com/ctengiz/firewad/blob/master/docs/screenshot-02.png)
 
-##Features 
+##Features
 
-The list below, is a mix of features completed and features which are planned to be implemented. Yet this is not
+The list below, is a mix of features completed and **features which are planned to be implemented**. Yet this is not
  a full plan list. It grows while I play with the project. Any suggestions are welcome.
 
 - [ ] Full database metadata representation
- - [x] Tables
- - [x] Views
- - [x] Trigger
- - [x] Procedure
- - [x] Sequence
- - [x] UDF
- - [x] Exceptions
- - [ ] Roles
- - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception)
+    - [x] Tables
+    - [x] Views
+    - [x] Trigger
+    - [x] Procedure
+    - [x] Sequence
+    - [x] UDF
+    - [x] Exceptions
+    - [ ] Roles
+    - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception)
 - [ ] Database operations
- - [x] Create Database
- - [x] Drop Database
- - [x] Database info via isc_info calls
- - [ ] Database parameter updates (sweep interval, shutdown etc.)
- - [ ] MON$ based analysis
- - [ ] Backup / restore
- - [x] Database Metada Extract (to screen, to file, to script tool)
- - [ ] Schema View
- - [ ] Recompute all statistics
+    - [x] Create Database
+    - [x] Drop Database
+    - [x] Database info via isc_info calls
+    - [ ] Database parameter updates (sweep interval, shutdown etc.)
+    - [ ] MON$ based analysis
+    - [ ] Backup / restore
+    - [x] Database Metada Extract (to screen, to file, to script tool)
+    - [ ] Schema View
+    - [ ] Recompute all statistics
 - [ ] DDL Operations
- - [ ] Table
-    - [ ] Create table
-    - [ ] Drop table
-    - [ ] Field modification
-    - [ ] Alter / Create constraints / indices  
-    - [x] Quick query from table (select * from ..)
- - [ ] View
-    - [ ] Create view
-    - [ ] Drop view
-    - [ ] Alter view
-    - [x] Quick query from view (select * from ..)
-    - [ ] Create view from query
- - [ ] Trigger
- - [ ] Procedure
-    - [x] Quick query from procedure (select * from ..)
-    - [x] Quick execution of procedure
- - [ ] Sequence
- - [ ] UDF
- - [ ] Exceptions
+    - [ ] Table
+        - [ ] Create table
+        - [ ] Drop table
+        - [ ] Field modification
+        - [ ] Alter / Create constraints / indices
+        - [x] DDL Edit
+    - [ ] View
+        - [ ] Create view
+        - [ ] Drop view
+        - [ ] Alter view
+        - [ ] Create view from query
+        - [x] DDL Edit
+    - [ ] Trigger
+        - [x] DDL Edit
+    - [ ] Procedure
+        - [x] DDL Edit
+    - [ ] Sequence
+    - [ ] UDF
+    - [ ] Exceptions
 - [ ] Data Operations
- - [x] Sql query
+    - [ ] Data edit / insert / delete
+- [x] Sql query
     - [ ] Code completion (semi supported)
     - [x] Execution plan
     - [x] Param support
     - [ ] Save & Load query sqls
- - [ ] Data edit / insert / delete
- - [ ] Execute procedure / fetch results
+    - [x] Quick query from table (select * from ..)
+    - [x] Quick query from view (select * from ..)
+    - [x] Quick query from procedure (select * from ..)
+    - [x] Quick execution of procedure
+    - [ ] Sorting on the result set
+    - [ ] Paging support
+    - [ ] Export result data (xls, cvs, json)
+    - [x] Execute procedure / fetch results
 - [ ] Script execution support
 - [ ] User management
 - [ ] Grants Management
