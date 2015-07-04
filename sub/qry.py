@@ -164,38 +164,96 @@ def script(db):
     if request.method == 'GET':
         prms = request.GET
         _sql = ''
+        refresh_obj = ''
+
 
         if 'sql' in prms:
             _sql = prms.sql
             if 'encoded' in prms:
                 _sql = base64.urlsafe_b64decode(_sql.encode("ascii")[2:-1]).decode("utf-8")
 
-        if 'obj_typ' in prms:
-            if prms.obj_typ == 'table':
-                _obj = appconf.con[db].schema.get_table(prms.name)
-                _sql = _obj.get_sql_for('recreate') + ';'
+        if 'ddl' in prms:
+            _ddl = prms.ddl
+            _typ = prms.typ
+            _name = prms.name
+            
+            if _ddl == 'drop':
+                _sql = 'drop %s %s;' %(_typ, _name)
+            elif _ddl == 'edit':
+                if _typ == 'table':
+                    _obj = appconf.con[db].schema.get_table(_name)
+                    _sql = _obj.get_sql_for('recreate') + ';'
 
-                #todo: not sure if I should add these to the script ?
-                """
-                for _cns in _obj.constraints:
-                    if not _cns.isnotnull():
-                        _sql += '\n' + _cns.get_sql_for('create') + ';'
+                    #todo: not sure if I should add these to the script ?
+                    """
+                    for _cns in _obj.constraints:
+                        if not _cns.isnotnull():
+                            _sql += '\n' + _cns.get_sql_for('create') + ';'
 
-                for _ndx in _obj.indices:
-                    _sql += '\n' + _ndx.get_sql_for('create') + ';'
-                """
+                    for _ndx in _obj.indices:
+                        _sql += '\n' + _ndx.get_sql_for('create') + ';'
+                    """
 
-            if prms.obj_typ == 'view':
-                _sql = appconf.con[db].schema.get_view(prms.name).get_sql_for('recreate')
-            if prms.obj_typ == 'procedure':
-                _sql = appconf.con[db].schema.get_procedure(prms.name).get_sql_for('create_or_alter')
-            if prms.obj_typ == 'trigger':
-                _sql = appconf.con[db].schema.get_trigger(prms.name).get_sql_for('recreate')
+                if _typ == 'view':
+                    _sql = appconf.con[db].schema.get_view(_name).get_sql_for('recreate')
+                if _typ == 'procedure':
+                    _sql = appconf.con[db].schema.get_procedure(_name).get_sql_for('create_or_alter')
+                if _typ == 'trigger':
+                    _sql = appconf.con[db].schema.get_trigger(_name).get_sql_for('recreate')
+                    
+            elif _ddl == 'create':
+                refresh_obj = _typ + 's'
 
-        return template('sql_script', db=db, sql_script=_sql)
+                if _typ == 'view':
+                    _sql = template('./sqls/view')
+                if _typ == 'trigger':
+                    _sql = template('./sqls/trigger')
+                elif _typ == 'sequence':
+                    _sql = 'create sequence NEW_SEQUENCE;'
+                elif _typ == 'exception':
+                    _sql = "create exception NEW_EXCEPTION '<exception_message>';"
+                elif _typ == 'role':
+                    _sql = "create role NEW_ROLE"
+                    
+            elif _ddl == 'trigger_disable' or _ddl == 'trigger_enable':
+                refresh_obj = 'triggers'
+
+                if _typ == 'table':
+                    _objs = appconf.con[db].schema.get_table(_name).triggers
+                else:
+                    _objs = appconf.con[db].triggers
+
+                _opr = 'inactive' if _ddl == 'trigger_disable' else 'active'
+                for k in _objs:
+                    _sql += 'alter trigger %s %s;\n' % (k.name, _opr)
+
+            elif _ddl == 'index_disable' or _ddl == 'index_enable':
+                refresh_obj = 'indices'
+
+                if _typ == 'table':
+                    _objs = appconf.con[db].schema.get_table(_name).indices
+                else:
+                    _objs = appconf.con[db].indices
+
+                _opr = 'inactive' if _ddl == 'index_disable' else 'active'
+                for k in _objs:
+                    _sql += 'alter index %s %s;\n' % (k.name, _opr)
+
+            elif _ddl == 'index_recompute':
+                refresh_obj = 'indices'
+
+                if _typ == 'table':
+                    _objs = appconf.con[db].schema.get_table(_name).indices
+                else:
+                    _objs = appconf.con[db].indices
+
+                for k in _objs:
+                    _sql += 'SET statistics INDEX %s;\n' % k.name
+
+        return template('sql_script', db=db, sql_script=_sql, refresh_obj=refresh_obj)
     else:
         prms = request.POST
-        sqls = prms.sql
+        script = prms.sql
         auto_commit = int(prms.auto_commit)
         trn = None
         trn_id = None
@@ -213,6 +271,8 @@ def script(db):
                     trn.commit()
                     trn.close()
                     appconf.trn.pop(trn_id)
+                    if prms.refresh:
+                        appconf.con[db].schema.reload(prms.refresh)
                     return json.dumps({'errors': [], 'result': 'Transaction committed', 'trn_id': None})
                 else:
                     trn.rollback()
@@ -231,16 +291,53 @@ def script(db):
 
         error_log = []
         try:
-            trn.execute_immediate(sqls)
+
+            #todo: very very dirty hack for sql statement parsing
+            #for identfying procedure and trigger blocks !!
+            p =re.compile('(end[\s]+;|end;)', re.IGNORECASE)
+            rsqls = p.split(script)
+
+            sqls = []
+            _len = len(rsqls)
+            for i in range(0, len(rsqls)):
+                _ln = rsqls[i].strip()
+                _nx = i + 1
+
+                if _ln.find('end') == 0:
+                    continue
+
+                if _nx < _len:
+                    if rsqls[_nx].find('end') >= 0:
+                        sqls.append(rsqls[i] + 'end;')
+                    else:
+                        for k in _ln.split(';'):
+                            k = k.strip()
+                            if k:
+                                sqls.append(k)
+                else:
+                    for k in _ln.split(';'):
+                        k = k.strip()
+                        if k:
+                            sqls.append(k)
+
+            for sql in sqls:
+                print('------------')
+                print(sql)
+
+            for sql in sqls:
+                trn.execute_immediate(sql)
 
             if auto_commit:
                 trn.commit()
                 trn.close()
+                if prms.refresh:
+                    appconf.con[db].schema.reload(prms.refresh)
         except Exception as e:
             if auto_commit:
                 trn.rollback()
                 trn.close()
-            error_log.append(e.args[0].replace('\n', '<br/>'))
+            _error = e.args[0].replace('\n', '<br/>') + '<br/>' + sql
+            error_log.append(_error)
 
         if error_log != []:
             result = 'Script executed with errors'

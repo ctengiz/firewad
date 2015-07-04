@@ -35,7 +35,7 @@
                             <td>{{k.name}}</td>
                             <td>{{k.message}}</td>
                             <td>{{k.description}}</td>
-                            <td>{{k.id}}</td>
+                            <td class="text-right">{{k.id}}</td>
                         </tr>
                         %end
                         </tbody>

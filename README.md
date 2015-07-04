@@ -42,27 +42,41 @@ The list below, is a mix of features completed and **features which are planned 
     - [ ] Backup / restore
     - [x] Database Metada Extract (to screen, to file, to script tool)
     - [ ] Schema View
-    - [ ] Recompute all statistics
+    - [x] Enable / Disable all triggers
+    - [x] Recompute all statistics
 - [ ] DDL Operations
     - [ ] Table
         - [ ] Create table
-        - [ ] Drop table
+        - [x] Drop table
         - [ ] Field modification
         - [ ] Alter / Create constraints / indices
         - [x] DDL Edit
+        - [x] Disable / Enable all triggers
+        - [x] Disable / Enable all indices
+        - [x] Recompute all statistics
     - [ ] View
-        - [ ] Create view
-        - [ ] Drop view
+        - [x] Create view
+        - [x] Drop view
         - [ ] Alter view
         - [ ] Create view from query
         - [x] DDL Edit
     - [ ] Trigger
+        - [ ] Create
+        - [ ] Drop
+        - [ ] Disable / Enable Trigger
         - [x] DDL Edit
     - [ ] Procedure
+        - [ ] Create
+        - [x] Drop
+        - [ ] Comment / Uncomment Body
         - [x] DDL Edit
     - [ ] Sequence
+        - [x] Create
     - [ ] UDF
     - [ ] Exceptions
+        - [x] Create
+    - [ ] Role
+        - [x] Create
 - [ ] Data Operations
     - [ ] Data edit / insert / delete
 - [x] Sql query
@@ -78,7 +92,7 @@ The list below, is a mix of features completed and **features which are planned 
     - [ ] Paging support
     - [ ] Export result data (xls, cvs, json)
     - [x] Execute procedure / fetch results
-- [ ] Script execution support
+- [x] Script execution support
 - [ ] User management
 - [ ] Grants Management
 - [ ] Data Analysis - Pivot Reports

@@ -5,7 +5,7 @@
                 <i class="fa fa-code"></i> DDL
             </a>
 
-            <a href="/tools/script/{{db}}?obj_typ={{typ}}&name={{tbl.name}}" class="btn btn-xs btn-primary pull-right panel-heading-button">
+            <a href="/tools/script/{{db}}?typ={{typ}}&name={{tbl.name}}&ddl=edit" class="btn btn-xs btn-primary pull-right panel-heading-button">
                 <i class="fa fa-edit"></i> Edit
             </a>
         </h4>

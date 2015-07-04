@@ -38,31 +38,28 @@
                         %for k in sorted(tbl, key=lambda k: str(k.name)):
                             <tr>
                                 <td>{{k.name}}</td>
-                                <td>{{k.table.name}}</td>
+                                <td>
+                                    <a href="/db/table/{{db}}/{{k.table.name}}">{{k.table.name}}</a>
+                                </td>
                                 <td>
                                     %for fname in k.segment_names:
-                                    {{fname}}
+                                    <a href="/db/table/{{db}}/{{k.table.name}}#{{fname}}">{{fname}}</a>
                                     %end
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     {{! '<span class="glyphicon glyphicon-ok"></span>' if k.isenforcer() else '&nbsp;'}}
                                 </td>
-                                <td>
-                                    {{k.index_type}}
+                                <td class="text-center">
+                                    {{! '<span class="fa fa-sort-alpha-asc"></span>' if k.index_type == 'ASCENDING' else '<span class="fa fa-sort-alpha-desc"></span>'}}
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     {{! '<span class="glyphicon glyphicon-ok"></span>' if k.isunique() else '&nbsp;'}}
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     {{! '<span class="glyphicon glyphicon-ok"></span>' if not k.isinactive() else '&nbsp;'}}
                                 </td>
-                                <td>
-                                    {{k.expression}}
-                                </td>
-                                <td>
-                                    {{k.statistics}}
-                                </td>
-
+                                <td>{{k.expression}}</td>
+                                <td class="text-right">{{k.statistics}}</td>
                             </tr>
                         %end
                         </tbody>

@@ -18,7 +18,7 @@
                         </a>
                     </h4>
                 </div>
-                <div id="tbl-constraints" class="panel-collapse collapse in">
+                <div id="tbl-constraints" class="panel-collapse collapse in" style="overflow-x: scroll;">
                     <table class="table table-condensed table-bordered">
                         <thead>
                         <tr>
@@ -38,31 +38,35 @@
                             <td>{{k.constraint_type}}</td>
                             <td>
                                 %if k.index:
-                                {{k.index.table.name}}
+                                <a href="/db/table/{{db}}/{{k.index.table.name}}">{{k.index.table.name}}</a>
                                 %end
                             </td>
                             <td>
                                 %if k.index:
                                 %for fname in k.index.segment_names:
-                                {{fname}}
+                                <a href="/db/table/{{db}}/{{k.index.table.name}}#{{fname}}">{{fname}}</a>
                                 %end
                                 %end
                             </td>
                             <td>
                                 %if k.index:
+                                %if k.index.name != k.name:
                                 {{k.index.name}} <small>{{k.index.index_type}}</small>
                                 %end
+                                %end
                             </td>
-                            <td>
+                            <td style="word-wrap: break-word">
                                 %if k.isfkey():
                                 Fk Table:
-                                <a href="/table/{{db}}/{{k.partner_constraint.index.table.name}}">
+                                <a href="/db/table/{{db}}/{{k.partner_constraint.index.table.name}}">
                                     {{k.partner_constraint.index.table.name}}
                                 </a>
                                 <small>
                                     (
                                     %for fname in k.partner_constraint.index.segment_names:
+                                    <a href="/db/table/{{db}}/{{k.partner_constraint.index.table.name}}#{{fname}}">
                                     {{fname}}
+                                    </a>
                                     %end
                                     )
                                 </small>

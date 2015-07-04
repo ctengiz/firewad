@@ -16,8 +16,8 @@
         </div>
 
         <div class="btn-group btn-group-sm">
-            <button class="btn btn-default" type="button" id="btn-exec" title="Execute script">
-                <i class="fa fa-bolt"></i>
+            <button class="btn btn-danger" type="button" id="btn-exec" title="Execute script">
+                <i class="fa fa-bolt"></i> Execute
             </button>
         </div>
     </div>
@@ -125,7 +125,8 @@
 
         var post_data = {
             sql: sql,
-            auto_commit: $('#btn-commit-type').data('pressed')
+            auto_commit: $('#btn-commit-type').data('pressed'),
+            refresh: '{{refresh_obj}}'
         };
 
         $.ajax({
@@ -195,7 +196,8 @@
             var post_data = {
                 action: $(this).data('action'),
                 trn_id: $(this).data('trn_id'),
-                auto_commit: $('#btn-commit-type').data('pressed')
+                auto_commit: $('#btn-commit-type').data('pressed'),
+                refresh: '{{refresh_obj}}'
             };
 
             $.ajax({
