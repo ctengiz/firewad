@@ -92,7 +92,7 @@ The list below, is a mix of features completed and **features which are planned 
     - [ ] Paging support
     - [ ] Export result data (xls, cvs, json)
     - [x] Execute procedure / fetch results
-- [x] Script execution support
+- [x] Script execution with multiple statements
 - [ ] User management
 - [ ] Grants Management
 - [ ] Data Analysis - Pivot Reports

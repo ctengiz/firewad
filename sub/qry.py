@@ -178,7 +178,9 @@ def script(db):
             _name = prms.name
             
             if _ddl == 'drop':
+                refresh_obj = _typ + 's'
                 _sql = 'drop %s %s;' %(_typ, _name)
+
             elif _ddl == 'edit':
                 if _typ == 'table':
                     _obj = appconf.con[db].schema.get_table(_name)
@@ -237,7 +239,8 @@ def script(db):
 
                 _opr = 'inactive' if _ddl == 'index_disable' else 'active'
                 for k in _objs:
-                    _sql += 'alter index %s %s;\n' % (k.name, _opr)
+                    if not k.isenforcer():
+                        _sql += 'alter index %s %s;\n' % (k.name, _opr)
 
             elif _ddl == 'index_recompute':
                 refresh_obj = 'indices'
@@ -294,35 +297,35 @@ def script(db):
 
             #todo: very very dirty hack for sql statement parsing
             #for identfying procedure and trigger blocks !!
-            p =re.compile('(end[\s]+;|end;)', re.IGNORECASE)
-            rsqls = p.split(script)
+
+            #match procedure / trigger / execute blocks
+            p = re.compile(r"(execute(\s)block|create(\s)+(procedure|trigger))(?s).*?(.*?)end(\s*);", re.IGNORECASE)
+            block_num = 0
+            blocks = []
+            iterator = p.finditer(script)
+            for match in iterator:
+                blocks.append(match.group())
+                block_text = ';__block:%d;' % block_num
+                script = script.replace(match.group(), block_text, 1)
+                block_num += 1
+
+            #replace block comments
+            p = re.compile(r"/\*(?s).*?\*/")
+            script = p.sub("", script)
 
             sqls = []
-            _len = len(rsqls)
-            for i in range(0, len(rsqls)):
-                _ln = rsqls[i].strip()
-                _nx = i + 1
-
-                if _ln.find('end') == 0:
-                    continue
-
-                if _nx < _len:
-                    if rsqls[_nx].find('end') >= 0:
-                        sqls.append(rsqls[i] + 'end;')
-                    else:
-                        for k in _ln.split(';'):
-                            k = k.strip()
-                            if k:
-                                sqls.append(k)
+            for ln in script.split(';'):
+                ln = ln.strip()
+                if ln[0:7] == '__block':
+                    block_num = int(ln.split(':')[1])
+                    sql = blocks[int(ln.split(':')[1])]
+                elif ln[0:2] == '--':
+                    sql = ''
                 else:
-                    for k in _ln.split(';'):
-                        k = k.strip()
-                        if k:
-                            sqls.append(k)
+                    sql = ln
 
-            for sql in sqls:
-                print('------------')
-                print(sql)
+                if sql:
+                    sqls.append(sql)
 
             for sql in sqls:
                 trn.execute_immediate(sql)
