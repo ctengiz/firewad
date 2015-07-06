@@ -32,14 +32,8 @@
     </ul>
 </li>
 
-<li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Monitor<b class="caret"></b></a>
-    <ul class="dropdown-menu">
-        <!--
-        <li><a href="/tools/query/{{db}}">Query</a></li>
-        <li><a href="/tools/script/{{db}}">Script</a></li>
-        -->
-    </ul>
+<li>
+    <a href="/mon/{{db}}">Monitor</a>
 </li>
 
 

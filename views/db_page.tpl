@@ -61,16 +61,6 @@
             </div></li>
 
             <li class="list-group-item"><div class="row">
-                <div class="col-md-6 text-right" style="text-align: right;">Shutdown Mode</div>
-                <div class="col-md-6 text-right">todo</div>
-            </div></li>
-
-            <li class="list-group-item"><div class="row">
-                <div class="col-md-6 text-right" style="text-align: right;">Backup State</div>
-                <div class="col-md-6 text-right">todo</div>
-            </div></li>
-
-            <li class="list-group-item"><div class="row">
                 <div class="col-md-6 text-right" style="text-align: right;">Forced Writes
                     <a href="#" data-toggle="tooltip" title="Mode in which database writes are performed: true=sync, false=async"><i class="fa fa-info-circle"></i></a>
                 </div>
@@ -127,12 +117,12 @@
                 <div class="col-md-6 text-right">{{appconf.con[db].db_info(fdb.isc_info_num_buffers)}}</div>
             </div></li>
 
-            <!--
             <li class="list-group-item"><div class="row">
-                <div class="col-md-6 text-right" style="text-align: right;">isc_info_db_file_size</div>
-                <div class="col-md-6 text-right">appconf.con[db].db_info(fdb.isc_info_db_file_size)}}</div>
+                <div class="col-md-6 text-right" style="text-align: right;">Cache Size (Page Buffers)
+                    <a href="#" data-toggle="tooltip" title="Cache size"><i class="fa fa-info-circle"></i></a>
+                </div>
+                <div class="col-md-6 text-right">{{appconf.con[db].db_info(fdb.isc_info_set_page_buffers)}}</div>
             </div></li>
-            -->
 
             <li class="list-group-item"><div class="row">
                 <div class="col-md-6 text-right" style="text-align: right;">Oldest Transaction</div>
@@ -201,13 +191,6 @@
                     <a href="#" data-toggle="tooltip" title="Number of writes to the memory buffer cache"><i class="fa fa-info-circle"></i></a>
                 </div>
                 <div class="col-md-6 text-right" style="text-align: right;">{{'{:,}'.format(appconf.con[db].db_info(fdb.isc_info_marks))}}</div>
-            </div></li>
-
-            <li class="list-group-item"><div class="row">
-                <div class="col-md-6 text-right" style="text-align: right;">isc_info_set_page_buffers
-                    <a href="#" data-toggle="tooltip" title="Number of transactions that are "><i class="fa fa-info-circle"></i></a>
-                </div>
-                <div class="col-md-6 text-right">{{appconf.con[db].db_info(fdb.isc_info_set_page_buffers)}}</div>
             </div></li>
 
             <li class="list-group-item"><div class="row">

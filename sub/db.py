@@ -4,6 +4,7 @@ Database objects and DDL operations
 
 import io
 import base64
+from collections import OrderedDict
 
 import fdb
 from bottle import request, redirect, HTTPError
@@ -38,6 +39,7 @@ def connect_db(db):
         sql_dialect=int(appconf.db_config[db]['dialect']),
         connection_class=fdb.ConnectionWithSchema
     )
+    appconf.mon[db] = OrderedDict()
 
     register_ddl(db)
 

@@ -166,7 +166,6 @@ def script(db):
         _sql = ''
         refresh_obj = ''
 
-
         if 'sql' in prms:
             _sql = prms.sql
             if 'encoded' in prms:

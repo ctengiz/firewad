@@ -20,6 +20,7 @@ class appconf():
     con = OrderedDict()
     trn = OrderedDict()
     ddl = OrderedDict()
+    mon = OrderedDict()
     db_config = configparser.ConfigParser()
 
 

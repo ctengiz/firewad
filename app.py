@@ -1,18 +1,22 @@
 __author__ = 'cagataytengiz'
 
 import os
+import sys
 import importlib
 
 from bottle import BaseTemplate, debug, run, template, static_file, request, redirect
 from beaker.middleware import SessionMiddleware
 
+from sub import db, ddl, login, mon, qry
 from common import appconf, baseApp, init_app, init_session, render, highlight_sql, get_rdb_type
 import firstrun
 
 
 def run_app(do_debug=True):
-
-    appconf.basepath = os.path.abspath(os.path.dirname(__file__))
+    if hasattr(sys, 'frozen'):
+        appconf.basepath = os.path.dirname(os.path.abspath(sys.argv[0]))
+    else:
+        appconf.basepath = os.path.abspath(os.path.dirname(__file__))
 
     if not(os.path.exists(appconf.basepath + '/config.ini')):
         baseApp.route('/', method=['GET', 'POST'], callback=firstrun.do_setup)
@@ -25,17 +29,6 @@ def run_app(do_debug=True):
     BaseTemplate.defaults['appconf'] = appconf
     BaseTemplate.defaults['highlight_sql'] = highlight_sql
     BaseTemplate.defaults['get_rdb_type'] = get_rdb_type
-
-    #Importing controllers
-    _controllers_dir = '%s/sub/' %(appconf.basepath, )
-    _lst = os.listdir(_controllers_dir)
-    for _fname in _lst:
-        _module_name, _module_ext = os.path.splitext(_fname)
-        _module_path = 'sub.' + _module_name
-        if not os.path.isdir(_module_path) and _fname[0:2] != '__' and _module_ext == '.py':
-            module = importlib.import_module(_module_path)
-
-        #baseApp.merge(module.subApp.routes)
 
     return SessionMiddleware(baseApp, {'session.type': 'file',
                                        'session.cookie_expires': 18000,
@@ -73,9 +66,6 @@ def server_static(filepath):
     :return:
     """
     return static_file(filepath, root='%s/static' % appconf.basepath)
-
-
-
 
 if __name__ == '__main__':
     run_app()
