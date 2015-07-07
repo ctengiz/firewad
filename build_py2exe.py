@@ -5,14 +5,9 @@ Windows executable build with py2exe
 from distutils.core import setup
 import py2exe
 import os
-import sys
 
 data_files = []
 base_path = os.path.abspath(os.path.dirname(__file__))
-#base_path = os.path.abspath(os.path.dirname(__file__) + '../')
-#sys.path.append(base_path)
-#import app
-#from sub import db
 
 def prep_data_files(dir):
     for root, dirs, files in os.walk(base_path + dir):
@@ -20,11 +15,15 @@ def prep_data_files(dir):
         _tfiles = []
         for file in files:
             _tfiles.append(root + '/' + file)
-            #print(path[1], root + '/' + file)
         data_files.append((path[1], _tfiles))
 
 prep_data_files('/static')
 prep_data_files('/views')
+prep_data_files('/docs')
+
+data_files.append(('./', [base_path + '/LICENSE',
+                          base_path + '/README.md'])
+                  )
 
 
 setup(

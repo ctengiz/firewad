@@ -21,6 +21,12 @@ $(document).ready(function() {
         window.location.href = _url;
         return false;
     });
+
+    $('#mon-key').change(function () {
+        var _url = "/mon/{{db}}/info/database/" + $(this).val();
+        window.location.href = _url;
+        return false;
+    });
 });
 
 

@@ -51,6 +51,23 @@ legend {
     padding: 3px 6px;
 }
 
+.breadcrumb .form-group {
+    margin-left: -6px;
+}
+
+.breadcrumb .form-control {
+    height: 22px;
+    line-height: 22px;
+    margin-top: -4px;
+    padding: 0px;
+}
+
+.breadcrumb label {
+    margin-bottom: 0px;
+}
+
+
+
 /* ----------------------------------
  * Drop-Down Menu
  * ---------------------------------- */

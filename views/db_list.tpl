@@ -6,15 +6,13 @@
     </div>
 </div>
 
-
 <div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;" id="toolbar">
     <div class="btn-group">
         <a  href="/db/register" class="btn btn-default" title="Register DB">
-            <i class="fa fa-database"></i> Register DB
+            <i class="fa fa-database fa-lg"></i> Register DB
         </a>
     </div>
 </div>
-
 
 <div class="row">
     <div class="col-md-12">

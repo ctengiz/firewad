@@ -52,7 +52,7 @@
 
             <li class="list-group-item"><div class="row">
                 <div class="col-md-6 text-right" style="text-align: right;">DB Creation Date</div>
-                <div class="col-md-6 text-right">{{appconf.con[db].db_info(fdb.isc_info_creation_date)}}</div>
+                <div class="col-md-6 text-right">{{appconf.con[db].db_info(fdb.isc_info_creation_date).strftime('%d.%m.%Y %H:%M:%S')}}</div>
             </div></li>
 
             <li class="list-group-item"><div class="row">

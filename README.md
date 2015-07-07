@@ -38,7 +38,7 @@ The list below, is a mix of features completed and **features which are planned 
     - [x] Drop Database
     - [x] Database info via isc_info calls
     - [ ] Database parameter updates (sweep interval, shutdown etc.)
-    - [ ] MON$ based analysis
+    - [x] Database Monitoring
     - [ ] Backup / restore
     - [x] Database Metada Extract (to screen, to file, to script tool)
     - [ ] Schema View
@@ -62,7 +62,7 @@ The list below, is a mix of features completed and **features which are planned 
         - [x] DDL Edit
     - [ ] Trigger
         - [ ] Create
-        - [ ] Drop
+        - [x] Drop
         - [ ] Disable / Enable Trigger
         - [x] DDL Edit
     - [ ] Procedure
@@ -100,7 +100,23 @@ The list below, is a mix of features completed and **features which are planned 
 
 ##Install
 
-###Requirements
+###Executable Distributions
+
+Right now only Firewad is packaged as an executable for Windows platform, for MacOs and Linux I think running from
+source code is 
+
+#### Windows
+
+Just grep the latest version from [relases](https://github.com/ctengiz/firewad/releases) unzip and execute app.exe and
+browse to http://127.0.0.1:18022
+
+#### Nix Flavours
+
+Sorry, no binary distrubition yet. (use the source Luke!)
+
+###From Source
+
+####Requirements
 
 * Firebird 2.1+ (though only tested with 2.5, but all major operations should be fine with 2.1)
 * python 3+
@@ -126,7 +142,7 @@ dbconfig.ini and access to website is not secured. Use it only from localhost ri
 - [ ] Usage documentation
 - [ ] Use github's isssue tracker
 - [ ] Prepare a roadmap
-- [ ] Package for windows
+- [x] Package for windows
 
 ## firewad steps on the shoulders of
 
@@ -139,6 +155,7 @@ dbconfig.ini and access to website is not secured. Use it only from localhost ri
 - [Beaker](http://beaker.readthedocs.org/en/latest/)
 - [Pygments](http://pygments.org/)
 - [Fontawesome](http://fortawesome.github.io/Font-Awesome/)
+- [py2exe](http://www.py2exe.org/)
 
 and of course
 
