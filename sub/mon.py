@@ -14,6 +14,7 @@ from sub.db import connect_db
 
 from common import baseApp, appconf, render, formval_to_utf8
 
+isinstance()
 
 def create_mon_session(db):
     _mon = fdb.monitor.Monitor()
