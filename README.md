@@ -31,21 +31,21 @@ The list below, is a mix of features completed and **features which are planned 
     - [x] Sequence
     - [x] UDF
     - [x] Exceptions
-    - [ ] Roles
-    - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception)
+    - [ ] Roles (planned in 0.1.0)
+    - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception) (planned in 0.2.0)
 - [ ] Database operations
     - [x] Create Database
     - [x] Drop Database
     - [x] Database info via isc_info calls
-    - [ ] Database parameter updates (sweep interval, shutdown etc.)
+    - [ ] Database parameter updates (sweep interval, shutdown etc.) (planned in 0.2.0)
     - [x] Database Monitoring
-    - [ ] Backup / restore
+    - [ ] Backup / restore (planned in 0.1.0)
     - [x] Database Metada Extract (to screen, to file, to script tool)
-    - [ ] Schema View
+    - [ ] Schema View (planned in 0.3.0)
     - [x] Enable / Disable all triggers
     - [x] Recompute all statistics
 - [ ] DDL Operations
-    - [ ] Table
+    - [ ] Table (planned in 0.1.0)
         - [ ] Create table
         - [x] Drop table
         - [ ] Field modification
@@ -54,48 +54,51 @@ The list below, is a mix of features completed and **features which are planned 
         - [x] Disable / Enable all triggers
         - [x] Disable / Enable all indices
         - [x] Recompute all statistics
-    - [ ] View
+    - [ ] View (planned in 0.1.0)
         - [x] Create view
         - [x] Drop view
         - [ ] Alter view
         - [ ] Create view from query
         - [x] DDL Edit
-    - [ ] Trigger
+    - [ ] Trigger (planned in 0.1.0)
         - [ ] Create
         - [x] Drop
         - [ ] Disable / Enable Trigger
         - [x] DDL Edit
-    - [ ] Procedure
+    - [ ] Procedure (planned in 0.1.0)
         - [ ] Create
         - [x] Drop
         - [ ] Comment / Uncomment Body
         - [x] DDL Edit
-    - [ ] Sequence
+    - [ ] Sequence (planned in 0.1.0)
         - [x] Create
-    - [ ] UDF
-    - [ ] Exceptions
+        - [ ] Drop
+    - [ ] UDF (planned in 0.1.0)
+    - [ ] Exceptions (planned in 0.1.0) 
         - [x] Create
-    - [ ] Role
+        - [ ] Drop
+    - [ ] Role (planned in 0.1.0)
         - [x] Create
-- [ ] Data Operations
+        - [ ] Drop
+- [ ] Data Operations (planned in 0.2.0)
     - [ ] Data edit / insert / delete
 - [x] Sql query
-    - [ ] Code completion (semi supported)
+    - [ ] Code completion (planned in 0.4.0)
     - [x] Execution plan
     - [x] Param support
-    - [ ] Save & Load query sqls
+    - [ ] Save & Load query sqls (planned in 0.4.0)
     - [x] Quick query from table (select * from ..)
     - [x] Quick query from view (select * from ..)
     - [x] Quick query from procedure (select * from ..)
     - [x] Quick execution of procedure
-    - [ ] Sorting on the result set
-    - [ ] Paging support
-    - [ ] Export result data (xls, cvs, json)
+    - [ ] Sorting on the result set (planned in 0.2.0)
+    - [ ] Paging support (planned in 0.2.0)
+    - [ ] Export result data (xls, cvs, json) (planned in 0.2.0)
     - [x] Execute procedure / fetch results
 - [x] Script execution with multiple statements
-- [ ] User management
-- [ ] Grants Management
-- [ ] Data Analysis - Pivot Reports
+- [ ] User management (planned in 0.5.0)
+- [ ] Grants Management (planned in 0.5.0)
+- [ ] Data Analysis - Pivot Reports (planned in 0.6.0)
 
 
 ##Install
@@ -141,7 +144,7 @@ dbconfig.ini and access to website is not secured. Use it only from localhost ri
 - [ ] Code documentation
 - [ ] Usage documentation
 - [ ] Use github's isssue tracker
-- [ ] Prepare a roadmap
+- [x] Prepare a roadmap
 - [x] Package for windows
 
 ## firewad steps on the shoulders of
