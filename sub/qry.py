@@ -313,13 +313,18 @@ def script(db):
             script = p.sub("", script)
 
             sqls = []
-            for ln in script.split(';'):
+            lines = script.split(';')
+            for ndx, ln in enumerate(lines):
                 ln = ln.strip()
                 if ln[0:7] == '__block':
                     block_num = int(ln.split(':')[1])
                     sql = blocks[int(ln.split(':')[1])]
                 elif ln[0:2] == '--':
-                    sql = ''
+                    for _new_ln in reversed(ln.splitlines()[1:]):
+                        _new_ln = _new_ln.strip()
+                        if _new_ln:
+                            lines.insert(ndx + 1, _new_ln)
+                    sql = None
                 else:
                     sql = ln
 

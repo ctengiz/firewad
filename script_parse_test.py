@@ -87,6 +87,25 @@ end
 --last line
 """
 
+script = """
+-- todo: task yönetimi için de bir tablo olmalı. --> Bu tablo
+-- ayrıca bu tablo import ve export edilebilinmeli
+
+insert into app(idx, code, title, admin_required, login_required, maintanence_mode)
+  values (next value for seq_app, 'admin', 'System Administration', 1, 1, 0);
+
+insert into app(idx, code, title, admin_required, login_required, maintanence_mode)
+  values (next value for seq_app, 'system', 'System Functions', 0, 0, 0);
+
+insert into app(idx, code, title, admin_required, login_required, maintanence_mode)
+  values (next value for seq_app, 'invigo', 'Invigo ERP', 0, 0, 0);
+
+insert into app(idx, code, title, admin_required, login_required, maintanence_mode)
+  values (next value for seq_app, 'wiki', 'Wiki', 0, 0, 0);
+
+
+"""
+
 p = re.compile(r"(execute(\s)block|create(\s)+(procedure|trigger))(?s).*?(.*?)end(\s*);", re.IGNORECASE)
 block_num = 0
 blocks = []
@@ -102,17 +121,23 @@ p = re.compile(r"/\*(?s).*?\*/")
 script = p.sub("", script)
 
 sqls = []
-for ln in script.split(';'):
+lines = script.split(';')
+for ndx, ln in enumerate(lines):
     ln = ln.strip()
     if ln[0:7] == '__block':
         block_num = int(ln.split(':')[1])
         sql = blocks[int(ln.split(':')[1])]
     elif ln[0:2] == '--':
-        sql = ''
+        for _new_ln in reversed(ln.splitlines()[1:]):
+            _new_ln = _new_ln.strip()
+            if _new_ln:
+                lines.insert(ndx + 1, _new_ln)
+        sql = None
     else:
         sql = ln
 
     if sql:
         sqls.append(sql)
 
-print(sqls)
+for sql in sqls:
+    print(sql)
