@@ -1,12 +1,12 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4 class="panel-title">
-            <a class="accordion-toggle collapsed" data-toggle="collapse" href="#tbl-depedencies">
+            <a class="accordion-toggle collapsed" data-toggle="collapse" href="#tbl-depedencies-{{tbl.name}}">
                 <i class="fa fa-share"></i> Dependencies
             </a>
         </h4>
     </div>
-    <div id="tbl-depedencies" class="panel-collapse collapse">
+    <div id="tbl-depedencies-{{tbl.name}}" class="panel-collapse collapse">
         <table class="table table-condensed table-bordered">
             <thead>
             <tr>

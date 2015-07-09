@@ -31,51 +31,66 @@
                         </tr>
                         </thead>
                         <tbody>
-                        %for k in sorted(tbl, key=lambda k: str(k.name)):
-                        %if not k.isnotnull():
-                        <tr>
-                            <td>{{k.name}}</td>
-                            <td>{{k.constraint_type}}</td>
-                            <td>
-                                %if k.index:
-                                <a href="/db/table/{{db}}/{{k.index.table.name}}">{{k.index.table.name}}</a>
-                                %end
-                            </td>
-                            <td>
-                                %if k.index:
-                                %for fname in k.index.segment_names:
-                                <a href="/db/table/{{db}}/{{k.index.table.name}}#{{fname}}">{{fname}}</a>
-                                %end
-                                %end
-                            </td>
-                            <td>
-                                %if k.index:
-                                %if k.index.name != k.name:
-                                {{k.index.name}} <small>{{k.index.index_type}}</small>
-                                %end
-                                %end
-                            </td>
-                            <td style="word-wrap: break-word">
-                                %if k.isfkey():
-                                Fk Table:
-                                <a href="/db/table/{{db}}/{{k.partner_constraint.index.table.name}}">
-                                    {{k.partner_constraint.index.table.name}}
-                                </a>
-                                <small>
-                                    (
-                                    %for fname in k.partner_constraint.index.segment_names:
-                                    <a href="/db/table/{{db}}/{{k.partner_constraint.index.table.name}}#{{fname}}">
-                                    {{fname}}
+                        %for _obj in sorted(tbl, key=lambda _obj: str(_obj.name)):
+                            %if not _obj.isnotnull():
+                            <tr>
+                                <td>
+                                    <a href="/db/constraint/{{db}}/{{_obj.name}}">
+                                        {{_obj.name}}
                                     </a>
+                                </td>
+                                <td>{{_obj.constraint_type}}</td>
+                                <td>
+                                    %if _obj.index:
+                                    <a href="/db/table/{{db}}/{{_obj.index.table.name}}">{{_obj.index.table.name}}</a>
                                     %end
-                                    )
-                                </small>
-                                On Update : {{k.update_rule}}
-                                On Delete : {{k.delete_rule}}
-                                %end
-                            </td>
-                        </tr>
-                        %end
+                                </td>
+                                <td>
+                                    %if _obj.index:
+                                    %for fname in _obj.index.segment_names:
+                                    <a href="/db/table/{{db}}/{{_obj.index.table.name}}#{{fname}}">{{fname}}</a>
+                                    %end
+                                    %end
+                                </td>
+                                <td>
+                                    %if _obj.index:
+                                    %if _obj.index.name != _obj.name:
+                                    {{_obj.index.name}} <small>{{_obj.index.index_type}}</small>
+                                    %end
+                                    %end
+                                </td>
+                                <td style="word-wrap: break-word">
+                                    %if _obj.isfkey():
+                                    Fk Table:
+                                    <a href="/db/table/{{db}}/{{_obj.partner_constraint.index.table.name}}">
+                                        {{_obj.partner_constraint.index.table.name}}
+                                    </a>
+                                    <small>
+                                        (
+                                        %for fname in _obj.partner_constraint.index.segment_names:
+                                        <a href="/db/table/{{db}}/{{_obj.partner_constraint.index.table.name}}#{{fname}}">
+                                        {{fname}}
+                                        </a>
+                                        %end
+                                        )
+                                    </small>
+                                    On Update : {{_obj.update_rule}}
+                                    On Delete : {{_obj.delete_rule}}
+                                    %end
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-xs">
+                                        <a href="#" class="btn btn-primary" title="Edit description">
+                                            <i class="fa fa-info fa-fw"></i>
+                                        </a>
+                                        <a href="/tools/script/{{db}}?typ=constraint&name={{_obj.name}}&ddl=drop" class="btn btn-danger" title="Drop">
+                                            <i class="fa fa-trash fa-fw"></i>
+                                        </a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            %end
                         %end
                         </tbody>
                     </table>

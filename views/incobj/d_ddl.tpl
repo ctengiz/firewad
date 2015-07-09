@@ -13,7 +13,8 @@
     </div>
     <div id="tbl-ddl" class="panel-collapse collapse">
         <div class="panel-body">
-            {{! highlight_sql(tbl.get_sql_for('recreate'))}}
+            % setdefault('ddl_type', 'recreate')
+            {{! highlight_sql(tbl.get_sql_for(ddl_type))}}
         </div>
     </div>
 </div>

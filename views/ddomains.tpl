@@ -28,19 +28,34 @@
                         <th>Computed</th>
                         <th>Default</th>
                         <th>Description</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    %for k in sorted(tbl, key=lambda k: str(k.name)):
+                    %for _obj in sorted(tbl, key=lambda _obj: str(_obj.name)):
                         <tr>
-                            <td>{{k.name}}</td>
-                            <td>{{k.datatype}}</td>
                             <td>
-                                {{! '<span class="glyphicon glyphicon-ok"></span>' if not k.isnullable() else '&nbsp;'}}
+                                <a href="/db/domain/{{db}}/{{_obj.name}}">
+                                    {{_obj.name}}
+                                </a>
                             </td>
-                            <td>{{k.expression}}</td>
-                            <td>{{k.default}}</td>
-                            <td>{{k.description}}</td>
+                            <td>{{_obj.datatype}}</td>
+                            <td class="text-center">
+                                {{! '<span class="glyphicon glyphicon-ok"></span>' if not _obj.isnullable() else '&nbsp;'}}
+                            </td>
+                            <td>{{_obj.expression}}</td>
+                            <td>{{_obj.default}}</td>
+                            <td>{{_obj.description}}</td>
+                            <td>
+                                <div class="btn-group btn-group-xs">
+                                    <a href="#" class="btn btn-primary" title="Edit description">
+                                        <i class="fa fa-info fa-fw"></i>
+                                    </a>
+                                    <a href="/tools/script/{{db}}?typ=domain&name={{_obj.name}}&ddl=drop" class="btn btn-danger" title="Drop">
+                                        <i class="fa fa-trash fa-fw"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                     %end
                     </tbody>

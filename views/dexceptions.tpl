@@ -26,16 +26,29 @@
                             <th>Name</th>
                             <th>Message</th>
                             <th>Description</th>
-                            <th>Internal ID</th>
+                            <th style="min-width: 60px;"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        %for k in sorted(tbl, key=lambda k: str(k.name)):
+                        %for _obj in sorted(tbl, key=lambda _obj: str(_obj.name)):
                         <tr>
-                            <td>{{k.name}}</td>
-                            <td>{{k.message}}</td>
-                            <td>{{k.description}}</td>
-                            <td class="text-right">{{k.id}}</td>
+                            <td>
+                                <a href="/db/exception/{{db}}/{{_obj.name}}">
+                                    {{_obj.name}}
+                                </a>
+                            </td>
+                            <td>{{_obj.message}}</td>
+                            <td>{{_obj.description}}</td>
+                            <td>
+                                <div class="btn-group btn-group-xs">
+                                    <a href="#" class="btn btn-primary" title="Edit description">
+                                        <i class="fa fa-info fa-fw"></i>
+                                    </a>
+                                    <a href="/tools/script/{{db}}?typ=exception&name={{_obj.name}}&ddl=drop" class="btn btn-danger" title="Drop">
+                                        <i class="fa fa-trash fa-fw"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                         %end
                         </tbody>

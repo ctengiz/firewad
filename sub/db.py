@@ -43,6 +43,15 @@ def connect_db(db):
 
     register_ddl(db)
 
+
+@baseApp.route('/db/close/<db>')
+def db_register(db):
+    appconf.con[db].close()
+    appconf.con.pop(db)
+    appconf.mon.pop(db)
+    appconf.ddl.pop(db)
+    redirect('/')
+
 @baseApp.route('/db/register', method=['GET', 'POST'])
 def db_register():
     if request.method == 'GET':
@@ -370,6 +379,14 @@ def dobj_list(typ, db):
         _ddl = appconf.con[db].constraints
     elif typ == 'exceptions':
         _ddl = appconf.con[db].exceptions
+    elif typ == 'tables':
+        _ddl = appconf.con[db].tables
+    elif typ == 'views':
+        _ddl = appconf.con[db].views
+    elif typ == 'procedures':
+        _ddl = appconf.con[db].procedures
+    elif typ == 'triggers':
+        _ddl = appconf.con[db].triggers
 
     return render(_rnd, db=db, tbl=_ddl, typ=typ)
 
@@ -389,6 +406,18 @@ def dbobj(typ, db, obj):
         _ddl = appconf.con[db].schema.get_procedure(obj)
     elif typ == 'function':
         _ddl = appconf.con[db].schema.get_function(obj)
+    elif typ == 'exception':
+        _ddl = appconf.con[db].schema.get_exception(obj)
+    elif typ == 'domain':
+        _ddl = appconf.con[db].schema.get_domain(obj)
+    elif typ == 'sequence':
+        _ddl = appconf.con[db].schema.get_sequence(obj)
+    elif typ == 'index':
+        _ddl = appconf.con[db].schema.get_index(obj)
+    elif typ == 'constraint':
+        _ddl = appconf.con[db].schema.get_constraint(obj)
+    elif typ == 'role':
+        _ddl = appconf.con[db].schema.get_role(obj)
 
     return render(_rnd, db=db, tbl=_ddl, obj=obj, typ=typ)
 

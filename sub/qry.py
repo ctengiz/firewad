@@ -178,7 +178,11 @@ def script(db):
             
             if _ddl == 'drop':
                 refresh_obj = _typ + 's'
-                _sql = 'drop %s %s;' %(_typ, _name)
+
+                if _typ == 'function':
+                    _sql = _obj = appconf.con[db].schema.get_function(_name).get_sql_for('drop') + ';'
+                else:
+                    _sql = 'drop %s %s;' %(_typ, _name)
 
             elif _ddl == 'edit':
                 if _typ == 'table':
@@ -195,13 +199,25 @@ def script(db):
                         _sql += '\n' + _ndx.get_sql_for('create') + ';'
                     """
 
-                if _typ == 'view':
+                elif _typ == 'view':
                     _sql = appconf.con[db].schema.get_view(_name).get_sql_for('recreate')
-                if _typ == 'procedure':
+                elif _typ == 'procedure':
                     _sql = appconf.con[db].schema.get_procedure(_name).get_sql_for('create_or_alter')
-                if _typ == 'trigger':
+                elif _typ == 'trigger':
                     _sql = appconf.con[db].schema.get_trigger(_name).get_sql_for('recreate')
-                    
+                elif _typ == 'exception':
+                    _sql = appconf.con[db].schema.get_exception(_name).get_sql_for('recreate')
+                elif _typ == 'sequence':
+                    _sql = appconf.con[db].schema.get_sequence(_name).get_sql_for('create')
+                elif _typ == 'index':
+                    _sql = appconf.con[db].schema.get_index(_name).get_sql_for('create')
+                elif _typ == 'domain':
+                    _obj = appconf.con[db].schema.get_domain(_name)
+                    _sql = _obj.get_sql_for('alter', default=_obj.default) + ';\n'
+                    _sql += _obj.get_sql_for('alter', check=_obj.validation) + ';\n'
+                    _sql += _obj.get_sql_for('alter', datatype=_obj.datatype) + ';\n'
+                    _sql += _obj.get_sql_for('alter', name=_obj.name) + ';\n'
+
             elif _ddl == 'create':
                 refresh_obj = _typ + 's'
 
@@ -294,8 +310,9 @@ def script(db):
         error_log = []
         try:
 
-            #todo: very very dirty hack for sql statement parsing
+            #very very dirty hack for sql statement parsing
             #for identfying procedure and trigger blocks !!
+            #a decent sql parser would be better
 
             #match procedure / trigger / execute blocks
             p = re.compile(r"(execute(\s)block|create(\s)+(procedure|trigger))(?s).*?(.*?)end(\s*);", re.IGNORECASE)
@@ -320,10 +337,9 @@ def script(db):
                     block_num = int(ln.split(':')[1])
                     sql = blocks[int(ln.split(':')[1])]
                 elif ln[0:2] == '--':
-                    for _new_ln in reversed(ln.splitlines()[1:]):
-                        _new_ln = _new_ln.strip()
-                        if _new_ln:
-                            lines.insert(ndx + 1, _new_ln)
+                    _new_ln = '\n'.join(ln.splitlines()[1:]).strip()
+                    if _new_ln:
+                        lines.insert(ndx + 1, _new_ln)
                     sql = None
                 else:
                     sql = ln

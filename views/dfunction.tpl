@@ -12,36 +12,11 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#tbl-ddl">
-                            DDL
-                        </a>
-                    </h4>
-                </div>
-                <div id="tbl-ddl" class="panel-collapse collapse in">
-                    <div class="panel-body">
-                        {{! highlight_sql(tbl.get_sql_for('declare'))}}
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#tbl-description">
-                            Description
-                        </a>
-                    </h4>
-                </div>
-                <div id="tbl-description" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        {{tbl.description}}
-                    </div>
-                </div>
-            </div>
-
+            %include('./incobj/d_arguments.tpl')
+            %include('./incobj/d_dependents.tpl')
+            %include('./incobj/d_dependencies.tpl')
+            %include('./incobj/d_ddl.tpl', ddl_type='declare')
+            %include('./incobj/d_description.tpl')
         </div>
 
 

@@ -24,18 +24,31 @@
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>Internal ID</th>
                             <th>Value</th>
+                            <th>Description</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        %for k in sorted(tbl, key=lambda k: str(k.name)):
+                        %for _obj in sorted(tbl, key=lambda k: str(k.name)):
                         <tr>
-                            <td>{{k.name}}</td>
-                            <td>{{k.description}}</td>
-                            <td>{{k.id}}</td>
-                            <td style="text-align: right;">{{k.value}}</td>
+                            <td>
+                                <a href="/db/sequence/{{db}}/{{_obj.name}}">
+                                    {{_obj.name}}
+                                </a>
+                            </td>
+                            <td style="text-align: right;">{{_obj.value}}</td>
+                            <td>{{_obj.description}}</td>
+                            <td>
+                                <div class="btn-group btn-group-xs">
+                                    <a href="#" class="btn btn-primary" title="Edit description">
+                                        <i class="fa fa-info fa-fw"></i>
+                                    </a>
+                                    <a href="/tools/script/{{db}}?typ=sequence&name={{_obj.name}}&ddl=drop" class="btn btn-danger" title="Drop">
+                                        <i class="fa fa-trash fa-fw"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                         %end
                         </tbody>
