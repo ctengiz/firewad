@@ -69,10 +69,8 @@ def get_rdb_type(typ):
 
     return types[typ]
 
-
 def formval_to_utf8(aval):
     return aval.encode('latin1').decode('utf8')
-
 
 def serve_file(filename, data=None, mimetype='auto', download=False, charset='UTF-8'):
     headers = dict()

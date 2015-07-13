@@ -25,7 +25,6 @@ data_files.append(('./', [base_path + '/LICENSE',
                           base_path + '/README.md'])
                   )
 
-
 setup(
     console=['app.py'],
     data_files=data_files,

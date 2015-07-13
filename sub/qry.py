@@ -237,7 +237,7 @@ def script(db):
 
                 if _typ == 'table':
                     _objs = appconf.con[db].schema.get_table(_name).triggers
-                elif _typ == 'triggers':
+                elif _typ == 'trigger':
                     _objs = [appconf.con[db].schema.get_trigger(_name)]
                 else:
                     _objs = appconf.con[db].triggers
