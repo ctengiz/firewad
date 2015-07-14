@@ -1,6 +1,8 @@
 <!-- Trigger Actions -->
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{obj}}<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-bolt fa-fw"></i> {{obj}}<b class="caret"></b>
+    </a>
     <ul class="dropdown-menu">
         <li><a a href="/tools/script/{{db}}?typ=trigger&name={{obj}}&ddl=trigger_disable">Disable Trigger</a></li>
         <li><a a href="/tools/script/{{db}}?typ=trigger&name={{obj}}&ddl=trigger_disable">Enable Trigger</a></li>

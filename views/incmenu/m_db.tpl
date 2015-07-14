@@ -1,5 +1,6 @@
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{db}}<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-database fa-fw"></i> {{db}}<b class="caret"></b></a>
     <ul class="dropdown-menu">
         <li><a href="/tools/script/{{db}}?typ=db&ddl=index_recompute">Recompute All Indices</a></li>
         <li><a href="/tools/script/{{db}}?typ=db&ddl=index_enable">Enable All Indices</a></li>
@@ -20,10 +21,12 @@
 </li>
 
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Create<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-magic fa-fw"></i> Create<b class="caret"></b>
+    </a>
     <ul class="dropdown-menu">
         <li><a href="#">New Domain</a></li>
-        <li><a href="#">New Table</a></li>
+        <li><a href="/ddl/new/table/{{db}}">New Table</a></li>
         <li><a href="/tools/script/{{db}}?typ=view&ddl=create">New View</a></li>
         <li><a href="#">New Procedure</a></li>
         <li><a href="#">New Trigger</a></li>
@@ -35,12 +38,14 @@
 </li>
 
 <li>
-    <a href="/mon/{{db}}">Monitor</a>
+    <a href="/mon/{{db}}"><i class="fa fa-tachometer fa-fw"></i> Monitor</a>
 </li>
 
 
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-briefcase fa-fw"></i> Tools<b class="caret"></b>
+    </a>
     <ul class="dropdown-menu">
         <li><a href="/tools/query/{{db}}">Query</a></li>
         <li><a href="/tools/script/{{db}}">Script</a></li>

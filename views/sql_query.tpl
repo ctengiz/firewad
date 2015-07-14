@@ -127,6 +127,14 @@
 
 % include('_footer.tpl')
 
+<script type="text/template" id="param-template">
+    <div class="form-group"><label class="col-sm-3 control-label">{param}</label>
+        <div class="col-sm-9">
+            <input class="form-control input-xs prm" name="{param}" id="prm-{param}">
+        </div>
+    </div>
+</script>
+
 <script src="/static/ace/ace.js"></script>
 <script src="/static/ace/ext-language_tools.js"></script>
 <script src="/static/ace/ext-statusbar.js"></script>
@@ -135,7 +143,7 @@
 
 
 
-<script>
+<script type="text/javascript">
     var params_parsed = false;
     var params_entered = false;
 
@@ -219,13 +227,6 @@
 
     };
 
-    var tstring = function(tstr, prm) {
-        tstr = tstr.replace(/{[^{}]+}/g, function(key){
-            return prm[key.replace(/[{}]+/g, '')].replace(':', '') || "";
-        });
-        return tstr;
-    };
-
     var parse_params = function(sql) {
         params_parsed = true;
 
@@ -239,12 +240,7 @@
         var param_html = '';
         for (var i = 0; i < params.length; i++) {
             param_html = param_html +
-                    tstring('<div class="form-group"><label class="col-sm-3 control-label">{param}</label>'+
-                            '<div class="col-sm-9">'+
-                            '<input class="form-control input-xs prm" name="{param}" id="prm-{param}">' +
-                            '</div></div>',
-                            {param: params[i]}
-                    );
+                    templateParamString($("#param-template").html(), {param: params[i]});
         }
         $("#params").html(param_html);
 

@@ -2,6 +2,20 @@
  * Created by cagataytengiz on 10.02.15.
  */
 
+var templateString = function(tstr, prm) {
+    tstr = tstr.replace(/{[^{}]+}/g, function(key){
+        return prm[key.replace(/[{}]+/g, '')] || "";
+    });
+    return tstr;
+};
+
+var templateParamString = function(tstr, prm) {
+    tstr = tstr.replace(/{[^{}]+}/g, function(key){
+        return prm[key.replace(/[{}]+/g, '')].replace(':', '') || "";
+    });
+    return tstr;
+};
+
 $(document).ready(function(){
     $('[data-toggle=offcanvas]').click(function () {
         $('.row-offcanvas').toggleClass('active');

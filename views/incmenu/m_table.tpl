@@ -1,5 +1,7 @@
 <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{obj}}<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-table fa-fw"></i> {{obj}}<b class="caret"></b>
+    </a>
     <ul class="dropdown-menu">
         <li><a href="/tools/query/{{db}}?table={{obj}}">Select from...</a></li>
         <li class="divider"></li>

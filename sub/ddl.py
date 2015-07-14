@@ -14,6 +14,14 @@ from sub.db import connect_db
 
 from common import baseApp, appconf, render, formval_to_utf8
 
-@baseApp.route('/ddl/<db>', method=['GET', 'POST'])
-def ddl_opr(db):
-    pass
+@baseApp.route('/ddl/new/table/<db>', method=['GET', 'POST'])
+def ddl_new_table(db):
+    if db not in appconf.con:
+        connect_db(db)
+
+    if request.method == 'GET':
+        return template('ddl_table', db=db)
+
+
+
+
