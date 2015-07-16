@@ -81,8 +81,8 @@ end
             <div class="form-group">
                 <label for="charset">Charset</label>
                 <select class="form-control" id="charset" name="charset">
-                    % chset = ['NONE', 'ASCII', 'UNICODE_FSS', 'UTF8', 'ISO8859_1', 'ISO8859_2', 'ISO8859_3', 'ISO8859_4', 'ISO8859_5', 'ISO8859_6', 'ISO8859_7', 'ISO8859_8', 'ISO8859_9', 'ISO8859131', 'WIN1250', 'WIN1251', 'WIN1252', 'WIN1253', 'WIN1254', 'WIN1255', 'WIN1256', 'WIN1257', 'WIN1258', 'DOS437', 'DOS737', 'DOS775', 'DOS850', 'DOS852', 'DOS857', 'DOS858', 'DOS860', 'DOS861', 'DOS862', 'DOS863', 'DOS864', 'DOS865', 'DOS866', 'DOS869', 'BIG_5', 'KOI8R', 'CYRL', 'DB_RUS', 'PDOX_CYRL', 'KSC_5601', 'KSC_DICTIONARY', 'NEXT', 'NXT_DEU', 'NXT_ESP', 'NXT_FRA', 'NXT_ITA', 'NXT_US', 'SJIS_0208', 'EUCJ_0208', 'GB_2312', 'CP943C', 'TIS620']
-                    %for ch in chset:
+                    %from common import Constants
+                    %for ch in Constants.charsets:
                     <option value="{{ch}}" {{!'selected="selected"' if ch==reg['charset'] else ""}}>{{ch}}</option>
                     %end
                 </select>

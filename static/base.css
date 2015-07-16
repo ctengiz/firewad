@@ -34,7 +34,7 @@ body {
 }
 
 /* ----------------------------------
- * Bootstrap Custumizations
+ * Bootstrap Customizations
  * ---------------------------------- */
 legend {
     margin-top: 10px;
@@ -68,6 +68,32 @@ legend {
 
 
 
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+    margin-top: 2px;
+}
+
+.radio, .checkbox {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    padding: 3px 6px;
+}
+
+.input-sm {
+    padding: 2px 4px;
+    font-size: 11px;
+    height: 24px;
+}
+
+select.input-sm {
+    height: 24px;
+    line-height: 24px;
+}
 /* ----------------------------------
  * Drop-Down Menu
  * ---------------------------------- */
