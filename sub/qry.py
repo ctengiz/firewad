@@ -77,6 +77,7 @@ def query(db):
     if request.method == 'GET':
         _col = None
         _prms_str = ''
+        _refresh_obj = ''
         if 'table' in request.GET:
             _table_name = request.GET.table
             _col = appconf.con[db].schema.get_table(_table_name).columns
@@ -100,7 +101,7 @@ def query(db):
                 _select_sql_str += 'execute procedure'
                 _select_sql_str += '\n  ' + _table_name + _prms_str
 
-        return template('sql_query', db=db, sql_select=_select_sql_str)
+        return template('sql_script', db=db, sql=_select_sql_str, refresh_object = _refresh_obj, extyp='query')
     else:
         sql = request.POST.sql
         exec_typ = request.POST.exec_typ
@@ -270,7 +271,7 @@ def script(db):
                 for k in _objs:
                     _sql += 'SET statistics INDEX %s;\n' % k.name
 
-        return template('sql_script', db=db, sql_script=_sql, refresh_obj=refresh_obj)
+        return template('sql_script', db=db, sql=_sql, refresh_object=refresh_obj, extyp='script')
     else:
         prms = request.POST
         script = prms.sql

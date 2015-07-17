@@ -14,10 +14,6 @@
         <button class="btn btn-default btn-ddl" type="button" title="Get DDL">
             <span class="fa fa-code fa-fw text-info"></span> DDL
         </button>
-
-        <button class="btn btn-default btn-exec" type="button" title="Execute query">
-            <i class="fa fa-bolt fa-fw text-danger"></i>
-        </button>
     </div>
     <div class="btn-group btn-group-sm">
         <button class="btn btn-default btn-add-field" type="button" title="Add field" data-field-no="99999999">
@@ -88,10 +84,6 @@
         <button class="btn btn-default btn-ddl" type="button" title="Get DDL">
             <span class="fa fa-code fa-fw text-info"></span> DDL
         </button>
-
-        <button class="btn btn-default btn-exec" type="button" title="Execute query">
-            <i class="fa fa-bolt fa-fw text-danger"></i>
-        </button>
     </div>
     <div class="btn-group btn-group-sm">
         <button class="btn btn-default btn-add-field" type="button" title="Add field" data-field-no="99999999">
@@ -105,8 +97,11 @@
 
 
 
-<pre id="ddl">
-</pre>
+<div id="script" style="display: none;">
+    % include('_script.tpl', extyp = 'script', sql='', refresh_object='tables')
+</div>
+
+
 
 % include('_footer.tpl')
 
@@ -130,13 +125,13 @@
         <td class="computed-hide">
             <div class="radio">
                 <label>
-                    <input type="radio" name="field_base" class="fld-base" value="custom" checked data-row-id="#row-{field_no}" id="field-base-customn-{field_no}">
+                    <input type="radio" name="field_base-{field_no}" class="fld-base" value="custom" checked data-row-id="#row-{field_no}" id="field-base-customn-{field_no}">
                     Custom
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    <input type="radio" name="field_base" class="fld-base" value="domain" data-row-id="#row-{field_no}" id="field-base-domain-{field_no}">
+                    <input type="radio" name="field_base-{field_no}" class="fld-base" value="domain" data-row-id="#row-{field_no}" id="field-base-domain-{field_no}">
                     Domain Based
                 </label>
             </div>
@@ -247,12 +242,19 @@
 </script>
 
 
-<script type="text/template" id="table-template">
-CREATE {gtt} TABLE {table_name} (
-    {fields}
-    {pk}
-) {gtt_end}
+<script type="text/template" id="table-template">CREATE {gtt} TABLE {table_name} (
+{fields}{pk});{gtt_end}
+{description}
 </script>
+
+
+<script src="/static/ace/ace.js"></script>
+<script src="/static/ace/ext-language_tools.js"></script>
+<script src="/static/ace/ext-statusbar.js"></script>
+
+<script src="/static/jquery.floatThead.min.js"></script>
+
+<script src="/static/script.js"></script>
 
 
 <script type="text/javascript">
@@ -285,22 +287,29 @@ var fieldOps = function() {
     function get_ddl() {
         var table_template = $('#table-template').text();
 
+        //constanst
+        var _space = '    ';
+
+        var _table_vals = {};
+        _table_vals.table_name = $("#table-name").val();
+
         //fields
         var _ddl_fields = '';
-        var _ddl_comment = '';
+        var _ddl_description = '';
         var _ddl_pk = '';
+        var _tr_count = $('#tbody-fields tr').length;
         $.each(tbody.children(), function( ndx, tr ) {
             var rno = $(tr).data('row-no');
             var rid = tr.getAttribute('id');
 
-            var _field_name = $('#field-name-' + rno).val();
+            var _field_name = $('#field-name-' + rno).val() + ' ';
 
             //is pk ?
             if ($('#is-pk-' + rno).is(':checked')) {
                 if (_ddl_pk) {
-                    _ddl_pk += ', ' + _field_vals.field_name;
+                    _ddl_pk += ', ' + _field_name;
                 } else {
-                    _ddl_pk += _field_vals.field_name;
+                    _ddl_pk += _field_name;
                 }
             }
 
@@ -322,8 +331,10 @@ var fieldOps = function() {
                 _check = ' CHECK (' + _check + ')'
             }
 
+            var _description = $('#field-description-' + rno).val();
+
             //is computed ?
-            var _field_type = ''
+            var _field_type = '';
             if ($('#is-computed-' + rno).is(':checked')) {
                 _field_type = 'COMPUTED BY (' + $('#computed-' + rno).val() + ')'
             }
@@ -382,21 +393,24 @@ var fieldOps = function() {
                 }
             }
 
-            _ddl_f = _field_name + _field_type + '\n';
+            _ddl_fields += _space + _field_name + _field_type;
 
-            if (ndx > 0) {
-
+            if ( (ndx < _tr_count - 1) || (_ddl_pk)) {
+                _ddl_fields += ',';
             }
-            _ddl_fields += '  , ' + _ddl_f
+            _ddl_fields +=  '\n';
 
+            if (_description) {
+                _ddl_description += 'comment on column ' +
+                        _table_vals.table_name + '.' +
+                        _field_name + "is '" +
+                        _description + "';\n";
+            }
         });
 
-
-        var _table_vals = {};
-        _table_vals.table_name = $("#table-name").val();
         _table_vals.fields = _ddl_fields;
         if (_ddl_pk) {
-            _table_vals.pk = ', CONSTRAINT PK_' + _table_vals.table_name + ' PRIMARY KEY (' + _ddl_pk + ')'
+            _table_vals.pk = _space + 'CONSTRAINT PK_' + _table_vals.table_name + ' PRIMARY KEY (' + _ddl_pk + ')\n'
         }
 
         var _table_type = $('#table-type').val();
@@ -405,15 +419,27 @@ var fieldOps = function() {
             _table_vals.gtt_end = '';
         } else if ( _table_type == 'TD') {
             _table_vals.gtt = 'GLOBAL TEMPORARY';
-            _table_vals.gtt_end = 'ON COMMIT DELETE ROWS'
+            _table_vals.gtt_end = ' ON COMMIT DELETE ROWS'
         } else {
             _table_vals.gtt = 'GLOBAL TEMPORARY';
-            _table_vals.gtt_end = 'ON COMMIT PRESERVE ROWS'
+            _table_vals.gtt_end = ' ON COMMIT PRESERVE ROWS'
         }
+
+        var _table_description = $('#description').val();
+        if (_table_description) {
+            _ddl_description = 'comment on table ' +
+                    _table_vals.table_name + " is '" +
+                    _table_description + "';\n" +
+                    _ddl_description;
+        }
+
+        _table_vals.description = _ddl_description;
 
         var _ddl = templateString(table_template, _table_vals);
 
-        $('#ddl').html(_ddl);
+        editor.setValue(_ddl, -1);
+        $('#script').show();
+        editor.focus();
     }
 
     function add_field() {

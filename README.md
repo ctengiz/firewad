@@ -46,7 +46,7 @@ The list below, is a mix of features completed and **features which are planned 
     - [x] Recompute all statistics
 - [ ] DDL Operations
     - [ ] Table (planned in 0.1.0)
-        - [ ] Create table
+        - [x] Create table
         - [x] Drop table
         - [ ] Field modification
         - [ ] Alter / Create constraints / indices
