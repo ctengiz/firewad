@@ -24,5 +24,12 @@ def ddl_new_table(db):
         return template('ddl_table', db=db)
 
 
+@baseApp.route('/ddl/new/column/<db>/<table>', method=['GET', 'POST'])
+def ddl_new_table(db, table):
+    if db not in appconf.con:
+        connect_db(db)
+
+    if request.method == 'GET':
+        return template('ddl_column', db=db, table=table)
 
 

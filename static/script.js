@@ -217,7 +217,6 @@ $(document).ready(function(){
     refresh_object = $("#refresh_object").text();
 
 
-
     $('#btn-commit-type').on('click', function () {
         if ($(this).data('pressed') == '0') {
             $(this).data('pressed', '1');

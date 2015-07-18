@@ -4,6 +4,11 @@
             <a class="accordion-toggle" data-toggle="collapse"  href="#tbl-field">
                 {{pnlt}}
             </a>
+
+            <a href="/ddl/new/column/{{db}}/{{tbl.name}}" class="btn btn-xs btn-primary pull-right panel-heading-button">
+                <i class="fa fa-table"></i> Add Field
+            </a>
+
         </h4>
     </div>
     <div id="tbl-field" class="panel-collapse collapse in">
@@ -34,13 +39,18 @@
                 <td><!-- todo: pk/fk/uq --> {{k.name}}</td>
                 <td style="word-wrap: break-word">{{k.datatype}}</td>
                 <td>{{k.domain.name}}</td>
-                <td style="text-align: center;">
+                <td class="text-center">
                     {{! '<span class="glyphicon glyphicon-ok"></span>' if not k.isnullable() else '&nbsp;'}}
                 </td>
                 <td>{{k.domain.expression}}</td>
-                <td>{{k.domain.default}}</td>
+                <td class="text-center">{{k.domain.default}}</td>
                 <td style="word-wrap: break-word">{{k.description}}</td>
                 <td>
+                    <div class="btn-group btn-group-xs">
+                        <a href="/tools/script/{{db}}?typ=column&name={{k.name}}&table={{tbl.name}}&ddl=drop" class="btn btn-danger" title="Drop field">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
 
                 </td>
             </tr>

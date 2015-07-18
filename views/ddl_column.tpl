@@ -4,7 +4,8 @@
     <div class="col-xs-12">
         <ol class="breadcrumb">
             <li><a href="/db/{{db}}">{{db}}</a></li>
-            <li class="active">Create Table</li>
+            <li><a href="/db/table/{{db}}/{{table}}">{{table}}</a></li>
+            <li class="active">Add Column</li>
         </ol>
     </div>
 </div>
@@ -15,81 +16,17 @@
             <span class="fa fa-code fa-fw text-info"></span> DDL
         </button>
     </div>
-    <div class="btn-group btn-group-sm">
-        <button class="btn btn-default btn-add-field" type="button" title="Add field" data-field-no="99999999">
-            <i class="fa fa-plus text-success"></i>
-        </button>
-        <button class="btn btn-default btn-remove-field" type="button" title="Remove field">
-            <i class="fa fa-minus text-danger"></i>
-        </button>
-    </div>
 </div>
 
-
-<div class="form-horizontal">
-    <div class="form-group">
-        <label for="table-name" class="col-sm-2 control-label">Table Name</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="table_name" id="table-name" required>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="table-type" class="col-sm-2 control-label">Table Type</label>
-        <div class="col-sm-6">
-            <select class="form-control" name="table_type" id="table-type">
-                <option value="P">Persistent</option>
-                <option value="TD">Temporary: Delete Rows</option>
-                <option value="TP">Temporary: Preserve Rows</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="external-file" class="col-sm-2 control-label">External File</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="external_file" id="external-file">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="description" class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" name="description" id="description">
-        </div>
-    </div>
-</div>
-
-% include('./incddl/l_column.tpl', trtyp='yable')
-
-<div class="btn-toolbar" role="toolbar" style="margin-bottom: 2px;" id="toolbar">
-    <div class="btn-group btn-group-sm">
-        <button class="btn btn-default btn-ddl" type="button" title="Get DDL">
-            <span class="fa fa-code fa-fw text-info"></span> DDL
-        </button>
-    </div>
-    <div class="btn-group btn-group-sm">
-        <button class="btn btn-default btn-add-field" type="button" title="Add field" data-field-no="99999999">
-            <i class="fa fa-plus text-success"></i>
-        </button>
-        <button class="btn btn-default btn-remove-field" type="button" title="Remove field">
-            <i class="fa fa-minus text-danger"></i>
-        </button>
-    </div>
-</div>
-
+% include('./incddl/l_column.tpl', trtyp='column')
 
 
 <div id="script" style="display: none;">
     % include('_script.tpl', extyp = 'script', sql='', refresh_object='tables')
 </div>
 
-
-
 % include('_footer.tpl')
 
-
-<script type="text/template" id="table-template">CREATE {gtt} TABLE {table_name} (
-{fields}{pk});{gtt_end}
-{description}
-</script>
 
 
 <script src="/static/ace/ace.js"></script>
@@ -134,8 +71,8 @@ var fieldOps = function() {
         //constanst
         var _space = '    ';
 
-        var _table_vals = {};
-        _table_vals.table_name = $("#table-name").val();
+        //table_name
+        var _table_name = '{{table}}';
 
         //fields
         var _ddl_fields = '';
@@ -237,51 +174,17 @@ var fieldOps = function() {
                 }
             }
 
-            _ddl_fields += _space + _field_name + _field_type;
-
-            if ( (ndx < _tr_count - 1) || (_ddl_pk)) {
-                _ddl_fields += ',';
-            }
-            _ddl_fields +=  '\n';
+            _ddl_fields += 'ALTER TABLE ' + _table_name + ' ADD ' +  _field_name + _field_type + ';\n';
 
             if (_description) {
                 _ddl_description += 'comment on column ' +
-                        _table_vals.table_name + '.' +
+                        _table_name + '.' +
                         _field_name + "is '" +
                         _description + "';\n";
             }
         });
 
-        _table_vals.fields = _ddl_fields;
-        if (_ddl_pk) {
-            _table_vals.pk = _space + 'CONSTRAINT PK_' + _table_vals.table_name + ' PRIMARY KEY (' + _ddl_pk + ')\n'
-        }
-
-        var _table_type = $('#table-type').val();
-        if (_table_type == 'P') {
-            _table_vals.gtt = '';
-            _table_vals.gtt_end = '';
-        } else if ( _table_type == 'TD') {
-            _table_vals.gtt = 'GLOBAL TEMPORARY';
-            _table_vals.gtt_end = ' ON COMMIT DELETE ROWS'
-        } else {
-            _table_vals.gtt = 'GLOBAL TEMPORARY';
-            _table_vals.gtt_end = ' ON COMMIT PRESERVE ROWS'
-        }
-
-        var _table_description = $('#description').val();
-        if (_table_description) {
-            _ddl_description = 'comment on table ' +
-                    _table_vals.table_name + " is '" +
-                    _table_description + "';\n" +
-                    _ddl_description;
-        }
-
-        _table_vals.description = _ddl_description;
-
-        var _ddl = templateString(table_template, _table_vals);
-
-        editor.setValue(_ddl, -1);
+        editor.setValue(_ddl_fields + _ddl_description, -1);
         $('#script').show();
         editor.focus();
     }

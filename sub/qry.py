@@ -181,7 +181,9 @@ def script(db):
                 refresh_obj = _typ + 's'
 
                 if _typ == 'function':
-                    _sql = _obj = appconf.con[db].schema.get_function(_name).get_sql_for('drop') + ';'
+                    _sql = appconf.con[db].schema.get_function(_name).get_sql_for('drop') + ';'
+                elif _typ == 'column':
+                    _sql = "alter table %s drop %s;" %(prms.table, _name)
                 else:
                     _sql = 'drop %s %s;' %(_typ, _name)
 
