@@ -5,9 +5,11 @@
                 {{pnlt}}
             </a>
 
+            %if pobj == 'table':
             <a href="/ddl/new/column/{{db}}/{{tbl.name}}" class="btn btn-xs btn-primary pull-right panel-heading-button">
                 <i class="fa fa-table"></i> Add Field
             </a>
+            %end
 
         </h4>
     </div>
@@ -20,8 +22,11 @@
                 <th>Field Type</th>
                 <th>Domain</th>
                 <th>Not Null</th>
+                %if pobj == 'table':
                 <th>Computed</th>
                 <th>Default</th>
+                <th>Check</th>
+                %end
                 <th>Description</th>
                 <th></th>
             </tr>
@@ -42,14 +47,19 @@
                 <td class="text-center">
                     {{! '<span class="glyphicon glyphicon-ok"></span>' if not k.isnullable() else '&nbsp;'}}
                 </td>
-                <td>{{k.domain.expression}}</td>
-                <td class="text-center">{{k.domain.default}}</td>
+                %if pobj == 'table':
+                <td>{{k.get_computedby()}}</td>
+                <td class="text-center">{{k.default}}</td>
+                <td>{{k.domain.validation}}</td>
+                %end
                 <td style="word-wrap: break-word">{{k.description}}</td>
                 <td>
                     <div class="btn-group btn-group-xs">
+                        %if pobj == 'table':
                         <a href="/tools/script/{{db}}?typ=column&name={{k.name}}&table={{tbl.name}}&ddl=drop" class="btn btn-danger" title="Drop field">
                             <i class="fa fa-trash"></i>
                         </a>
+                        %end
                     </div>
 
                 </td>

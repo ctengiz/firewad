@@ -6,7 +6,7 @@
         <li><a href="/tools/query/{{db}}?table={{obj}}">Select from...</a></li>
         <li class="divider"></li>
         <li><a href="#">Edit Table</a></li>
-        <li><a href="#">New Field</a></li>
+        <li><a href="/ddl/new/column/{{db}}/{{obj}}">New Field</a></li>
         <li><a href="#">New Trigger</a></li>
         <li><a href="#">New Index</a></li>
         <li><a href="#">New Foreign Key</a></li>

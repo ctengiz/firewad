@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="panel-group" id="accordion">
-            %include('./incobj/d_fields.tpl', clmn=tbl.columns, pnlt='Fields')
+            %include('./incobj/d_fields.tpl', clmn=tbl.columns, pnlt='Fields', pobj='view')
             %include('./incobj/d_dependents.tpl')
             %include('./incobj/d_dependencies.tpl')
             %include('./incobj/d_triggers.tpl')
