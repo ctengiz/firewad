@@ -204,16 +204,22 @@ def script(db):
 
                 elif _typ == 'view':
                     _sql = appconf.con[db].schema.get_view(_name).get_sql_for('recreate')
+
                 elif _typ == 'procedure':
                     _sql = appconf.con[db].schema.get_procedure(_name).get_sql_for('create_or_alter')
+
                 elif _typ == 'trigger':
                     _sql = appconf.con[db].schema.get_trigger(_name).get_sql_for('recreate')
+
                 elif _typ == 'exception':
                     _sql = appconf.con[db].schema.get_exception(_name).get_sql_for('recreate')
+
                 elif _typ == 'sequence':
                     _sql = appconf.con[db].schema.get_sequence(_name).get_sql_for('create')
+
                 elif _typ == 'index':
                     _sql = appconf.con[db].schema.get_index(_name).get_sql_for('create')
+
                 elif _typ == 'domain':
                     _obj = appconf.con[db].schema.get_domain(_name)
                     _sql = _obj.get_sql_for('alter', default=_obj.default) + ';\n'
@@ -226,12 +232,16 @@ def script(db):
 
                 if _typ == 'view':
                     _sql = template('./sqls/view')
+
                 if _typ == 'trigger':
                     _sql = template('./sqls/trigger')
+
                 elif _typ == 'sequence':
                     _sql = 'create sequence NEW_SEQUENCE;'
+
                 elif _typ == 'exception':
                     _sql = "create exception NEW_EXCEPTION '<exception_message>';"
+
                 elif _typ == 'role':
                     _sql = "create role NEW_ROLE"
                     
@@ -240,8 +250,10 @@ def script(db):
 
                 if _typ == 'table':
                     _objs = appconf.con[db].schema.get_table(_name).triggers
+
                 elif _typ == 'trigger':
                     _objs = [appconf.con[db].schema.get_trigger(_name)]
+
                 else:
                     _objs = appconf.con[db].triggers
 
@@ -315,11 +327,10 @@ def script(db):
         error_log = []
         try:
 
-            #very very dirty hack for sql statement parsing
-            #for identfying procedure and trigger blocks !!
-            #a decent sql parser would be better
+            # very very dirty hack for sql statement parsing for identfying procedure and trigger blocks !!
+            # a decent sql parser would be better
 
-            #match procedure / trigger / execute blocks
+            # match procedure / trigger / execute blocks
             p = re.compile(r"(execute(\s)block|create(\s)+(procedure|trigger))(?s).*?(.*?)end(\s*);", re.IGNORECASE)
             block_num = 0
             blocks = []
@@ -330,7 +341,7 @@ def script(db):
                 script = script.replace(match.group(), block_text, 1)
                 block_num += 1
 
-            #replace block comments
+            # replace block comments
             p = re.compile(r"/\*(?s).*?\*/")
             script = p.sub("", script)
 

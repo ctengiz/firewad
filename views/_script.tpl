@@ -2,7 +2,7 @@
 
     %if extyp == 'script':
     <div class="btn-group btn-group-sm">
-        <button class="btn btn-default" type="button" id="btn-commit-type"
+        <button class="btn btn-warning" type="button" id="btn-commit-type"
                 data-toggle="button"
                 data-pressed="0"
                 data-0-text="Auto Commit: OFF"
@@ -141,17 +141,12 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="text-center">
-                    <!--
-                    <img src="http://www.travislayne.com/images/loading.gif" class="icon" />
-                    -->
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                            <!--<span class="sr-only">45% Complete</span>-->
                         </div>
                     </div>
                     <h4>
                         Executing sql
-                        <!-- <button type="button" class="close" style="float: none;" data-dismiss="modal" aria-hidden="true">×</button> -->
                     </h4>
                 </div>
             </div>
