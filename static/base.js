@@ -39,4 +39,33 @@ $(document).ready(function(){
 
     //Tooltip
     $("[data-toggle='tooltip']").tooltip();
+
+
+
+    //Database objects description edit
+    $(".edit-description").click(function() {
+        var object = $(this).data("object");
+        var object_name = $(this).data("object_name");
+        var description = $(this).data("description");
+        var db = $(this).data("db");
+
+        bootbox.prompt({
+            title: "Description for " + object_name,
+            value: description,
+            callback: function(result) {
+                if (result === null) {
+
+                } else {
+                    window.location="/tools/script/"
+                    + db + '?'
+                    + "typ=" + object + ';'
+                    + "name=" + object_name + ';'
+                    + "ddl=description;"
+                    + "description=" + result;
+                }
+            }
+        });
+
+
+    })
 });

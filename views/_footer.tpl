@@ -31,7 +31,10 @@ end
 <script src="/static/bootstrap-table/bootstrap-table.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="/static/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
-<!-- Invigo Core Js -->
+
+<script src="/static/bootbox.min.js"></script>
+
+<!-- Firewad Core Js -->
 <script src="/static/base.js"></script>
 </body>
 </html>

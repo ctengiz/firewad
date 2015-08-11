@@ -56,6 +56,17 @@
                 <td>
                     <div class="btn-group btn-group-xs">
                         %if pobj == 'table':
+                        <a href="#" class="btn btn-primary edit-description" title="Edit description"
+                           data-db="{{db}}"
+                           data-object="column"
+                           data-object_name="{{tbl.name}}.{{k.name}}"
+                           data-description="{{k.description}}"
+                        >
+                            <i class="fa fa-comment"></i>
+                        </a>
+                        <a href="#" class="btn btn-warning" title="Edit field">
+                            <i class="fa fa-edit"></i>
+                        </a>
                         <a href="/tools/script/{{db}}?typ=column&name={{k.name}}&table={{tbl.name}}&ddl=drop" class="btn btn-danger" title="Drop field">
                             <i class="fa fa-trash"></i>
                         </a>

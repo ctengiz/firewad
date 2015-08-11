@@ -4,11 +4,16 @@
             <a class="accordion-toggle collapsed" data-toggle="collapse" href="#tbl-description">
                 <i class="fa fa-info"></i> Description
             </a>
-            <!-- todo: edit description
-            <a href="/tools/script/{{db}}?obj_typ={{typ}}&name={{tbl.name}}" class="btn btn-xs btn-primary pull-right panel-heading-button">
+            <a href="#"
+               class="btn btn-xs btn-primary pull-right panel-heading-button edit-description" title="Edit description"
+               data-db="{{db}}"
+               data-object="table"
+               data-object_name="{{tbl.name}}"
+               data-description="{{tbl.description}}">
+                <i class="fa fa-edit"></i>
                 Edit
             </a>
-            -->
+
 
         </h4>
     </div>

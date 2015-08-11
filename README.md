@@ -159,6 +159,7 @@ dbconfig.ini and access to website is not secured. Use it only from localhost ri
 - [Pygments](http://pygments.org/)
 - [Fontawesome](http://fortawesome.github.io/Font-Awesome/)
 - [py2exe](http://www.py2exe.org/)
+- [Bootbox](http://bootboxjs.com)
 
 and of course
 

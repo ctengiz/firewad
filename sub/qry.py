@@ -285,6 +285,12 @@ def script(db):
                 for k in _objs:
                     _sql += 'SET statistics INDEX %s;\n' % k.name
 
+            elif _ddl == 'description':
+                _sql += "comment on %s %s is '%s'" %(_typ, _name, prms.description)
+                refresh_obj = 'tables'
+
+
+
         return template('sql_script', db=db, sql=_sql, refresh_object=refresh_obj, extyp='script')
     else:
         prms = request.POST
