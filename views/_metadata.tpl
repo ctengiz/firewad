@@ -63,11 +63,9 @@
     <i class="fa fa-exclamation-triangle"></i>Exceptions <small>({{len(metadata['exceptions'])}})</small>
 </a>
 
-<a href="#menu-role" class="list-group-item menu-root" data-toggle="collapse" style="padding-left:5px;">
-    <i class="fa fa-group"></i>Roles <small>({{len(metadata['roles'])}})</small> <span class="glyphicon glyphicon-chevron-right"></span>
+
+<a href="/db/roles/{{db}}" class="list-group-item menu-root"  style="padding-left:5px;">
+    <i class="fa fa-group"></i>Roles <small>({{len(metadata['roles'])}})</small>
 </a>
-<div class="collapse" id="menu-role">
-    %for k in metadata['roles']:
-        <a class="list-group-item" href="/db/role/{{db}}/{{k}}" style="padding-left:15px;">{{k}}</a>
-    %end
-</div>
+
+

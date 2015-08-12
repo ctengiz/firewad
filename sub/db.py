@@ -7,6 +7,7 @@ import base64
 from collections import OrderedDict
 
 import fdb
+import fdb.schema
 from bottle import request, redirect, HTTPError
 
 from common import baseApp, appconf, render, formval_to_utf8, serve_file
@@ -387,6 +388,8 @@ def dobj_list(typ, db):
         _ddl = appconf.con[db].procedures
     elif typ == 'triggers':
         _ddl = appconf.con[db].triggers
+    elif typ == 'roles':
+        _ddl = appconf.con[db].roles
 
     return render(_rnd, db=db, tbl=_ddl, typ=typ)
 
