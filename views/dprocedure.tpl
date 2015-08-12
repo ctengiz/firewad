@@ -17,7 +17,7 @@
             %include('./incobj/d_dependents.tpl')
             %include('./incobj/d_dependencies.tpl')
             %include('./incobj/d_ddl.tpl')
-            %include('./incobj/d_description.tpl')
+            %include('./incobj/d_description.tpl', pobj='procedure')
         </div>
     </div>
 </div>

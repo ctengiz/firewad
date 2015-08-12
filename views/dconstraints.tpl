@@ -80,9 +80,11 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-xs">
+                                        <!--
                                         <a href="#" class="btn btn-primary" title="Edit description">
                                             <i class="fa fa-info fa-fw"></i>
                                         </a>
+                                        -->
                                         <a href="/tools/script/{{db}}?typ=constraint&name={{_obj.name}}&ddl=drop" class="btn btn-danger" title="Drop">
                                             <i class="fa fa-trash fa-fw"></i>
                                         </a>

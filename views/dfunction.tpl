@@ -16,7 +16,7 @@
             %include('./incobj/d_dependents.tpl')
             %include('./incobj/d_dependencies.tpl')
             %include('./incobj/d_ddl.tpl', ddl_type='declare')
-            %include('./incobj/d_description.tpl')
+            %include('./incobj/d_description.tpl', pobj="function")
         </div>
 
 

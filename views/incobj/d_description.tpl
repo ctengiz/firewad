@@ -7,7 +7,7 @@
             <a href="#"
                class="btn btn-xs btn-primary pull-right panel-heading-button edit-description" title="Edit description"
                data-db="{{db}}"
-               data-object="table"
+               data-object="{{pobj}}"
                data-object_name="{{tbl.name}}"
                data-description="{{tbl.description}}">
                 <i class="fa fa-edit"></i>

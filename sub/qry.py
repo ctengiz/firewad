@@ -286,10 +286,17 @@ def script(db):
                     _sql += 'SET statistics INDEX %s;\n' % k.name
 
             elif _ddl == 'description':
-                _sql += "comment on %s %s is '%s'" %(_typ, _name, prms.description)
-                refresh_obj = 'tables'
+                if _typ == 'function':
+                    _sql += "comment on external %s %s is '%s'" %(_typ, _name, prms.description)
+                else:
+                    _sql += "comment on %s %s is '%s'" %(_typ, _name, prms.description)
 
-
+                if _typ == 'column':
+                    refresh_obj = 'tables'
+                elif _typ == 'index':
+                    refresh_obj = 'indices'
+                else:
+                    refresh_obj = '%ss' %(_typ)
 
         return template('sql_script', db=db, sql=_sql, refresh_object=refresh_obj, extyp='script')
     else:

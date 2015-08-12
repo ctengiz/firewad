@@ -20,7 +20,7 @@
             %include('./incobj/d_dependencies.tpl')
             %include('./incobj/d_triggers.tpl')
             %include('./incobj/d_ddl.tpl')
-            %include('./incobj/d_description.tpl')
+            %include('./incobj/d_description.tpl', pobj='table')
 
         </div>
 
