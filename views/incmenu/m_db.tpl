@@ -9,8 +9,8 @@
         <li><a href="/tools/script/{{db}}?typ=db&ddl=trigger_enable">Enable All Triggers</a></li>
         <li><a href="/tools/script/{{db}}?typ=db&ddl=trigger_disable">Disable All Triggers</a></li>
         <li class="divider"></li>
-        <li><a href="/db/backup/{{db}}">Backup Database</a></li>
-        <li><a href="/db/restore/{{db}}">Restore Database</a></li>
+        <li><a href="/backup/{{db}}">Backup Database</a></li>
+        <li><a href="/restore/{{db}}">Restore Database</a></li>
         <li class="divider"></li>
         <li><a href="/db/metadata/{{db}}">Extract Database Metadata</a></li>
         <li class="divider"></li>

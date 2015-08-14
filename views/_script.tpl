@@ -133,7 +133,6 @@
 </div>
 
 
-
 <!-- Static Modal -->
 <!-- Source : http://bootsnipp.com/snippets/featured/centered-processing-modal -->
 <div class="modal modal-static fade" id="processing-modal" role="dialog" aria-hidden="true">

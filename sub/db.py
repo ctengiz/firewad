@@ -5,10 +5,12 @@ Database objects and DDL operations
 import io
 import base64
 from collections import OrderedDict
+import json
 
 import fdb
 import fdb.schema
-from bottle import request, redirect, HTTPError
+
+from bottle import request, redirect, HTTPError, template
 
 from common import baseApp, appconf, render, formval_to_utf8, serve_file
 
@@ -424,4 +426,55 @@ def dbobj(typ, db, obj):
 
     return render(_rnd, db=db, tbl=_ddl, obj=obj, typ=typ)
 
+
+@baseApp.route('/backup/<db>', method=['GET', 'POST'])
+def db_backup(db):
+    if db not in appconf.con:
+        connect_db(db)
+
+    #return render(tpl='db_backup', db=db)
+
+    if request.method == 'GET':
+        return template('db_backup', db=db)
+    else:
+
+        con = fdb.services.connect(host=appconf.db_config[db]['db_server'],
+                                   user=appconf.db_config[db]['db_user'],
+                                   password=appconf.db_config[db]['db_pass']
+                                   )
+
+        backup_path = request.POST.backup_path
+        can_downlod = False
+
+        if backup_path == './static/backup':
+            backup_path = appconf.basepath + '/static/backup'
+            can_downlod = True
+
+        if backup_path[-1] != "/":
+            backup_path += '/'
+
+        backup_file = backup_path + request.POST.backup_name
+
+        con.backup(source_database=appconf.db_config[db]['db_path'],
+                   dest_filenames=backup_file,
+                   #dest_file_sizes=(),
+                   ignore_checksums=int(request.POST.pop('ignore_checksums', 0)),
+                   ignore_limbo_transactions=int(request.POST.pop('ignore_limbo_transactions', 0)),
+                   metadata_only=int(request.POST.pop('metadata_only', 0)),
+                   collect_garbage=int(request.POST.pop('collect_garbage', 0)),
+                   transportable=int(request.POST.pop('transportable', 0)),
+                   convert_external_tables_to_internal=int(request.POST.pop('convert_external_to_internal', 0)),
+                   compressed=int(request.POST.pop('compressed', 0)),
+                   no_db_triggers=int(request.POST.pop('no_db_triggers', 0))
+                   )
+
+        rpt = '\n'.join(con.readlines())
+        lnk = ""
+        if can_downlod:
+            lnk = '<a href="/static/backup/%s">Your backup is ready for download</a>' %(request.POST.backup_name)
+
+        return json.dumps({
+            "report":rpt,
+            "link": lnk
+        })
 
