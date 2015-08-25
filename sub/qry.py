@@ -14,6 +14,10 @@ from sub.db import connect_db
 
 from common import baseApp, appconf, render, formval_to_utf8
 
+def refresh_db(db, objs):
+    for obj in objs.split(','):
+        appconf.con[db].schema.reload(obj)
+
 
 def process_val(cval):
 
@@ -165,7 +169,7 @@ def script(db):
     if request.method == 'GET':
         prms = request.GET
         _sql = ''
-        refresh_obj = ''
+        _refresh_obj = ''
 
         if 'sql' in prms:
             _sql = prms.sql
@@ -178,12 +182,15 @@ def script(db):
             _name = prms.name
             
             if _ddl == 'drop':
-                refresh_obj = _typ + 's'
+                _refresh_obj = _typ + 's'
 
                 if _typ == 'function':
                     _sql = appconf.con[db].schema.get_function(_name).get_sql_for('drop') + ';'
                 elif _typ == 'column':
                     _sql = "alter table %s drop %s;" %(prms.table, _name)
+                    _refresh_obj = 'tables'
+                elif _typ == 'constraint':
+                    _sql = "alter table %s drop constraint %s;" %(prms.table, _name)
                 else:
                     _sql = 'drop %s %s;' %(_typ, _name)
 
@@ -228,7 +235,7 @@ def script(db):
                     _sql += _obj.get_sql_for('alter', name=_obj.name) + ';\n'
 
             elif _ddl == 'create':
-                refresh_obj = _typ + 's'
+                _refresh_obj = _typ + 's'
 
                 if _typ == 'view':
                     _sql = template('./sqls/view')
@@ -246,7 +253,7 @@ def script(db):
                     _sql = "create role NEW_ROLE"
                     
             elif _ddl == 'trigger_disable' or _ddl == 'trigger_enable':
-                refresh_obj = 'triggers'
+                _refresh_obj = 'triggers'
 
                 if _typ == 'table':
                     _objs = appconf.con[db].schema.get_table(_name).triggers
@@ -262,7 +269,7 @@ def script(db):
                     _sql += 'alter trigger %s %s;\n' % (k.name, _opr)
 
             elif _ddl == 'index_disable' or _ddl == 'index_enable':
-                refresh_obj = 'indices'
+                _refresh_obj = 'indices'
 
                 if _typ == 'table':
                     _objs = appconf.con[db].schema.get_table(_name).indices
@@ -275,7 +282,7 @@ def script(db):
                         _sql += 'alter index %s %s;\n' % (k.name, _opr)
 
             elif _ddl == 'index_recompute':
-                refresh_obj = 'indices'
+                _refresh_obj = 'indices'
 
                 if _typ == 'table':
                     _objs = appconf.con[db].schema.get_table(_name).indices
@@ -292,13 +299,13 @@ def script(db):
                     _sql += "comment on %s %s is '%s'" %(_typ, _name, prms.description)
 
                 if _typ == 'column':
-                    refresh_obj = 'tables'
+                    _refresh_obj = 'tables'
                 elif _typ == 'index':
-                    refresh_obj = 'indices'
+                    _refresh_obj = 'indices'
                 else:
-                    refresh_obj = '%ss' %(_typ)
+                    _refresh_obj = '%ss' %(_typ)
 
-        return template('sql_script', db=db, sql=_sql, refresh_object=refresh_obj, extyp='script')
+        return template('sql_script', db=db, sql=_sql, refresh_object=_refresh_obj, extyp='script')
     else:
         prms = request.POST
         script = prms.sql
@@ -320,7 +327,8 @@ def script(db):
                     trn.close()
                     appconf.trn.pop(trn_id)
                     if prms.refresh:
-                        appconf.con[db].schema.reload(prms.refresh)
+                        refresh_db(db, prms.refresh)
+
                     return json.dumps({'errors': [], 'result': 'Transaction committed', 'trn_id': None})
                 else:
                     trn.rollback()
@@ -383,7 +391,7 @@ def script(db):
                 trn.commit()
                 trn.close()
                 if prms.refresh:
-                    appconf.con[db].schema.reload(prms.refresh)
+                    refresh_db(db, prms.refresh)
         except Exception as e:
             if auto_commit:
                 trn.rollback()

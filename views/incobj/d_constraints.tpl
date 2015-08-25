@@ -15,6 +15,7 @@
                 <th>Fields</th>
                 <th>Index</th>
                 <th>Attr</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -56,6 +57,21 @@
                     {{k.triggers[0].source.lstrip('check (').rstrip(')')}}
                     %end
                 </td>
+
+                <td>
+                    <div class="btn-group btn-group-xs">
+                        %if k.index:
+                        <a href="#" class="btn btn-warning" title="Edit constraint">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="/tools/script/{{db}}?typ=constraint&name={{k.name}}&table={{tbl.name}}&ddl=drop" class="btn btn-danger" title="Drop constraint ">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        %end
+                    </div>
+
+                </td>
+
             </tr>
             %end
             %end

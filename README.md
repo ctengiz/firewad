@@ -39,7 +39,7 @@ The list below, is a mix of features completed and **features which are planned 
     - [x] Database info via isc_info calls
     - [ ] Database parameter updates (sweep interval, shutdown etc.) (planned in 0.2.0)
     - [x] Database Monitoring
-    - [ ] Backup / restore (planned in 0.1.0)
+    - [x] Backup / restore
     - [x] Database Metada Extract (to screen, to file, to script tool)
     - [ ] Schema View (planned in 0.3.0)
     - [x] Enable / Disable all triggers

@@ -60,6 +60,22 @@
 
 </div>
 
+<div class="alert alert-info alert-dismissible" role="alert" id="result-panel" style="margin-bottom: 3px; display:none;">
+    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <span id="result-panel-text">
+        </span>
+    <div class="btn-group" id="result-panel-action" style="display: none;">
+        <a class="btn btn-success trn-action" data-action="commit">Commit</a>
+        <a class="btn btn-danger trn-action" data-action="rollback">Rollback</a>
+    </div>
+</div>
+
+<div class="alert alert-danger alert-dismissible" role="alert" id="error-panel" style="margin-bottom: 3px; display:none;">
+    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <span id="error-panel-text">
+
+        </span>
+</div>
 
 <!-- Nav tabs -->
 %if extyp == 'query':
@@ -87,12 +103,6 @@
     </div>
 </div>
 
-<div class="alert alert-danger alert-dismissible" role="alert" id="error-panel" style="margin-bottom: 3px; display:none;">
-    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <span id="error-panel-text">
-
-        </span>
-</div>
 
 %if extyp == 'query':
 <div class="panel panel-primary">
@@ -118,17 +128,6 @@
         <button class="btn btn-default" type="button" id="btn-fetch-all-param" title="Execute and fetch all">
             <i class="fa fa-fast-forward"></i>
         </button>
-    </div>
-</div>
-
-
-<div class="alert alert-info alert-dismissible" role="alert" id="result-panel" style="margin-bottom: 3px; display:none;">
-    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <span id="result-panel-text">
-        </span>
-    <div class="btn-group" id="result-panel-action" style="display: none;">
-        <a class="btn btn-success trn-action" data-action="commit">Commit</a>
-        <a class="btn btn-danger trn-action" data-action="rollback">Rollback</a>
     </div>
 </div>
 

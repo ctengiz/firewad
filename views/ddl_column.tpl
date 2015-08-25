@@ -22,7 +22,7 @@
 
 
 <div id="script" style="display: none;">
-    % include('_script.tpl', extyp = 'script', sql='', refresh_object='tables')
+    % include('_script.tpl', extyp = 'script', sql='', refresh_object='tables,domains')
 </div>
 
 % include('_footer.tpl')
