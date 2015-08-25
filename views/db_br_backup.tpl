@@ -4,7 +4,6 @@
     <div class="col-xs-12">
         <ol class="breadcrumb">
             <li class="active">Backup Database</li>
-            <li><a href="/db/{{db}}">{{db}}</a></li>
         </ol>
     </div>
 </div>
@@ -13,6 +12,15 @@
 <div class="row">
     <div class="col-md-6">
         <form method="post" id="form-backup">
+            <div class="form-group">
+                <label for="backup_path">Select DB To Backed Up</label>
+                <select name="db" id="backup-db-select">
+                    %for k in appconf.db_config.sections():
+                    <option value="{{k}}" {{'selected="selected"' if k == session['db'] else ''}}>{{k}}</option>
+                    %end
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="backup_path">Backup File Path</label>
                 <span  class="help-block alert-warning">
@@ -23,7 +31,11 @@
 
             <div class="form-group">
                 <label for="backup_name">Backup File Name</label>
-                <input type="text" id="backup_name" name="backup_name" class="form-control" value="{{db}}.fbk">
+                %if session['db']:
+                    <input type="text" id="backup_name" name="backup_name" class="form-control" value="{{session['db']}}.fbk">
+                %else:
+                    <input type="text" id="backup_name" name="backup_name" class="form-control">
+                %end
             </div>
 
             <div class="checkbox">
@@ -121,12 +133,14 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+    $("#backup_name").val(slug("{{session['db']}}") + '.fbk');
+
     $("#btn-backup").click(function() {
         var data = $("#form-backup").serialize();
 
         $.ajax({
             method: "POST",
-            url: "/backup/{{db}}",
+            url: "/backup",
             data: data,
             dataType: "json",
             beforeSend: function() {
@@ -135,17 +149,24 @@ $(document).ready(function(){
             error: function (e) {
             }
         }).done(function(rslt, textStatus, jqXH){
-            $("#results").show();
+            if (rslt.success == 1) {
+                $("#results").show();
 
-            $("#results").text(rslt.report);
+                $("#results").text(rslt.report);
 
-            if (rslt.link != "") {
-                $("#backup-link").show();
-                $("#backup-link").html(rslt.link);
+                if (rslt.link != "") {
+                    $("#backup-link").show();
+                    $("#backup-link").html(rslt.link);
+                } else {
+                    $("#backup-link").text("Backup completed...")
+                }
             } else {
-                $("#backup-link").text("Backup completed...")
+                alert(rslt.message);
             }
-        }).fail(function(){
+
+        }).fail(function(rslt){
+
+
 
         }).always(function () {
             $('#processing-modal').modal('hide');
@@ -153,9 +174,14 @@ $(document).ready(function(){
         });
 
         return false;
+    });
 
+    $("#backup-db-select").change(function () {
+        var str = slug($("#backup-db-select option:selected").text()) + '.fbk';
+        $("#backup_name").val(str);
+        return false;
+    });
 
-    })
 
 }
 );

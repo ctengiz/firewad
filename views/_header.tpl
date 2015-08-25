@@ -95,6 +95,9 @@ end
                         <li class="divider"></li>
                         <li><a href="/db/create">Create Database</a></li>
                         <li><a href="/db/drop">Drop Database</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/backup">Backup Database</a></li>
+                        <li><a href="/restore">Restore Database</a></li>
                     </ul>
                 </li>
 

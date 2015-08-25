@@ -364,6 +364,7 @@ def db_page(db):
 
     s = request.environ['beaker.session']
 
+    s['db'] = db
     return render('db_page', db=db)
 
 @baseApp.route('/db/<typ>/<db>')
@@ -427,18 +428,14 @@ def dbobj(typ, db, obj):
     return render(_rnd, db=db, tbl=_ddl, obj=obj, typ=typ)
 
 
-@baseApp.route('/backup/<db>', method=['GET', 'POST'])
-def db_backup(db):
-    if db not in appconf.con:
-        connect_db(db)
-
-    #return render(tpl='db_backup', db=db)
-
+@baseApp.route('/backup', method=['GET', 'POST'])
+def db_backup():
     if request.method == 'GET':
-        return template('db_backup', db=db)
+        return template('db_br_backup', db="")
     else:
+        db = request.POST.db
 
-        con = fdb.services.connect(host=appconf.db_config[db]['db_server'],
+        scon = fdb.services.connect(host=appconf.db_config[db]['db_server'],
                                    user=appconf.db_config[db]['db_user'],
                                    password=appconf.db_config[db]['db_pass']
                                    )
@@ -455,26 +452,94 @@ def db_backup(db):
 
         backup_file = backup_path + request.POST.backup_name
 
-        con.backup(source_database=appconf.db_config[db]['db_path'],
-                   dest_filenames=backup_file,
-                   #dest_file_sizes=(),
-                   ignore_checksums=int(request.POST.pop('ignore_checksums', 0)),
-                   ignore_limbo_transactions=int(request.POST.pop('ignore_limbo_transactions', 0)),
-                   metadata_only=int(request.POST.pop('metadata_only', 0)),
-                   collect_garbage=int(request.POST.pop('collect_garbage', 0)),
-                   transportable=int(request.POST.pop('transportable', 0)),
-                   convert_external_tables_to_internal=int(request.POST.pop('convert_external_to_internal', 0)),
-                   compressed=int(request.POST.pop('compressed', 0)),
-                   no_db_triggers=int(request.POST.pop('no_db_triggers', 0))
-                   )
+        try:
+            scon.backup(source_database=appconf.db_config[db]['db_path'],
+                       dest_filenames=backup_file,
+                       #dest_file_sizes=(),
+                       ignore_checksums=int(request.POST.pop('ignore_checksums', 0)),
+                       ignore_limbo_transactions=int(request.POST.pop('ignore_limbo_transactions', 0)),
+                       metadata_only=int(request.POST.pop('metadata_only', 0)),
+                       collect_garbage=int(request.POST.pop('collect_garbage', 0)),
+                       transportable=int(request.POST.pop('transportable', 0)),
+                       convert_external_tables_to_internal=int(request.POST.pop('convert_external_to_internal', 0)),
+                       compressed=int(request.POST.pop('compressed', 0)),
+                       no_db_triggers=int(request.POST.pop('no_db_triggers', 0))
+                       )
 
-        rpt = '\n'.join(con.readlines())
-        lnk = ""
-        if can_downlod:
-            lnk = '<a href="/static/backup/%s">Your backup is ready for download</a>' %(request.POST.backup_name)
+            rpt = '\n'.join(scon.readlines())
+            lnk = ""
+            if can_downlod:
+                lnk = '<a href="/static/backup/%s">Your backup is ready for download</a>' %(request.POST.backup_name)
 
-        return json.dumps({
-            "report":rpt,
-            "link": lnk
-        })
+            return json.dumps({
+                "success": 1,
+                "report":rpt,
+                "link": lnk
+            })
+        except Exception as err:
+            return json.dumps({"success":0, "message":str(err)})
+        finally:
+            scon.close()
+
+
+@baseApp.route('/restore', method=['GET', 'POST'])
+def db_restore():
+
+    if request.method == 'GET':
+        return template('db_br_restore', db="")
+    else:
+
+        restore_target = request.POST.restore_target
+
+        if restore_target == "registered":
+            dest_db = request.POST.dest_db
+            dest_filename = appconf.db_config[dest_db]['db_path']
+
+            _server=appconf.db_config[dest_db]['db_server']
+            _user=appconf.db_config[dest_db]['db_user']
+            _pass=appconf.db_config[dest_db]['db_pass']
+
+        else:
+            dest_filename = request.POST.dest_filename
+
+            _server = request.POST.dest_server
+            _user = 'SYSDBA'
+            _pass = request.POST.passw
+
+        source_filename = request.POST.source_filename.replace('./static/backup', appconf.basepath + '/static/backup')
+
+        scon = fdb.services.connect(host=_server,
+                                    user=_user,
+                                    password=_pass
+                                    )
+
+        try:
+            scon.restore(source_filenames=source_filename,
+                         dest_filenames=dest_filename,
+                         #todo: dest_file_pages=int(request.POST.pop('dest_file_pages', 8192)),
+                         page_size=int(request.POST.pop('page_size', 8192)),
+                         #todo: cache_buffers=int(request.POST.pop('cache_buffers', 8192)),
+                         access_mode_read_only=int(request.POST.pop('access_mode_read_only', 0)),
+                         replace=int(request.POST.pop('replace', 0)),
+                         deactivate_indexes=int(request.POST.pop('deactivate_indexes', 0)),
+                         do_not_restore_shadows=int(request.POST.pop('do_not_restore_shadows', 0)),
+                         do_not_enforce_constraints=int(request.POST.pop('do_not_enforce_constraints', 0)),
+                         commit_after_each_table=int(request.POST.pop('commit_after_each_table', 0)),
+                         use_all_page_space=int(request.POST.pop('use_all_page_space', 1)),
+                         no_db_triggers=int(request.POST.pop('no_db_triggers', 0)),
+                         metadata_only=int(request.POST.pop('metadata_only', 0))
+                         )
+
+            rpt = '\n'.join(scon.readlines())
+            lnk = ""
+
+            return json.dumps({
+                "success": 1,
+                "report":rpt,
+                "link": lnk
+            })
+        except Exception as err:
+            return json.dumps({"success":0, "message":str(err)})
+        finally:
+            scon.close()
 
