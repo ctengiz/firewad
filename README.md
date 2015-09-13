@@ -24,12 +24,15 @@ The list below, is a mix of features completed and **features which are planned 
  a full plan list. It grows while I play with the project. Any suggestions are welcome.
 
 - [ ] Full database metadata representation
+    - [x] Domains
     - [x] Tables
     - [x] Views
-    - [x] Trigger
-    - [x] Procedure
-    - [x] Sequence
-    - [x] UDF
+    - [x] Triggers
+    - [x] Procedures
+    - [x] Sequences
+    - [x] Indices
+    - [x] Constraints
+    - [x] Functions
     - [x] Exceptions
     - [ ] Roles (planned in 0.1.0)
     - [ ] Better dependency displays (also dependency display for UDF, sequence, domain, exception) (planned in 0.2.0)
@@ -49,7 +52,7 @@ The list below, is a mix of features completed and **features which are planned 
         - [x] Create table
         - [x] Drop table
         - [ ] Field modification
-        - [ ] Alter / Create constraints / indices
+        - [ ] Alter / Create / Drop constraints / indices
         - [x] DDL Edit
         - [x] Disable / Enable all triggers
         - [x] Disable / Enable all indices
@@ -57,7 +60,7 @@ The list below, is a mix of features completed and **features which are planned 
     - [ ] View (planned in 0.1.0)
         - [x] Create view
         - [x] Drop view
-        - [ ] Alter view
+        - [x] Alter view
         - [ ] Create view from query
         - [x] DDL Edit
     - [ ] Trigger (planned in 0.1.0)

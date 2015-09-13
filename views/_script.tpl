@@ -2,7 +2,7 @@
 
     %if extyp == 'script':
     <div class="btn-group btn-group-sm">
-        <button class="btn btn-warning" type="button" id="btn-commit-type"
+        <button class="btn btn-default" type="button" id="btn-commit-type"
                 data-toggle="button"
                 data-pressed="0"
                 data-0-text="Auto Commit: OFF"
