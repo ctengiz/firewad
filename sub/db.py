@@ -312,7 +312,7 @@ def db_create():
                 user '{db_user}'
                 password '{db_pass}'
                 page_size  {db_page_size}
-                DEFAULT CHARACTER SET {charset}""".format(**prms)
+                DEFAULT CHARACTER SET {charset} """.format(**prms)
 
         appconf.con[prms.db_alias] = fdb.create_database(
             sql=sql,

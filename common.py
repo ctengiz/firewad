@@ -116,6 +116,7 @@ def init_app():
     except:
         pass
 
+
 def render(tpl='', scripts='', show_topbar=True, show_sidebar=True, **kwargs):
     if tpl:
         content = bottle.template(tpl, **kwargs)
@@ -129,8 +130,10 @@ def render(tpl='', scripts='', show_topbar=True, show_sidebar=True, **kwargs):
                            **kwargs
                            )
 
+
 def highlight_sql(text):
     return highlight(text, sql.PlPgsqlLexer(), html.HtmlFormatter())
+
 
 def get_rdb_type(typ):
     types = ['table', 'view', 'trigger', 'computed field', 'validation', 'procedure',
@@ -139,8 +142,10 @@ def get_rdb_type(typ):
 
     return types[typ]
 
+
 def formval_to_utf8(aval):
     return aval.encode('latin1').decode('utf8')
+
 
 def serve_file(filename, data=None, mimetype='auto', download=False, charset='UTF-8'):
     headers = dict()
